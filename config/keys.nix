@@ -74,83 +74,97 @@
       options = { noremap = true; silent = true; };
     }
 
+    # bufferline
+    {
+      mode = [ "n" "i" "n" ];
+      key = "<F1>";
+      action = ":BufferLineCyclePrev<CR>";
+      options = { noremap = true; silent = true; };
+    }
+    {
+      mode = [ "n" "i" "n" ];
+      key = "<F2>";
+      action = ":BufferLineCycleNext<CR>";
+      options = { noremap = true; silent = true; };
+    }
+
     # telescope
     {
       mode = "n";
       key = "<leader>gq";
-      action = ''require("telescope.builtin").git_commits()'';
+      action = '':lua require("telescope.builtin").git_commits()<CR>'';
       options = { desc = "Commits"; };
     }
     {
       mode = "n";
       key = "<leader>gw";
-      action = ''require("telescope.builtin").git_bcommits()'';
+      action = '':lua require("telescope.builtin").git_bcommits()<CR>'';
       options = { desc = "Commits in branch"; };
     }
     {
       mode = "n";
       key = "<leader>gb";
-      action = ''require("telescope.builtin").git_status()'';
+      action = '':lua require("telescope.builtin").git_status()<CR>'';
       options = { desc = "Git status"; };
     }
     {
       mode = "n";
       key = "<leader>gs";
-      action = ''require("telescope.builtin").git_stash()'';
+      action = '':lua require("telescope.builtin").git_stash()<CR>'';
       options = { desc = "Git stash"; };
     }
     # {
     #   mode = "n";
     #   key = "<leader>gg";
-    #   action = ''require("telescope.builtin").git_status()'';
+    #   action = '':lua require("telescope.builtin").git_status()<CR>'';
     #   options = { desc = "Gitui"; };
     # }
     # {
     #   mode = "n";
     #   key = "<leader>gg";
-    #   action = ''require("telescope.builtin").git_status()'';
+    #   action = '':lua require("telescope.builtin").git_status()<CR>'';
     #   options = { desc = "Gitui"; };
     # }
     {
       mode = "n";
       key = "<leader>fb";
-      action = ''require("telescope").extensions.file_browser.file_browser({})'';
+      action = '':lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
       options = { desc = "File Browser"; };
     }
     {
       mode = "n";
       key = "<leader>ff";
-      action = ''require("telescope.builtin").find_files()'';
+      action = '':lua require("telescope.builtin").find_files()<CR>'';
       options = { desc = "Find Files"; };
     }
     {
       mode = "n";
       key = "<leader>fg";
-      action = ''Live_grep_from_project_git_root()'';
+      action = '':lua Live_grep_from_project_git_root()<CR>'';
       options = { desc = "Live Grep (root)"; };
     }
     {
       mode = "n";
       key = "<leader>fG";
-      action = ''require("telescope.builtin").live_grep()'';
+      action = '':lua require("telescope.builtin").live_grep()<CR>'';
       options = { desc = "Live Grep (cwd)"; };
     }
     {
       mode = "n";
       key = "<leader>fh";
-      action = ''require("telescope.builtin").help_tags()'';
+      action = '':lua require("telescope.builtin").help_tags()<CR>'';
       options = { desc = "Help"; };
     }
     {
       mode = "n";
       key = "<leader>fp";
-      action = ''require("telescope").extensions.project.project({})'';
+      action = '':lua require("telescope").extensions.project.project({})<CR>'';
       options = { desc = "Projects"; };
     }
     {
       mode = "n";
       key = "<leader>z";
-      action = ''require("telescope").extensions.zoxide.list({})'';
+      action = '':lua require("telescope").extensions.zoxide.list({})<CR>'';
       options = { desc = "Zoxide"; };
     }
 
@@ -213,12 +227,12 @@
     }
 
     # lsp
-    # {
-    #   mode = ["n" "v"];
-    #   key = "<F4>";
-    #   action = '''';
-    #   options = { desc = "Format"; };
-    # }
+    {
+      mode = [ "n" "i" "v" ];
+      key = "<F4>";
+      action = '':lua require("conform").format({async = true, lsp_format = "prefer"})<CR>'';
+      options = { desc = "Format"; silent = true; };
+    }
 
     # neoscroll
     {

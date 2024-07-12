@@ -1,4 +1,7 @@
 { lib, pkgs, ... }: {
+  extraPlugins = with pkgs.vimPlugins; [
+    Ionide-vim
+  ];
   plugins = {
     typescript-tools = {
       enable = true;

@@ -1,5 +1,11 @@
 { pkgs, ... }: {
   plugins = {
+    mini = {
+      enable = true;
+    };
+    bufferline = {
+      enable = true;
+    };
     clipboard-image = {
       clipboardPackage = pkgs.wl-clipboard;
       enable = true;
