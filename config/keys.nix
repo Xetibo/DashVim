@@ -277,7 +277,7 @@
     {
       mode = "n";
       key = "<leader>dc";
-      action = '':lua require("dap").continue()<CR>'';
+      action = '':lua debugAction()<CR>'';
       options = { desc = "Continue"; };
     }
     {
@@ -295,25 +295,25 @@
 
     # neoscroll
     {
-      mode = ["n" "i" "v"];
+      mode = [ "n" "i" "v" ];
       key = "<A-l>";
       action = '':lua require('neoscroll').ctrl_u({ duration = 250 })<CR>'';
       options = { desc = "Scroll Up"; silent = true; };
     }
     {
-      mode = ["n" "i" "v"];
+      mode = [ "n" "i" "v" ];
       key = "<A-k>";
       action = '':lua require('neoscroll').ctrl_d({ duration = 250 })<CR>'';
       options = { desc = "Scroll Down"; silent = true; };
     }
     {
-      mode = ["n" "i" "v"];
+      mode = [ "n" "i" "v" ];
       key = "<A-;>";
       action = ''<S-$>'';
       options = { desc = "Scroll Rigth"; silent = true; };
     }
     {
-      mode = ["n" "i" "v"];
+      mode = [ "n" "i" "v" ];
       key = "<A-j>";
       action = ''<S-0>'';
       options = { desc = "Scroll Left"; silent = true; };
@@ -352,7 +352,6 @@
     	local opts = {}
     	local function is_git_repo()
     		vim.fn.system("git rev-parse --is-inside-work-tree")
-    
     		return vim.v.shell_error == 0
     	end
     	if is_git_repo() then
@@ -364,7 +363,7 @@
     	end
     	return opts
     end
-    
+
     function Live_grep_from_project_git_root()
     	local opts = Get_git_root()
     	require("telescope.builtin").live_grep(opts)
@@ -374,6 +373,13 @@
     	vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
     end
 
+    function debugAction()
+      if vim.bo.filetype == "rust" then
+        vim.cmd.RustLsp("debuggables")
+      else
+        require("dap").continue()
+      end
+    end
 
     function codeAction()
       if vim.bo.filetype == "rust" then

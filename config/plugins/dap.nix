@@ -33,8 +33,17 @@
       adapters = {
         executables = {
           codelldb = {
-            # command = "${pkgs.vscode-extensions.vadimcn.vscode-lldb.adapter}";
             command = "${pkgs.lldb_17}/bin/lldb-vscode";
+          };
+          netcoredbg = {
+            command = "${pkgs.netcoredbg}/bin/netcoredbg";
+            args = [ "--interpreter=vscode" ];
+          };
+          java = {
+            command = "${pkgs.vscode-extensions.vscjava.vscode-java-debug}/bin/java-debug-adapter";
+          };
+          delve = {
+            command = "${pkgs.delve}/bin/delve";
           };
         };
       };
@@ -44,15 +53,11 @@
           request = "launch";
           type = "java";
         }];
-        # rust = [{
-        #   name = "Debug Rust";
-        #   request = "launch";
-        #   type = "codelldb";
-        #   program = ''function()
-        #     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-        #   end'';
-        #   # cwd = ''${workspaceFolder}'';
-        # }];
+        go = [{
+          name = "Debug Go";
+          request = "launch";
+          type = "delve";
+        }];
         cpp = [{
           name = "Debug CPP";
           request = "launch";
@@ -63,6 +68,11 @@
           request = "launch";
           type = "codelldb";
         }];
+        cs = [{
+          name = "Debug C#";
+          request = "launch";
+          type = "netcoredbg";
+        }];
       };
     };
   };
@@ -70,24 +80,5 @@
     require('dap').listeners.after.event_initialized['dapui_config'] = require('dapui').open
     require('dap').listeners.before.event_terminated['dapui_config'] = require('dapui').close
     require('dap').listeners.before.event_exited['dapui_config'] = require('dapui').close
-
-    local rust_dap = Get_git_root().cwd
-    local filename = ""
-    for w in rust_dap:gmatch("([^/]+)") do
-      filename = w
-    end
-    require('dap').configurations.rust = {
-      	{
-      		name = 'Launch',
-      		type = 'codelldb',
-      		request = 'launch',
-      		program = function()
-            return rust_dap .. "/target/debug/" .. filename
-      		end,
-      		cwd = "''${workspaceFolder}",
-      		stopOnEntry = false,
-      		args = {},
-      	},
-    }
   '';
 }
