@@ -109,6 +109,12 @@
     }
     {
       mode = "n";
+      key = "<leader>gB";
+      action = '':GitBlameToggle<CR>'';
+      options = { desc = "Git Blame"; };
+    }
+    {
+      mode = "n";
       key = "<leader>gs";
       action = '':lua require("telescope.builtin").git_stash()<CR>'';
       options = { desc = "Git stash"; };
@@ -206,6 +212,21 @@
       options = { noremap = true; silent = true; };
     }
 
+    # code action
+    {
+      mode = [ "n" "i" "v" ];
+      key = "<leader>cq";
+      action = '':lua codeAction()<CR>'';
+      options = { noremap = true; silent = true; desc = "Code Action"; };
+    }
+    {
+      mode = [ "n" "i" "v" ];
+      key = "<leader>cQ";
+      action = '':lua codeRefactor()<CR>'';
+      options = { noremap = true; silent = true; desc = "Code Refactor"; };
+    }
+
+
     # window movement
     {
       mode = [ "n" "i" "v" ];
@@ -222,7 +243,7 @@
     {
       mode = [ "n" "i" "v" ];
       key = "<A-f>";
-      action = '':Neotree toggle focus <CR>'';
+      action = '':Neotree toggle focus right<CR>'';
       options = { desc = "File Tree"; noremap = true; silent = true; };
     }
 
@@ -274,16 +295,28 @@
 
     # neoscroll
     {
-      mode = "n";
+      mode = ["n" "i" "v"];
       key = "<A-l>";
-      action = ''<CMD>-vim.wo.scroll true 250<CR>'';
+      action = '':lua require('neoscroll').ctrl_u({ duration = 250 })<CR>'';
       options = { desc = "Scroll Up"; silent = true; };
     }
     {
-      mode = "n";
+      mode = ["n" "i" "v"];
       key = "<A-k>";
-      action = ''<CMD>vim.wo.scroll true 250<CR>'';
+      action = '':lua require('neoscroll').ctrl_d({ duration = 250 })<CR>'';
       options = { desc = "Scroll Down"; silent = true; };
+    }
+    {
+      mode = ["n" "i" "v"];
+      key = "<A-;>";
+      action = ''<S-$>'';
+      options = { desc = "Scroll Rigth"; silent = true; };
+    }
+    {
+      mode = ["n" "i" "v"];
+      key = "<A-j>";
+      action = ''<S-0>'';
+      options = { desc = "Scroll Left"; silent = true; };
     }
 
     # Custom Commands
@@ -339,6 +372,38 @@
 
     local change_scale_factor = function(delta)
     	vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+    end
+
+
+    function codeAction()
+      if vim.bo.filetype == "rust" then
+        vim.cmd.RustLsp('codeAction')
+      else 
+        vim.lsp.buf.code_action({
+            context = {
+              only = {
+                "quickfix",
+                "quickfix.ltex",
+                "source",
+                "source.fixAll",
+                "source.organizeImports",
+                "",
+              },
+            },
+          })
+      end 
+    end
+    function codeRefactor()
+      vim.lsp.buf.code_action({
+        context = {
+          only = {
+            "refactor",
+            "refactor.inline",
+            "refactor.extract",
+            "refactor.rewrite",
+          },
+        },
+      })
     end
   '';
 }

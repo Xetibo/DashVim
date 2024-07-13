@@ -11,5 +11,6 @@
     scrolljump = 5;
     wrap = false;
     mapleader = " ";
+    gitblame_enabled = false;
   };
 }

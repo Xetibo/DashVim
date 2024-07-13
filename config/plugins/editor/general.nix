@@ -16,6 +16,9 @@
     nvim-colorizer = {
       enable = true;
     };
+    leap = {
+      enable = true;
+    };
     noice = {
       enable = true;
     };
@@ -56,9 +59,6 @@
       enable = true;
     };
     instant = {
-      enable = true;
-    };
-    neoscroll = {
       enable = true;
     };
   };

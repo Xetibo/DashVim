@@ -3,7 +3,9 @@
     neotest = {
       enable = true;
     };
-    lsp-format = { enable = true; };
+    lsp-format = {
+      enable = true;
+    };
     lsp-lines = {
       enable = true;
     };
