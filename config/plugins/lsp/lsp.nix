@@ -37,11 +37,12 @@
         omnisharp.enable = true;
         pyright.enable = true;
         ruby-lsp.enable = true;
-        rust-analyzer = {
-          enable = true;
-          installCargo = false;
-          installRustc = false;
-        };
+        # installed by rustacean
+        # rust-analyzer = {
+        #   enable = true;
+        #   installCargo = false;
+        #   installRustc = false;
+        # };
         svelte.enable = true;
         taplo.enable = true;
         sqls.enable = true;

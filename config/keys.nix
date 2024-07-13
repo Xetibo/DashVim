@@ -234,6 +234,44 @@
       options = { desc = "Format"; silent = true; };
     }
 
+    # DAP
+    {
+      mode = "n";
+      key = "<leader>db";
+      action = '':lua require("dap").toggle_breakpoint()<CR>'';
+      options = { desc = "Toggle Breakpoint"; };
+    }
+    {
+      mode = "n";
+      key = "<leader>do";
+      action = '':lua require("dap").step_over()<CR>'';
+      options = { desc = "Step Over"; };
+    }
+    {
+      mode = "n";
+      key = "<leader>di";
+      action = '':lua require("dap").step_into()<CR>'';
+      options = { desc = "Step Into"; };
+    }
+    {
+      mode = "n";
+      key = "<leader>dc";
+      action = '':lua require("dap").continue()<CR>'';
+      options = { desc = "Continue"; };
+    }
+    {
+      mode = "n";
+      key = "<leader>du";
+      action = '':lua require("dapui").toggle()<CR>'';
+      options = { desc = "Toggle DAP UI"; };
+    }
+    {
+      mode = "n";
+      key = "<leader>de";
+      action = '':lua require("dapui").eval()<CR>'';
+      options = { desc = "DAP Eval"; };
+    }
+
     # neoscroll
     {
       mode = "n";
