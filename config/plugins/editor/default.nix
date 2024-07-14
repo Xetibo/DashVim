@@ -5,5 +5,7 @@
     ./git.nix
     ./telescope.nix
     ./neoscroll.nix
+    ./neotree.nix
+    ./bars.nix
   ];
 }

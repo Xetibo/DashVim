@@ -74,17 +74,25 @@
       options = { noremap = true; silent = true; };
     }
 
+    # terminal
+    {
+      mode = ["t" "n" "i" "v"];
+      key = "<C-t>";
+      action = "<CMD>lua require('toggleterm').toggle() <CR>";
+      options = { noremap = true; silent = true; };
+    }
+
     # bufferline
     {
       mode = [ "n" "i" "n" ];
       key = "<F1>";
-      action = ":BufferLineCyclePrev<CR>";
+      action = ":BufferPrevious<CR>";
       options = { noremap = true; silent = true; };
     }
     {
       mode = [ "n" "i" "n" ];
       key = "<F2>";
-      action = ":BufferLineCycleNext<CR>";
+      action = ":BufferNext<CR>";
       options = { noremap = true; silent = true; };
     }
 
@@ -306,18 +314,18 @@
       action = '':lua require('neoscroll').ctrl_d({ duration = 250 })<CR>'';
       options = { desc = "Scroll Down"; silent = true; };
     }
-    {
-      mode = [ "n" "i" "v" ];
-      key = "<A-;>";
-      action = ''<S-$>'';
-      options = { desc = "Scroll Rigth"; silent = true; };
-    }
-    {
-      mode = [ "n" "i" "v" ];
-      key = "<A-j>";
-      action = ''<S-0>'';
-      options = { desc = "Scroll Left"; silent = true; };
-    }
+    # {
+    #   mode = [ "n" "i" "v" ];
+    #   key = "<A-;>";
+    #   action = ''<S-$>'';
+    #   options = { desc = "Scroll Rigth"; silent = true; };
+    # }
+    # {
+    #   mode = [ "n" "i" "v" ];
+    #   key = "<A-j>";
+    #   action = ''<S-0>'';
+    #   options = { desc = "Scroll Left"; silent = true; };
+    # }
 
     # Custom Commands
     {

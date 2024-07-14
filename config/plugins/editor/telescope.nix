@@ -4,6 +4,9 @@
     telescope-zoxide
     telescope-project-nvim
   ];
+  plugins.dressing = {
+    enable = true;
+  };
   plugins.telescope = {
     enable = true;
     extensions = {

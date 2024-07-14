@@ -3,9 +3,6 @@
     mini = {
       enable = true;
     };
-    bufferline = {
-      enable = true;
-    };
     clipboard-image = {
       clipboardPackage = pkgs.wl-clipboard;
       enable = true;
@@ -22,13 +19,7 @@
     noice = {
       enable = true;
     };
-    neo-tree = {
-      enable = true;
-    };
     coverage = {
-      enable = true;
-    };
-    lualine = {
       enable = true;
     };
     project-nvim = {
@@ -36,6 +27,12 @@
     };
     toggleterm = {
       enable = true;
+      settings = {
+        direction = "float";
+        float_opts = {
+          border = "curved";
+        };
+      };
     };
     surround = {
       enable = true;

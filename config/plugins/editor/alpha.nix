@@ -1,11 +1,11 @@
 let
   dashie = [
     " _______       ___           _______. __    __   __   _______ "
-    "|       \     /   \         /       ||  |  |  | |  | |   ____|"
-    "|  .--.  |   /  ^  \       |   (----`|  |__|  | |  | |  |__   "
-    "|  |  |  |  /  /_\  \       \   \    |   __   | |  | |   __|  "
-    "|  '--'  | /  _____  \  .----)   |   |  |  |  | |  | |  |____ "
-    "|_______/ /__/     \__\ |_______/    |__|  |__| |__| |_______|"
+    ''|       \     /   \         /       ||  |  |  | |  | |   ____|''
+    ''|  .--.  |   /  ^  \       |   (----`|  |__|  | |  | |  |__   ''
+    ''|  |  |  |  /  /_\  \       \   \    |   __   | |  | |   __|  ''
+    ''|  '--'  | /  _____  \  .----)   |   |  |  |  | |  | |  |____ ''
+    ''|_______/ /__/     \__\ |_______/    |__|  |__| |__| |_______|''
     "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⢤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          "
     "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠪⣍⣒⠒⠦⠤⠤⠤⠄⠠⡜⡐⠁⠪⡢⡀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠤⢄⠀⠀⠀⠀⠀⠀⠀          "
     "        ⠀⠀⠀⠈⠛⠯⣉⠁⣐⣂⠐⠮⠥⠟⣓⣲⣾⣿⣿⣿⣶⡃⠀⠀⠈⢞⢆⠀⠀⠀⠀⠀⠀⡰⢁⠂⠄⣇⠀⠀⠀⠀⠀⠀          "
@@ -44,7 +44,7 @@ in
       }
       {
         opts = {
-          hl = "AlphaHeader";
+          hl = "Include";
           position = "center";
         };
         type = "text";
@@ -60,15 +60,16 @@ in
           let
             mkButton = shortcut: cmd: val: hl: {
               type = "button";
-              inherit val;
+              inherit val hl;
+              on_press = { __raw = "function() ${cmd} end"; };
               opts = {
-                inherit hl shortcut;
                 keymap = [
                   "n"
                   shortcut
-                  cmd
+                  ":lua ${cmd} <CR>"
                   { }
                 ];
+                shortcut = shortcut;
                 position = "center";
                 cursor = 0;
                 width = 40;
@@ -81,42 +82,42 @@ in
             (
               mkButton
                 "f"
-                "<CMD>lua require('telescope.builtin').find_files({hidden = true})<CR>"
+                "require('telescope.builtin').find_files({hidden = true})"
                 "🔍 Find File"
                 "Operator"
             )
             (
               mkButton
                 "y"
-                "<CMD>lua require('yazi').yazi()<CR>"
+                "require('yazi').yazi()"
                 "🔍 Yazi"
                 "Operator"
             )
             (
               mkButton
                 "p"
-                "<CMD>lua require('telescope').extensions.project.project{}<CR>"
+                "require('telescope').extensions.project.project{}"
                 "🔍 Projects"
                 "Operator"
             )
             (
               mkButton
                 "t"
-                "<CMD>lua require('telescope').extensions.zoxide.list{}<CR>"
+                "require('telescope').extensions.zoxide.list{}"
                 "🔍 Zoxide"
                 "Operator"
             )
             (
               mkButton
                 "c"
-                "<CMD>e ~/gits/dotFiles<CR>"
+                "vim.cmd('e ~/gits/dotFiles')"
                 "🔍 Configuration"
                 "Operator"
             )
             (
               mkButton
                 "q"
-                "<CMD>qa<CR>"
+                "vim.cmd('qa')"
                 "💣 Quit Neovim"
                 "String"
             )
@@ -128,7 +129,7 @@ in
       }
       {
         opts = {
-          hl = "AlphaFooter";
+          hl = "Type";
           position = "center";
         };
         type = "text";

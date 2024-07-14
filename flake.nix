@@ -23,9 +23,10 @@
           nixvim' = nixvim.legacyPackages.${system};
           nixvimModule = {
             inherit pkgs;
-            module = import ./config; # import the module directly
+            module = import ./config;
+            # extraSpecialArgs = { inherit  colorscheme =  "catppuccin-mocha"; };
           };
-          dim = nixvim'.makeNixvimWithModule nixvimModule;
+          dashvim = nixvim'.makeNixvimWithModule nixvimModule;
         in
         {
           checks = {
@@ -33,8 +34,16 @@
           };
 
           packages = {
-            default = dim;
+            default = dashvim;
           };
         };
+
+      flake = _: rec {
+        nixosModules.home-manager = homeManagerModules.default;
+        homeManagerModules = rec {
+          dashvim = import ./hm inputs.self;
+          default = dashvim;
+        };
+      };
     };
 }
