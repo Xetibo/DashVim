@@ -15,10 +15,9 @@
         "branch"
         # "diff"
         {
-          name = "diagnostics";
-          # name = "require'lsp-status'.status()";
+          name = "require'lsp-status'.status()";
           extraConfig = {
-            sources = [ "nvim_lsp" ];
+            # sources = [ "lsp_stat()" ];
             symbols = {
               error = " ";
               warn = " ";
@@ -33,19 +32,7 @@
         {
           name = "diff";
           extraConfig = {
-            # sources = [ "vim.b.gitsigns_status" ];
             sources = [ ''diff_source()'' ];
-            #   ''function()
-            #       local gitsigns = vim.b.gitsigns_status_dict
-            #         if gitsigns then
-            #          return {
-            #            added = gitsigns.added,
-            #            modified = gitsigns.changed,
-            #            removed = gitsigns.removed,
-            #          }
-            #        end
-            #      end''
-            # ];
             symbols = {
               added = " ";
               modified = "󰝤 ";
@@ -74,6 +61,9 @@
   };
 
   extraConfigLua = ''
+    local lsp_status = require('lsp-status')
+    lsp_status.register_progress()
+
     function diff_source()
       local gitsigns = vim.b.gitsigns_status_dict
       if gitsigns then
@@ -82,6 +72,12 @@
           modified = gitsigns.changed,
           removed = gitsigns.removed
         }
+      end
+    end
+
+    function lsp_stat()
+      if vim.lsp.buf_get_clients() > 0 then 
+        require('lsp-status').status()
       end
     end
   '';

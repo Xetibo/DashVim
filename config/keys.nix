@@ -76,11 +76,26 @@
 
     # terminal
     {
-      mode = ["t" "n" "i" "v"];
+      mode = [ "t" "n" "i" "v" ];
       key = "<C-t>";
       action = "<CMD>lua require('toggleterm').toggle() <CR>";
       options = { noremap = true; silent = true; };
     }
+
+    # flash
+    {
+      mode = [ "n" "x" "o" ];
+      key = "s";
+      action = "<CMD>lua require('flash').jump()<CR>";
+      options = { noremap = true; silent = true; desc = "Flash"; };
+    }
+    {
+      mode = [ "n" "x" "o" ];
+      key = "S";
+      action = "<CMD>lua require('flash').treesitter()<CR>";
+      options = { noremap = true; silent = true; desc = "Flash Treesitter"; };
+    }
+
 
     # bufferline
     {

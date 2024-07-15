@@ -13,11 +13,28 @@
     nvim-colorizer = {
       enable = true;
     };
-    leap = {
+    flash = {
       enable = true;
+      # highlightUnlabeledPhaseOneTargets = true;
     };
     noice = {
       enable = true;
+      notify = {
+        enabled = false;
+      };
+      messages = {
+        enabled = true;
+      };
+      lsp = {
+        message = {
+          enabled = true;
+        };
+        progress = {
+          enabled = true;
+          view = "mini";
+        };
+        signature.enabled = true;
+      };
     };
     coverage = {
       enable = true;
