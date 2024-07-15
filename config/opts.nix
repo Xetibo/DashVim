@@ -122,6 +122,9 @@
           vim.cmd("highlight  BufferDefaultCurrentWarn  guibg=nil")
           vim.cmd("highlight  BufferDefaultCurrentTarget  guibg=nil")
           vim.cmd("highlight  BufferDefaultCurrentMod  guibg=nil")
+
+          vim.cmd("highlight  Pmenu  guibg=nil")
+          vim.cmd("highlight  NormalFloat  guibg=nil")
         end'';
       };
     }

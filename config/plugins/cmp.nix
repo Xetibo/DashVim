@@ -34,8 +34,8 @@
         ];
 
         window = {
-          completion = { border = "solid"; };
-          documentation = { border = "solid"; };
+          completion = { border = "rounded"; scrollbar = false; };
+          documentation = { border = "rounded"; scrollbar = false; };
         };
         mapping = {
           "<C-b>" = "cmp.mapping.scroll_docs(-4)";
