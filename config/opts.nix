@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ pkgs, ... }: {
   globals = {
     fileencoding = "utf-8";
     number = true;
@@ -12,9 +12,18 @@
     mapleader = " ";
     gitblame_enabled = false;
     clear_background = true;
+    mkdp_auto_start = true;
+    loaded_netrw = true;
+    loaded_netrwPlugin = true;
+    autoformat = false;
+    mkdp_browser = "${pkgs.firefox}/bin/firefox";
+    neovide_refresh_rate = 180;
+    neovide_refresh_rate_idle = 5;
+    neovide_hide_mouse_when_typing = true;
   };
 
   opts = {
+    guifont = "JetBrainsMono Nerd Font:h14";
     foldenable = false;
     foldmethod = "manual";
     termguicolors = true;
@@ -28,6 +37,7 @@
     highlight_yank = { };
     resize = { };
     neotree = { };
+    filetypes = { };
   };
   autoCmd = [
     {
@@ -70,6 +80,23 @@
           vim.cmd("tabdo wincmd =")
           vim.cmd("tabnext " .. current_tab)
         end'';
+      };
+    }
+    {
+      desc = "Add typst as filetype";
+      event = [ "BufEnter" ];
+      group = "filetypes";
+      pattern = "*";
+      callback = {
+        __raw = ''function()
+          vim.filetype.add({
+          	extension = {
+          		typst = "typst",
+          		typ = "typst",
+          	},
+          })
+        end'';
+
       };
     }
   ];

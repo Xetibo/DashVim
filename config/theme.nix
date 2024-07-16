@@ -1,7 +1,8 @@
-{ inputs, pkgs, config, ... }:
+{ inputs, pkgs, colorscheme, ... }:
 let
+  conf_scheme = colorscheme;
   parsed =
-    (if builtins.isAttrs config.programs.dashvim.colorscheme then config.programs.dashvim.colorscheme else "${pkgs.base16-schemes}/share/themes/${config.programs.dashvim.colorscheme}.yaml");
+    (if builtins.isAttrs conf_scheme then conf_scheme else "${pkgs.base16-schemes}/share/themes/${conf_scheme}.yaml");
   base16 = pkgs.callPackage inputs.base16.lib { };
   scheme = (base16.mkSchemeAttrs parsed);
 in
@@ -9,7 +10,7 @@ in
   colorschemes = {
     base16 = {
       enable = true;
-      colorscheme = config.programs.dashvim.colorscheme;
+      colorscheme = conf_scheme;
       settings = {
         telescope = false;
         ts_rainbow = false;

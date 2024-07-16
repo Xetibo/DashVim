@@ -10,6 +10,7 @@
   outputs =
     { nixvim, flake-parts, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
+
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -20,14 +21,14 @@
       perSystem =
         { pkgs, system, ... }:
         let
+          colorscheme = "catppuccin-mocha";
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
           nixvimModule = {
             inherit pkgs;
             module = import ./config;
-            extraSpecialArgs = { inherit inputs; };
+            extraSpecialArgs = { inherit inputs colorscheme; };
           };
-          dashvim = nixvim'.makeNixvimWithModule nixvimModule;
         in
         {
           checks = {
@@ -35,11 +36,11 @@
           };
 
           packages = {
-            default = dashvim;
+            default = nixvim'.makeNixvimWithModule nixvimModule;
           };
         };
 
-      flake = _: rec {
+      flake = toplevel@{ ... }: rec {
         nixosModules.home-manager = homeManagerModules.default;
         homeManagerModules = rec {
           dashvim = import ./hm inputs.self;
