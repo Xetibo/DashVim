@@ -22,109 +22,29 @@
     shell = "fish";
   };
 
-  colorschemes = {
-    base16 = {
-      settings = {
-        telescope = true;
-        ts_rainbow = true;
-        telescope_borders = true;
-        cmp = true;
-        dapui = true;
-        illuminate = true;
-        lsp_semantic = true;
-        mini_completion = true;
-        notify = true;
-      };
-    };
-    catppuccin.settings = {
-      disable_underline = true;
-      flavour = "mocha";
-      integrations = {
-        navic = {
-          enabled = true;
-        };
-        neotest = true;
-        neotree = true;
-        noice = true;
-        semantic_tokens = true;
-        treesitter_context = true;
-        which_key = true;
-        aerial = true;
-        alpha = true;
-        cmp = true;
-        dashboard = true;
-        flash = true;
-        gitsigns = true;
-        headlines = true;
-        illuminate = true;
-        indent_blankline = true;
-        leap = true;
-        lsp_trouble = true;
-        mason = true;
-        markdown = true;
-        native_lsp = {
-          enabled = true;
-          underlines = {
-            errors = "undercurl";
-            hints = "undercurl";
-            warnings = "undercurl";
-            information = "undercurl";
-          };
-        };
-        telescope = false;
-        mini = {
-          enabled = true;
-          indentscope_color = "";
-        };
-        notify = false;
-        nvimtree = true;
-        treesitter = true;
-        barbar = true;
-        toggleterm = true;
-      };
-      styles = {
-        booleans = [
-          "bold"
-          "italic"
-        ];
-        conditionals = [
-          "bold"
-        ];
-      };
-      # term_colors = true;
-    };
-  } // config.programs.dashvim.colorscheme;
-
   clipboard.register = "unnamedplus";
   autoGroups = {
     custom_theme = { };
     highlight_yank = { };
+    resize = { };
+    neotree = { };
   };
   autoCmd = [
     {
-      desc = "fix theme";
-      event = [ "ColorScheme" "VimEnter" ];
-      group = "custom_theme";
+      desc = "Neotree directory";
+      event = [ "BufEnter" ];
+      group = "neotree";
       pattern = "*";
       callback = {
         __raw = ''function()
-          vim.cmd("highlight  FloatBorder  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrent  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentADDED  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentERROR guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentCHANGED  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentDELETED  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentINFO  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentHINT  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentIndex  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentPin  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentSign  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentWarn  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentTarget  guibg=nil")
-          vim.cmd("highlight  BufferDefaultCurrentMod  guibg=nil")
-
-          vim.cmd("highlight  Pmenu  guibg=nil")
-          vim.cmd("highlight  NormalFloat  guibg=nil")
+          if package.loaded["neo-tree"] then
+            return
+          else
+            local stats = vim.uv.fs_stat(vim.fn.argv(0))
+            if stats and stats.type == "directory" then
+              require("neo-tree")
+            end
+          end
         end'';
       };
     }
@@ -136,6 +56,19 @@
       callback = {
         __raw = ''function()
           vim.highlight.on_yank()
+        end'';
+      };
+    }
+    {
+      desc = "Resize splits";
+      event = [ "VimResized" ];
+      group = "resize";
+      pattern = "*";
+      callback = {
+        __raw = ''function()
+          local current_tab = vim.fn.tabpagenr()
+          vim.cmd("tabdo wincmd =")
+          vim.cmd("tabnext " .. current_tab)
         end'';
       };
     }

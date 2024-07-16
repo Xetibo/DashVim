@@ -60,9 +60,10 @@ in
           let
             mkButton = shortcut: cmd: val: hl: {
               type = "button";
-              inherit val hl;
+              inherit val;
               on_press = { __raw = "function() ${cmd} end"; };
               opts = {
+                inherit hl;
                 keymap = [
                   "n"
                   shortcut
@@ -83,43 +84,43 @@ in
               mkButton
                 "f"
                 "require('telescope.builtin').find_files({hidden = true})"
-                "🔍 Find File"
-                "Operator"
+                " Find File"
+                "Keyword"
             )
             (
               mkButton
                 "y"
                 "require('yazi').yazi()"
-                "🔍 Yazi"
-                "Operator"
+                " Yazi"
+                "Keyword"
             )
             (
               mkButton
                 "p"
                 "require('telescope').extensions.project.project{}"
-                "🔍 Projects"
-                "Operator"
+                "󰺄 Projects"
+                "Keyword"
             )
             (
               mkButton
                 "t"
                 "require('telescope').extensions.zoxide.list{}"
-                "🔍 Zoxide"
-                "Operator"
+                " Zoxide"
+                "Keyword"
             )
             (
               mkButton
                 "c"
-                "vim.cmd('e ~/gits/dotFiles')"
-                "🔍 Configuration"
-                "Operator"
+                "vim.cmd('Neotree dir=~/gits/dotFiles/nix')  vim.cmd('e  ~/gits/dotFiles/nix/flake.nix')"
+                " Configuration"
+                "Keyword"
             )
             (
               mkButton
                 "q"
                 "vim.cmd('qa')"
-                "💣 Quit Neovim"
-                "String"
+                "⏻ Quit Neovim"
+                "Keyword"
             )
           ];
       }

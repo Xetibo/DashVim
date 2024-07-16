@@ -19,6 +19,38 @@
     };
     noice = {
       enable = true;
+      # extraOptions = {
+      # };
+      views = {
+ cmdline_popup = {
+        position = {
+          row = 5;
+          col = "50%";
+        };
+        size = {
+          width = 60;
+          height = "auto";
+        };
+      };
+        popupmenu = {
+  relative = "editor";
+        position = {
+          row = 8;
+          col = "50%";
+        };
+        size = {
+          width = 60;
+          height = 10;
+        };
+        border = {
+          style = "rounded";
+        };
+          winhighlight = {
+            Normal = "NormalFloat";
+            FloatBorder = "FloatBorder";
+          };
+        };
+      };
       notify = {
         enabled = false;
       };
@@ -45,6 +77,11 @@
     toggleterm = {
       enable = true;
       settings = {
+        highlights= {
+          FloatBorder = {
+            link = "FloatBorder";
+          };
+        };
         direction = "float";
         float_opts = {
           border = "curved";

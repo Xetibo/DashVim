@@ -34,8 +34,16 @@
         ];
 
         window = {
-          completion = { border = "rounded"; scrollbar = false; };
-          documentation = { border = "rounded"; scrollbar = false; };
+          completion = { 
+            border = "rounded";
+            scrollbar = false;
+            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
+          };
+          documentation = { 
+            border = "rounded";
+            scrollbar = false;
+            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
+          };
         };
         mapping = {
           "<C-b>" = "cmp.mapping.scroll_docs(-4)";

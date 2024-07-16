@@ -4,6 +4,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    base16.url = "github:SenchoPens/base16.nix";
   };
 
   outputs =
@@ -24,7 +25,7 @@
           nixvimModule = {
             inherit pkgs;
             module = import ./config;
-            # extraSpecialArgs = { inherit  colorscheme =  "catppuccin-mocha"; };
+            extraSpecialArgs = { inherit inputs; };
           };
           dashvim = nixvim'.makeNixvimWithModule nixvimModule;
         in
