@@ -3,6 +3,13 @@
     enable = true;
     popupBorderStyle = "rounded";
     useDefaultMappings = false;
+    filesystem = {
+      hijackNetrwBehavior = "open_current";
+      filteredItems = {
+        hideDotfiles = false;
+        hideGitignored = false;
+      };
+    };
     window = {
       position = "right";
       mappings = {

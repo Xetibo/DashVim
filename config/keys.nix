@@ -3,24 +3,24 @@
   plugins.which-key = {
     enable = true;
     registrations = {
-      "g" = "+goto";
-      "gz" = "+surround";
+      # "g" = "+goto";
+      # "gz" = "+surround";
       "]" = "+next";
       "[" = "+prev";
       "<leader><tab>" = "+tabs";
-      "<leader>b" = "+buffer";
+      # "<leader>b" = "+buffer";
       "<leader>c" = "+code";
       "<leader>cl" = "+codelines";
       "<leader>f" = "+file/find";
       "<leader>g" = "+git";
-      "<leader>gh" = "+hunks";
-      "<leader>q" = "+quit/session";
-      "<leader>s" = "+search";
-      "<leader>u" = "+ui";
-      "<leader>w" = "+windows";
+      # "<leader>gh" = "+hunks";
+      # "<leader>q" = "+quit/session";
+      # "<leader>s" = "+search";
+      # "<leader>u" = "+ui";
+      # "<leader>w" = "+windows";
       "<leader>x" = "+diagnostics/quickfix";
-      "<leader>h" = "+harpoon";
-      "<leader>d" = "+DAP";
+      # "<leader>h" = "+harpoon";
+      "<leader>d" = "+debug";
     };
   };
   keymaps = [
@@ -115,19 +115,19 @@
     {
       mode = "n";
       key = "<leader>gq";
-      action = '':lua require("telescope.builtin").git_commits()<CR>'';
+      action = ''<CMD>lua require("telescope.builtin").git_commits()<CR>'';
       options = { desc = "Commits"; };
     }
     {
       mode = "n";
       key = "<leader>gw";
-      action = '':lua require("telescope.builtin").git_bcommits()<CR>'';
+      action = ''<CMD>lua require("telescope.builtin").git_bcommits()<CR>'';
       options = { desc = "Commits in branch"; };
     }
     {
       mode = "n";
       key = "<leader>gb";
-      action = '':lua require("telescope.builtin").git_status()<CR>'';
+      action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
       options = { desc = "Git status"; };
     }
     {
@@ -139,61 +139,61 @@
     {
       mode = "n";
       key = "<leader>gs";
-      action = '':lua require("telescope.builtin").git_stash()<CR>'';
+      action = ''<CMD>lua require("telescope.builtin").git_stash()<CR>'';
       options = { desc = "Git stash"; };
     }
     # {
     #   mode = "n";
     #   key = "<leader>gg";
-    #   action = '':lua require("telescope.builtin").git_status()<CR>'';
+    #   action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
     #   options = { desc = "Gitui"; };
     # }
     # {
     #   mode = "n";
     #   key = "<leader>gg";
-    #   action = '':lua require("telescope.builtin").git_status()<CR>'';
+    #   action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
     #   options = { desc = "Gitui"; };
     # }
     {
       mode = "n";
       key = "<leader>fb";
-      action = '':lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
+      action = ''<CMD>lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
       options = { desc = "File Browser"; };
     }
     {
       mode = "n";
       key = "<leader>ff";
-      action = '':lua require("telescope.builtin").find_files()<CR>'';
+      action = ''<CMD>lua require("telescope.builtin").find_files()<CR>'';
       options = { desc = "Find Files"; };
     }
     {
       mode = "n";
       key = "<leader>fg";
-      action = '':lua Live_grep_from_project_git_root()<CR>'';
+      action = ''<CMD>lua Live_grep_from_project_git_root()<CR>'';
       options = { desc = "Live Grep (root)"; };
     }
     {
       mode = "n";
       key = "<leader>fG";
-      action = '':lua require("telescope.builtin").live_grep()<CR>'';
+      action = ''<CMD>lua require("telescope.builtin").live_grep()<CR>'';
       options = { desc = "Live Grep (cwd)"; };
     }
     {
       mode = "n";
       key = "<leader>fh";
-      action = '':lua require("telescope.builtin").help_tags()<CR>'';
+      action = ''<CMD>lua require("telescope.builtin").help_tags()<CR>'';
       options = { desc = "Help"; };
     }
     {
       mode = "n";
       key = "<leader>fp";
-      action = '':lua require("telescope").extensions.project.project({})<CR>'';
+      action = ''<CMD>lua require("telescope").extensions.project.project({})<CR>'';
       options = { desc = "Projects"; };
     }
     {
       mode = "n";
       key = "<leader>z";
-      action = '':lua require("telescope").extensions.zoxide.list({})<CR>'';
+      action = ''<CMD>lua require("telescope").extensions.zoxide.list({})<CR>'';
       options = { desc = "Zoxide"; };
     }
 
@@ -239,13 +239,13 @@
     {
       mode = [ "n" "i" "v" ];
       key = "<leader>cq";
-      action = '':lua codeAction()<CR>'';
+      action = ''<CMD>lua codeAction()<CR>'';
       options = { noremap = true; silent = true; desc = "Code Action"; };
     }
     {
       mode = [ "n" "i" "v" ];
       key = "<leader>cQ";
-      action = '':lua codeRefactor()<CR>'';
+      action = ''<CMD>lua codeRefactor()<CR>'';
       options = { noremap = true; silent = true; desc = "Code Refactor"; };
     }
 
@@ -274,7 +274,7 @@
     {
       mode = [ "n" "i" "v" ];
       key = "<F4>";
-      action = '':lua require("conform").format({async = true, lsp_format = "prefer"})<CR>'';
+      action = ''<CMD>lua require("conform").format({async = true, lsp_format = "prefer"})<CR>'';
       options = { desc = "Format"; silent = true; };
     }
 
@@ -282,37 +282,37 @@
     {
       mode = "n";
       key = "<leader>db";
-      action = '':lua require("dap").toggle_breakpoint()<CR>'';
+      action = ''<CMD>lua require("dap").toggle_breakpoint()<CR>'';
       options = { desc = "Toggle Breakpoint"; };
     }
     {
       mode = "n";
       key = "<leader>do";
-      action = '':lua require("dap").step_over()<CR>'';
+      action = ''<CMD>lua require("dap").step_over()<CR>'';
       options = { desc = "Step Over"; };
     }
     {
       mode = "n";
       key = "<leader>di";
-      action = '':lua require("dap").step_into()<CR>'';
+      action = ''<CMD>lua require("dap").step_into()<CR>'';
       options = { desc = "Step Into"; };
     }
     {
       mode = "n";
       key = "<leader>dc";
-      action = '':lua debugAction()<CR>'';
+      action = ''<CMD>lua debugAction()<CR>'';
       options = { desc = "Continue"; };
     }
     {
       mode = "n";
       key = "<leader>du";
-      action = '':lua require("dapui").toggle()<CR>'';
+      action = ''<CMD>lua require("dapui").toggle()<CR>'';
       options = { desc = "Toggle DAP UI"; };
     }
     {
       mode = "n";
       key = "<leader>de";
-      action = '':lua require("dapui").eval()<CR>'';
+      action = ''<CMD>lua require("dapui").eval()<CR>'';
       options = { desc = "DAP Eval"; };
     }
 
@@ -320,13 +320,13 @@
     {
       mode = [ "n" "i" "v" ];
       key = "<A-l>";
-      action = '':lua require('neoscroll').ctrl_u({ duration = 250 })<CR>'';
+      action = ''<CMD>lua require('neoscroll').ctrl_u({ duration = 250 })<CR>'';
       options = { desc = "Scroll Up"; silent = true; };
     }
     {
       mode = [ "n" "i" "v" ];
       key = "<A-k>";
-      action = '':lua require('neoscroll').ctrl_d({ duration = 250 })<CR>'';
+      action = ''<CMD>lua require('neoscroll').ctrl_d({ duration = 250 })<CR>'';
       options = { desc = "Scroll Down"; silent = true; };
     }
     # {

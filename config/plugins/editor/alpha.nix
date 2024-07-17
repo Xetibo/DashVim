@@ -67,7 +67,7 @@ in
                 keymap = [
                   "n"
                   shortcut
-                  ":lua ${cmd} <CR>"
+                  "<CMD>lua ${cmd} <CR>"
                   { }
                 ];
                 shortcut = shortcut;
