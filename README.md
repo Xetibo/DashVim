@@ -18,7 +18,7 @@ programs.dashvim = {
 
 ## Try before Installation
 
-`nix run`nix inside the directory, or `nix run  github:DashieTM/DashVim`nix.
+`nix run` inside the directory, or `nix run github:DashieTM/DashVim`.
 
 # Keys
 Could potentially be outdated.
