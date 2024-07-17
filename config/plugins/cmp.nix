@@ -21,25 +21,25 @@
           {
             name = "buffer"; # text within current buffer
             option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
-            keywordLength = 3;
+            keyword_length = 3;
           }
           {
             name = "path"; # file system paths
-            keywordLength = 3;
+            keyword_length = 3;
           }
           {
             name = "luasnip"; # snippets
-            keywordLength = 3;
+            keyword_length = 3;
           }
         ];
 
         window = {
-          completion = { 
+          completion = {
             border = "rounded";
             scrollbar = false;
             winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
           };
-          documentation = { 
+          documentation = {
             border = "rounded";
             scrollbar = false;
             winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
