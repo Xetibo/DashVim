@@ -16,7 +16,7 @@
           base06 = "CBCCD1";
           base07 = "D5D6DB";
           base08 = "C0CAF5";
-          base09 = "A9B1D6";
+          base09 = "A9B1D7";
           base0A = "0DB9D7";
           base0B = "9ECE6A";
           base0C = "B4F9F8";

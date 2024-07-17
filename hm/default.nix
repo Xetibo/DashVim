@@ -6,13 +6,7 @@ self: { lib
 let
   cfg = config.programs.dashvim;
   system = pkgs.stdenv.hostPlatform.system;
-  nixvim' = self.inputs.nixvim.legacyPackages.${system};
-  nixvimModule = {
-    inherit pkgs;
-    module = import ../config;
-    extraSpecialArgs = { inputs = self.inputs; colorscheme = cfg.colorscheme; };
-  };
-  dashvim = nixvim'.makeNixvimWithModule nixvimModule;
+  dashvim = (import ../lib { inherit system pkgs; inputs = self.inputs; colorscheme = cfg.colorscheme; });
 in
 {
   imports = [ ../modules ];
@@ -22,7 +16,7 @@ in
 
     package = mkOption {
       type = with types; nullOr package;
-      default = dashvim;
+      default = dashvim.build_dashvim;
       defaultText = literalExpression ''
         ReSet.packages.''${pkgs.stdenv.hostPlatform.system}.default
       '';

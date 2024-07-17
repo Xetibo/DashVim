@@ -8,7 +8,7 @@
   };
 
   outputs =
-    { nixvim, flake-parts, ... }@inputs:
+    { flake-parts, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
 
       systems = [
@@ -21,22 +21,15 @@
       perSystem =
         { pkgs, system, ... }:
         let
-          colorscheme = "catppuccin-mocha";
-          nixvimLib = nixvim.lib.${system};
-          nixvim' = nixvim.legacyPackages.${system};
-          nixvimModule = {
-            inherit pkgs;
-            module = import ./config;
-            extraSpecialArgs = { inherit inputs colorscheme; };
-          };
+          package = (import ./lib { inherit system inputs pkgs; });
         in
         {
           checks = {
-            default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+            default = package.test_dashvim;
           };
 
           packages = {
-            default = nixvim'.makeNixvimWithModule nixvimModule;
+            default = package.build_dashvim;
           };
         };
 
