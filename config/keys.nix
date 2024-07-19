@@ -237,13 +237,13 @@
 
     # code action
     {
-      mode = [ "n" "i" "v" ];
+      mode = [ "n" "v" ];
       key = "<leader>cq";
       action = ''<CMD>lua codeAction()<CR>'';
       options = { noremap = true; silent = true; desc = "Code Action"; };
     }
     {
-      mode = [ "n" "i" "v" ];
+      mode = [ "n" "v" ];
       key = "<leader>cQ";
       action = ''<CMD>lua codeRefactor()<CR>'';
       options = { noremap = true; silent = true; desc = "Code Refactor"; };
