@@ -1,6 +1,7 @@
 { lib, pkgs, ... }: {
   extraPlugins = with pkgs.vimPlugins; [
     Ionide-vim
+    haskell-tools-nvim
   ];
   plugins = {
     typescript-tools = {

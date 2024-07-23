@@ -25,7 +25,8 @@
         dhall-lsp-server.enable = true;
         elixirls.enable = true;
         gopls.enable = true;
-        hls.enable = true;
+        # installed by haskell-tools
+        # hls.enable = true;
         html.enable = true;
         htmx.enable = true;
         jsonls.enable = true;

@@ -41,6 +41,21 @@
   };
   autoCmd = [
     {
+      desc = "Haskell mappings";
+      event = [ "FileType" ];
+      group = "filetypes";
+      pattern = "haskell";
+      callback = {
+        __raw = ''function()
+          local ht = require('haskell-tools')
+          local bufnr = vim.api.nvim_get_current_buf()
+          vim.keymap.set('n', '<leader>cE', ht.hoogle.hoogle_signature, {desc = "hoogle signature", buffer = bufnr})
+          -- Evaluate all code snippets
+          vim.keymap.set('n', '<leader>cS', ht.lsp.buf_eval_all, {desc = "evaluate", buffer = bufnr})
+        end'';
+      };
+    }
+    {
       desc = "Neotree directory";
       event = [ "BufEnter" ];
       group = "neotree";
