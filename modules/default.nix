@@ -36,5 +36,33 @@
         or a path to a custom yaml file.
       '';
     };
+
+    default_keymaps = lib.mkOption {
+      default = true;
+      example = false;
+      type = lib.types.bool;
+      description = ''
+        Enables the default keybinds for DashVim.
+        Keep in mind that regular keymaps from plugin defaults and Neovim are still active.
+      '';
+    };
+
+    keymaps = lib.mkOption {
+      default = { };
+      example = {
+        keymaps = [
+          # cursed movement
+          {
+            mode = "n";
+            key = "j";
+            action = "h";
+            options = { noremap = true; silent = true; };
+          }
+        ];
+      };
+      description = ''
+        A set of NixVim modules which will be used either alone or in combination with the default keybinds.
+      '';
+    };
   };
 }

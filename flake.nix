@@ -19,7 +19,7 @@
       ];
 
       perSystem =
-        { pkgs, system, ... }:
+        { pkgs, system, ... }@orig:
         let
           package = (import ./lib { inherit system inputs pkgs; });
         in

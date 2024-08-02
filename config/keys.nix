@@ -1,5 +1,58 @@
-{
+{ config', lib, ... }: lib.mkIf config'.default_keymaps {
   # which key topics
+  plugins.lsp = {
+    keymaps = {
+      silent = true;
+      lspBuf = {
+        "<leader>ca" = {
+          action = "definition";
+          desc = "Goto Definition";
+        };
+        "<leader>cs" = {
+          action = "references";
+          desc = "Goto References";
+        };
+        "<leader>cA" = {
+          action = "declaration";
+          desc = "Goto Declaration";
+        };
+        "<leader>cf" = {
+          action = "implementation";
+          desc = "Goto Implementation";
+        };
+        "<leader>cd" = {
+          action = "type_definition";
+          desc = "Type Definition";
+        };
+        "<leader>ce" = {
+          action = "hover";
+          desc = "Hover";
+        };
+        "<leader>cw" = {
+          action = "workspace_symbol";
+          desc = "Workspace Symbol";
+        };
+        "<leader>cr" = {
+          action = "rename";
+          desc = "Rename";
+        };
+      };
+      diagnostic = {
+        "<leader>cld" = {
+          action = "open_float";
+          desc = "Line Diagnostics";
+        };
+        "<leader>cn" = {
+          action = "goto_next";
+          desc = "Next Diagnostic";
+        };
+        "<leader>cp" = {
+          action = "goto_prev";
+          desc = "Previous Diagnostic";
+        };
+      };
+    };
+  };
   plugins.which-key = {
     enable = true;
     settings.spec = [{

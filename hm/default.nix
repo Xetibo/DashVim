@@ -6,7 +6,7 @@ self: { lib
 let
   cfg = config.programs.dashvim;
   system = pkgs.stdenv.hostPlatform.system;
-  dashvim = (import ../lib { inherit system pkgs; inputs = self.inputs; colorscheme = cfg.colorscheme; });
+  dashvim = (import ../lib { inherit system pkgs; inputs = self.inputs; config' = cfg; });
 in
 {
   imports = [ ../modules ];

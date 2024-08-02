@@ -1,6 +1,6 @@
-{ inputs, pkgs, colorscheme, ... }:
+{ inputs, pkgs, config', ... }:
 let
-  conf_scheme = colorscheme;
+  conf_scheme = config'.colorscheme;
   parsed =
     (if builtins.isAttrs conf_scheme then conf_scheme else "${pkgs.base16-schemes}/share/themes/${conf_scheme}.yaml");
   base16 = pkgs.callPackage inputs.base16.lib { };

@@ -1,11 +1,12 @@
-{ colorscheme ? "catppuccin-mocha", system, inputs, pkgs, ... }:
+{ config' ? { colorscheme = "catppuccin-mocha"; default_keymaps = true; keymaps = { }; }, system, inputs, pkgs, ... }:
 let
+
   nixvimLib = inputs.nixvim.lib.${system};
   nixvim' = inputs.nixvim.legacyPackages.${system};
   nixvimModule = {
     inherit pkgs;
     module = import ../config;
-    extraSpecialArgs = { inherit inputs colorscheme; };
+    extraSpecialArgs = { inherit inputs config'; };
   };
 
 in
