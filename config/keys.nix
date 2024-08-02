@@ -2,27 +2,52 @@
   # which key topics
   plugins.which-key = {
     enable = true;
-    registrations = {
-      # "g" = "+goto";
-      # "gz" = "+surround";
-      "]" = "+next";
-      "[" = "+prev";
-      "<leader><tab>" = "+tabs";
-      # "<leader>b" = "+buffer";
-      "<leader>c" = "+code";
-      "<leader>cl" = "+codelines";
-      "<leader>f" = "+file/find";
-      "<leader>g" = "+git";
-      # "<leader>gh" = "+hunks";
-      # "<leader>q" = "+quit/session";
-      # "<leader>s" = "+search";
-      # "<leader>u" = "+ui";
-      # "<leader>w" = "+windows";
-      "<leader>x" = "+diagnostics/quickfix";
-      # "<leader>h" = "+harpoon";
-      "<leader>d" = "+debug";
-    };
+    settings.spec = [{
+      __unkeyed-1 = "]";
+      desc = "+next";
+    }
+      {
+        __unkeyed-1 = "[";
+        desc = "+prev";
+      }
+      {
+        __unkeyed-1 = "<leader><tab>";
+        desc = "+tabs";
+      }
+      {
+        # "<leader>b" = "+buffer";
+        __unkeyed-1 = "<leader>c";
+        desc = "+code";
+      }
+      {
+        __unkeyed-1 = "<leader>cl";
+        desc = "+codelines";
+      }
+      {
+        __unkeyed-1 = "<leader>f";
+        desc = "+file/find";
+      }
+      {
+        __unkeyed-1 = "<leader>g";
+        desc = "+git";
+      }
+      {
+        __unkeyed-1 = "<leader>x";
+        desc = "+diagnostics/quickfix";
+      }
+      {
+        __unkeyed-1 = "<leader>d";
+        desc = "+debug";
+      }];
   };
+  # "g" = "+goto";
+  # "gz" = "+surround";
+  # "<leader>gh" = "+hunks";
+  # "<leader>q" = "+quit/session";
+  # "<leader>s" = "+search";
+  # "<leader>u" = "+ui";
+  # "<leader>w" = "+windows";
+  # "<leader>h" = "+harpoon";
   keymaps = [
     # movement
     {
