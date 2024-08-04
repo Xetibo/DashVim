@@ -34,7 +34,10 @@
         };
 
       flake = toplevel@{ ... }: rec {
-        nixosModules.home-manager = homeManagerModules.default;
+        nixosModules = {
+          home-manager = homeManagerModules.default;
+          dashvim = import ./hm inputs.self;
+        };
         homeManagerModules = rec {
           dashvim = import ./hm inputs.self;
           default = dashvim;
