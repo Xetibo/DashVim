@@ -1,6 +1,7 @@
 self: { lib
       , config
       , pkgs
+      , options
       , ...
       }:
 let
@@ -25,10 +26,12 @@ in
       '';
     };
   };
-  config =
-    lib.mkIf
-      cfg.enable
+  config = lib.mkIf cfg.enable
+    (lib.optionalAttrs (options?home.packages)
       {
         home.packages = lib.optional (cfg.package != null) cfg.package;
-      };
+      } //
+    lib.optionalAttrs (options?environment.systemPackages) {
+      environment.systemPackages = lib.optional (cfg.package != null) cfg.package;
+    });
 }
