@@ -55,10 +55,11 @@
   };
   plugins.which-key = {
     enable = true;
-    settings.spec = [{
-      __unkeyed-1 = "]";
-      desc = "+next";
-    }
+    settings.spec = [
+      {
+        __unkeyed-1 = "]";
+        desc = "+next";
+      }
       {
         __unkeyed-1 = "[";
         desc = "+prev";
@@ -91,7 +92,8 @@
       {
         __unkeyed-1 = "<leader>d";
         desc = "+debug";
-      }];
+      }
+    ];
   };
   # "g" = "+goto";
   # "gz" = "+surround";
@@ -102,6 +104,13 @@
   # "<leader>w" = "+windows";
   # "<leader>h" = "+harpoon";
   keymaps = [
+    {
+      mode = "n";
+      key = "<leader>cm";
+      action = "<CMD>lua lsp.inlay_hint.enable(0, not lsp.inlay_hint.is_enabled()) <CR>";
+      options = { noremap = true; silent = true; };
+    }
+
     # movement
     {
       mode = "n";
