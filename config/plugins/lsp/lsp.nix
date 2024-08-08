@@ -57,7 +57,6 @@
         texlab.enable = true;
         tailwindcss.enable = true;
         nixd.enable = true;
-        fsautocomplete.enable = true;
       };
     };
   };
