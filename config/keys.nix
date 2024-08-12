@@ -8,10 +8,6 @@
           action = "definition";
           desc = "Goto Definition";
         };
-        "<leader>cs" = {
-          action = "references";
-          desc = "Goto References";
-        };
         "<leader>cA" = {
           action = "declaration";
           desc = "Goto Declaration";
@@ -363,6 +359,12 @@
       key = "<F4>";
       action = ''<CMD>lua require("conform").format({async = true, lsp_format = "prefer"})<CR>'';
       options = { desc = "Format"; silent = true; };
+    }
+    {
+      mode = [ "n" "v" ];
+      key = "<leader>cs";
+      action = ''<CMD>lua require("telescope.builtin").lsp_references()<CR>'';
+      options = { desc = "Goto References"; silent = true; };
     }
 
     # DAP
