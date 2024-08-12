@@ -20,6 +20,7 @@
     neovide_refresh_rate = 180;
     neovide_refresh_rate_idle = 5;
     neovide_hide_mouse_when_typing = true;
+    "fsharp#workspace_mode_peek_deep_level" = 5;
   };
 
   opts = {
