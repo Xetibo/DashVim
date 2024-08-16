@@ -106,6 +106,12 @@
       action = "<CMD>lua lsp.inlay_hint.enable(0, not lsp.inlay_hint.is_enabled()) <CR>";
       options = { noremap = true; silent = true; };
     }
+    {
+      mode = "n";
+      key = "gx";
+      action = ":silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>";
+      options = { noremap = true; silent = true; };
+    }
 
     # movement
     {
