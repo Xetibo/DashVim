@@ -101,17 +101,6 @@
       };
     }
     {
-      desc = "Refresh lense on write";
-      event = [ "BufWritePost" ];
-      group = "filetypes";
-      pattern = "*";
-      callback = {
-        __raw = ''function()
-          vim.lsp.codelens.refresh()
-        end'';
-      };
-    }
-    {
       desc = "Disable lsp-lines by default";
       event = [ "BufEnter" ];
       group = "filetypes";
