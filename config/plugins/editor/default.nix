@@ -7,5 +7,7 @@
     ./neoscroll.nix
     ./neotree.nix
     ./bars.nix
+    ./neorg.nix
+    ./special.nix
   ];
 }

@@ -20,7 +20,9 @@
     neovide_refresh_rate = 180;
     neovide_refresh_rate_idle = 5;
     neovide_hide_mouse_when_typing = true;
-    "fsharp#workspace_mode_peek_deep_level" = 5;
+    "fsharp#workspace_mode_peek_deep_level" = 100;
+    "fsharp#exclude_project_directories" = [ "paket-files" ];
+    "fsharp#fsautocomplete_command" = [ "fsautocomplete" "--adaptive-lsp-server-enabled" "--project-graph-enabled" "--use-fcs-transparent-compiler" ];
   };
 
   opts = {
@@ -99,6 +101,28 @@
       };
     }
     {
+      desc = "Refresh lense on write";
+      event = [ "BufWritePost" ];
+      group = "filetypes";
+      pattern = "*";
+      callback = {
+        __raw = ''function()
+          vim.lsp.codelens.refresh()
+        end'';
+      };
+    }
+    {
+      desc = "Disable lsp-lines by default";
+      event = [ "BufEnter" ];
+      group = "filetypes";
+      pattern = "*";
+      callback = {
+        __raw = ''function()
+          vim.diagnostic.config({ virtual_lines = false })
+        end'';
+      };
+    }
+    {
       desc = "Add typst as filetype";
       event = [ "BufEnter" ];
       group = "filetypes";
@@ -112,7 +136,6 @@
           	},
           })
         end'';
-
       };
     }
   ];

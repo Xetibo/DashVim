@@ -1,5 +1,11 @@
 { pkgs, ... }: {
   plugins = {
+    neogit = {
+      enable = true;
+    };
+    trouble = {
+      enable = true;
+    };
     mini = {
       enable = true;
     };
@@ -22,29 +28,29 @@
       # extraOptions = {
       # };
       views = {
- cmdline_popup = {
-        position = {
-          row = 5;
-          col = "50%";
+        cmdline_popup = {
+          position = {
+            row = 5;
+            col = "50%";
+          };
+          size = {
+            width = 60;
+            height = "auto";
+          };
         };
-        size = {
-          width = 60;
-          height = "auto";
-        };
-      };
         popupmenu = {
-  relative = "editor";
-        position = {
-          row = 8;
-          col = "50%";
-        };
-        size = {
-          width = 60;
-          height = 10;
-        };
-        border = {
-          style = "rounded";
-        };
+          relative = "editor";
+          position = {
+            row = 8;
+            col = "50%";
+          };
+          size = {
+            width = 60;
+            height = 10;
+          };
+          border = {
+            style = "rounded";
+          };
           winhighlight = {
             Normal = "NormalFloat";
             FloatBorder = "FloatBorder";
@@ -77,7 +83,7 @@
     toggleterm = {
       enable = true;
       settings = {
-        highlights= {
+        highlights = {
           FloatBorder = {
             link = "FloatBorder";
           };
@@ -95,6 +101,11 @@
       enable = true;
     };
     treesitter = {
+      settings.highlight.enable = true;
+      grammarPackages = with pkgs.tree-sitter-grammars; [
+        tree-sitter-norg
+        tree-sitter-norg-meta
+      ];
       enable = true;
     };
     diffview = {

@@ -35,7 +35,7 @@
           codelldb = {
             command = "${pkgs.lldb_17}/bin/lldb-vscode";
           };
-          netcoredbg = {
+          coreclr = {
             command = "${pkgs.netcoredbg}/bin/netcoredbg";
             args = [ "--interpreter=vscode" ];
           };
@@ -68,15 +68,41 @@
           request = "launch";
           type = "codelldb";
         }];
-        cs = [{
-          name = "Debug C#";
-          request = "launch";
-          type = "netcoredbg";
-        }];
+        # no file picker possible here?
+        # cs = [{
+        #   name = "Debug C#";
+        #   request = "launch";
+        #   type = "netcoredbg";
+        # }];
+        # fsharp = [{
+        #   name = "Debug F#";
+        #   request = "launch";
+        #   type = "netcoredbg";
+        # }];
       };
     };
   };
   extraConfigLua = ''
+    require('dap').configurations.cs = {
+      {
+        type = "coreclr",
+        name = "Debug .Net",
+        request = "launch",
+        program = function()
+            return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+        end,
+      },
+    }
+    require('dap').configurations.fsharp = {
+      {
+        type = "coreclr",
+        name = "Debug .Net",
+        request = "launch",
+        program = function()
+            return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+        end,
+      },
+    }
     require('dap').listeners.after.event_initialized['dapui_config'] = require('dapui').open
     require('dap').listeners.before.event_terminated['dapui_config'] = require('dapui').close
     require('dap').listeners.before.event_exited['dapui_config'] = require('dapui').close

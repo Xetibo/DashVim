@@ -102,6 +102,28 @@
   keymaps = [
     {
       mode = "n";
+      key = "<leader>cll";
+      action = "<CMD>lua require('lsp_lines').toggle() <CR>";
+      options =
+        {
+          noremap = true;
+          silent = true;
+          desc = "Toggle lsp lines";
+        };
+    }
+    {
+      mode = "n";
+      key = "<leader>ccr";
+      action = "<CMD>LspRestart <CR>";
+      options =
+        {
+          noremap = true;
+          silent = true;
+          desc = "Restart LSP";
+        };
+    }
+    {
+      mode = "n";
       key = "<leader>cm";
       action = "<CMD>lua lsp.inlay_hint.enable(0, not lsp.inlay_hint.is_enabled()) <CR>";
       options = { noremap = true; silent = true; };
@@ -112,6 +134,20 @@
       action = ":silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>";
       options = { noremap = true; silent = true; };
     }
+
+    # trouble 
+    {
+      mode = "n";
+      key = "<leader>t";
+      action = "<cmd>Trouble diagnostics toggle filter.buf=0<cr>";
+      options =
+        {
+          noremap = true;
+          silent = true;
+          desc = "Trouble";
+        };
+    }
+
 
     # movement
     {
@@ -216,7 +252,7 @@
     {
       mode = "n";
       key = "<leader>gb";
-      action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
+      action = ''<CMD>lua require("telescope.builtin").git_branches()<CR>'';
       options = { desc = "Git status"; };
     }
     {
@@ -228,21 +264,21 @@
     {
       mode = "n";
       key = "<leader>gs";
-      action = ''<CMD>lua require("telescope.builtin").git_stash()<CR>'';
+      action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
       options = { desc = "Git stash"; };
     }
-    # {
-    #   mode = "n";
-    #   key = "<leader>gg";
-    #   action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
-    #   options = { desc = "Gitui"; };
-    # }
-    # {
-    #   mode = "n";
-    #   key = "<leader>gg";
-    #   action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
-    #   options = { desc = "Gitui"; };
-    # }
+    {
+      mode = "n";
+      key = "<leader>gn";
+      action = ''<CMD>lua require('neogit').neogit.open()<CR>'';
+      options = { desc = "Neogit"; };
+    }
+    {
+      mode = "n";
+      key = "<leader>gg";
+      action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
+      options = { desc = "Gitui"; };
+    }
     {
       mode = "n";
       key = "<leader>fb";
@@ -355,7 +391,7 @@
     {
       mode = [ "n" "i" "v" ];
       key = "<A-f>";
-      action = '':Neotree toggle focus right<CR>'';
+      action = '':Neotree toggle focus right reveal_force_cwd=true<CR>'';
       options = { desc = "File Tree"; noremap = true; silent = true; };
     }
 
