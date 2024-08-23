@@ -22,6 +22,7 @@
     neovide_hide_mouse_when_typing = true;
     "fsharp#workspace_mode_peek_deep_level" = 100;
     "fsharp#exclude_project_directories" = [ "paket-files" ];
+    "fsharp#automatic_workspace_init" = 0;
     "fsharp#fsautocomplete_command" = [ "fsautocomplete" "--adaptive-lsp-server-enabled" "--project-graph-enabled" "--use-fcs-transparent-compiler" ];
   };
 
