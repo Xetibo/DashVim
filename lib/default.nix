@@ -1,4 +1,8 @@
-{ config' ? { colorscheme = "catppuccin-mocha"; default_keymaps = true; keymaps = { }; }, system, inputs, pkgs, ... }:
+{ config' ? {
+  colorscheme = "catppuccin-mocha";
+  default_keymaps = true;
+  keymaps = { };
+}, system, inputs, pkgs, ... }:
 let
 
   nixvimLib = inputs.nixvim.lib.${system};
@@ -9,8 +13,7 @@ let
     extraSpecialArgs = { inherit inputs config'; };
   };
 
-in
-{
+in {
   build_dashvim = nixvim'.makeNixvimWithModule nixvimModule;
   test_dashvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
 }

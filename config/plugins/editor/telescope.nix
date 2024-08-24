@@ -1,12 +1,10 @@
 { pkgs, ... }: {
-  extraPlugins = with pkgs.vimPlugins;[
+  extraPlugins = with pkgs.vimPlugins; [
     yazi-nvim
     telescope-zoxide
     telescope-project-nvim
   ];
-  plugins.dressing = {
-    enable = true;
-  };
+  plugins.dressing = { enable = true; };
   plugins.telescope = {
     enable = true;
     extensions = {

@@ -13,7 +13,9 @@
         snippet = { expand = "luasnip"; };
         formatting = { fields = [ "kind" "abbr" "menu" ]; };
         sources = [
-          { name = "nvim_lsp"; }
+          {
+            name = "nvim_lsp";
+          }
           # { name = "treesitter"; }
           { name = "fuzzy_path"; }
           { name = "nvim_lsp_document_symbol"; }
@@ -37,12 +39,14 @@
           completion = {
             border = "rounded";
             scrollbar = false;
-            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
+            winhighlight =
+              "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
           };
           documentation = {
             border = "rounded";
             scrollbar = false;
-            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
+            winhighlight =
+              "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
           };
         };
         mapping = {
@@ -51,73 +55,63 @@
           "<C-Space>" = "cmp.mapping.complete()";
           "<C-e>" = "cmp.mapping.abort()";
           "<CR>" = "cmp.mapping.confirm({ select = false })";
-          "<S-CR>" = ''cmp.mapping.confirm({
-            behavior =  cmp.ConfirmBehavior.Replace,
-            select = false,
-          })'';
-          "<Tab>" = ''cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
-            else
-              fallback()
-            end
-          end, { "i", "s" }),
-          ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
-            else
-              fallback()
-            end
-          end, {
-            "i",
-            "s",
-          })'';
-          "<C-j>" = ''cmp.mapping(function(fallback)
-            if luasnip.expandable() then
-              luasnip.expand()
-            elseif luasnip.expand_or_jumpable() then
-              luasnip.expand_or_jump()
-            else
-              fallback()
-            end
-          end, {
-            "i",
-            "s",
-          })'';
-          "<C-k>" = ''cmp.mapping(function(fallback)
-            if luasnip.expand_or_jumpable(-1) then
-              luasnip.jump(-1)
-            else
-              fallback()
-            end
-          end, {
-            "i",
-            "s",
-          })'';
+          "<S-CR>" = ''
+            cmp.mapping.confirm({
+                        behavior =  cmp.ConfirmBehavior.Replace,
+                        select = false,
+                      })'';
+          "<Tab>" = ''
+            cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                          cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
+                        else
+                          fallback()
+                        end
+                      end, { "i", "s" }),
+                      ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                          cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
+                        else
+                          fallback()
+                        end
+                      end, {
+                        "i",
+                        "s",
+                      })'';
+          "<C-j>" = ''
+            cmp.mapping(function(fallback)
+                        if luasnip.expandable() then
+                          luasnip.expand()
+                        elseif luasnip.expand_or_jumpable() then
+                          luasnip.expand_or_jump()
+                        else
+                          fallback()
+                        end
+                      end, {
+                        "i",
+                        "s",
+                      })'';
+          "<C-k>" = ''
+            cmp.mapping(function(fallback)
+                        if luasnip.expand_or_jumpable(-1) then
+                          luasnip.jump(-1)
+                        else
+                          fallback()
+                        end
+                      end, {
+                        "i",
+                        "s",
+                      })'';
         };
       };
     };
-    luasnip = {
-      enable = true;
-    };
-    cmp-treesitter = {
-      enable = true;
-    };
-    cmp_luasnip = {
-      enable = true;
-    };
-    cmp-nvim-lsp = {
-      enable = true;
-    };
-    cmp-nvim-lsp-document-symbol = {
-      enable = true;
-    };
-    cmp-nvim-lsp-signature-help = {
-      enable = true;
-    };
-    cmp-fuzzy-path = {
-      enable = true;
-    };
+    luasnip = { enable = true; };
+    cmp-treesitter = { enable = true; };
+    cmp_luasnip = { enable = true; };
+    cmp-nvim-lsp = { enable = true; };
+    cmp-nvim-lsp-document-symbol = { enable = true; };
+    cmp-nvim-lsp-signature-help = { enable = true; };
+    cmp-fuzzy-path = { enable = true; };
   };
 
   extraConfigLua = ''

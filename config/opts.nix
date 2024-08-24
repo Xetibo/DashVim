@@ -23,7 +23,12 @@
     "fsharp#workspace_mode_peek_deep_level" = 100;
     "fsharp#exclude_project_directories" = [ "paket-files" ];
     "fsharp#automatic_workspace_init" = 0;
-    "fsharp#fsautocomplete_command" = [ "fsautocomplete" "--adaptive-lsp-server-enabled" "--project-graph-enabled" "--use-fcs-transparent-compiler" ];
+    "fsharp#fsautocomplete_command" = [
+      "fsautocomplete"
+      "--adaptive-lsp-server-enabled"
+      "--project-graph-enabled"
+      "--use-fcs-transparent-compiler"
+    ];
   };
 
   opts = {
@@ -50,13 +55,14 @@
       group = "filetypes";
       pattern = "haskell";
       callback = {
-        __raw = ''function()
-          local ht = require('haskell-tools')
-          local bufnr = vim.api.nvim_get_current_buf()
-          vim.keymap.set('n', '<leader>cE', ht.hoogle.hoogle_signature, {desc = "hoogle signature", buffer = bufnr})
-          -- Evaluate all code snippets
-          vim.keymap.set('n', '<leader>cS', ht.lsp.buf_eval_all, {desc = "evaluate", buffer = bufnr})
-        end'';
+        __raw = ''
+          function()
+                    local ht = require('haskell-tools')
+                    local bufnr = vim.api.nvim_get_current_buf()
+                    vim.keymap.set('n', '<leader>cE', ht.hoogle.hoogle_signature, {desc = "hoogle signature", buffer = bufnr})
+                    -- Evaluate all code snippets
+                    vim.keymap.set('n', '<leader>cS', ht.lsp.buf_eval_all, {desc = "evaluate", buffer = bufnr})
+                  end'';
       };
     }
     {
@@ -65,16 +71,17 @@
       group = "neotree";
       pattern = "*";
       callback = {
-        __raw = ''function()
-          if package.loaded["neo-tree"] then
-            return
-          else
-            local stats = vim.uv.fs_stat(vim.fn.argv(0))
-            if stats and stats.type == "directory" then
-              require("neo-tree")
-            end
-          end
-        end'';
+        __raw = ''
+          function()
+                    if package.loaded["neo-tree"] then
+                      return
+                    else
+                      local stats = vim.uv.fs_stat(vim.fn.argv(0))
+                      if stats and stats.type == "directory" then
+                        require("neo-tree")
+                      end
+                    end
+                  end'';
       };
     }
     {
@@ -83,9 +90,10 @@
       group = "highlight_yank";
       pattern = "*";
       callback = {
-        __raw = ''function()
-          vim.highlight.on_yank()
-        end'';
+        __raw = ''
+          function()
+                    vim.highlight.on_yank()
+                  end'';
       };
     }
     {
@@ -94,11 +102,12 @@
       group = "resize";
       pattern = "*";
       callback = {
-        __raw = ''function()
-          local current_tab = vim.fn.tabpagenr()
-          vim.cmd("tabdo wincmd =")
-          vim.cmd("tabnext " .. current_tab)
-        end'';
+        __raw = ''
+          function()
+                    local current_tab = vim.fn.tabpagenr()
+                    vim.cmd("tabdo wincmd =")
+                    vim.cmd("tabnext " .. current_tab)
+                  end'';
       };
     }
     {
@@ -107,9 +116,10 @@
       group = "filetypes";
       pattern = "*";
       callback = {
-        __raw = ''function()
-          vim.diagnostic.config({ virtual_lines = false })
-        end'';
+        __raw = ''
+          function()
+                    vim.diagnostic.config({ virtual_lines = false })
+                  end'';
       };
     }
     {
@@ -118,14 +128,15 @@
       group = "filetypes";
       pattern = "*";
       callback = {
-        __raw = ''function()
-          vim.filetype.add({
-          	extension = {
-          		typst = "typst",
-          		typ = "typst",
-          	},
-          })
-        end'';
+        __raw = ''
+          function()
+                    vim.filetype.add({
+                    	extension = {
+                    		typst = "typst",
+                    		typ = "typst",
+                    	},
+                    })
+                  end'';
       };
     }
   ];

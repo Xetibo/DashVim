@@ -8,9 +8,7 @@
           enable = false;
           settings = {
             dap = {
-              args = {
-                justMyCode = false;
-              };
+              args = { justMyCode = false; };
               adapter_name = "coreclr";
             };
           };
@@ -29,15 +27,9 @@
         deno.enable = true;
       };
     };
-    lsp-format = {
-      enable = true;
-    };
-    lsp-lines = {
-      enable = true;
-    };
-    lsp-status = {
-      enable = true;
-    };
+    lsp-format = { enable = true; };
+    lsp-lines = { enable = true; };
+    lsp-status = { enable = true; };
     lsp = {
       enable = true;
       inlayHints = true;
@@ -92,13 +84,15 @@
             "--project-graph-enabled"
             "--use-fcs-transparent-compiler"
           ];
-          rootDir = "require('lspconfig').util.root_pattern('*.sln', '*.fsproj', '.git')";
+          rootDir =
+            "require('lspconfig').util.root_pattern('*.sln', '*.fsproj', '.git')";
           settings = {
             FSharp = {
               EnableReferenceCodeLens = true;
               ExternalAutocomplete = false;
               InterfaceStubGeneration = true;
-              InterfaceStubGenerationMethodBody = ''failwith "Not Implemented"'';
+              InterfaceStubGenerationMethodBody =
+                ''failwith "Not Implemented"'';
               InterfaceStubGenerationObjectIdentifier = "this";
               Linter = true;
               RecordStubGeneration = true;

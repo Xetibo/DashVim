@@ -1,4 +1,5 @@
-{ config', lib, ... }: lib.mkIf config'.default_keymaps {
+{ config', lib, ... }:
+lib.mkIf config'.default_keymaps {
   # which key topics
   plugins.lsp = {
     keymaps = {
@@ -104,35 +105,41 @@
       mode = "n";
       key = "<leader>cll";
       action = "<CMD>lua require('lsp_lines').toggle() <CR>";
-      options =
-        {
-          noremap = true;
-          silent = true;
-          desc = "Toggle lsp lines";
-        };
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Toggle lsp lines";
+      };
     }
     {
       mode = "n";
       key = "<leader>ccr";
       action = "<CMD>LspRestart <CR>";
-      options =
-        {
-          noremap = true;
-          silent = true;
-          desc = "Restart LSP";
-        };
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Restart LSP";
+      };
     }
     {
       mode = "n";
       key = "<leader>cm";
-      action = "<CMD>lua lsp.inlay_hint.enable(0, not lsp.inlay_hint.is_enabled()) <CR>";
-      options = { noremap = true; silent = true; };
+      action =
+        "<CMD>lua lsp.inlay_hint.enable(0, not lsp.inlay_hint.is_enabled()) <CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "n";
       key = "gx";
-      action = ":silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>";
-      options = { noremap = true; silent = true; };
+      action =
+        ":silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
 
     # trouble 
@@ -140,63 +147,85 @@
       mode = "n";
       key = "<leader>t";
       action = "<cmd>Trouble diagnostics toggle filter.buf=0<cr>";
-      options =
-        {
-          noremap = true;
-          silent = true;
-          desc = "Trouble";
-        };
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Trouble";
+      };
     }
-
 
     # movement
     {
       mode = "n";
       key = "j";
       action = "h";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "n";
       key = "l";
       action = "k";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "n";
       key = "k";
       action = "j";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "n";
       key = ";";
       action = "l";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "v";
       key = "j";
       action = "h";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "v";
       key = "k";
       action = "j";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "v";
       key = "l";
       action = "k";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "v";
       key = ";";
       action = "l";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
 
     # terminal
@@ -204,7 +233,10 @@
       mode = [ "t" "n" "i" "v" ];
       key = "<C-t>";
       action = "<CMD>lua require('toggleterm').toggle() <CR>";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
 
     # flash
@@ -212,28 +244,41 @@
       mode = [ "n" "x" "o" ];
       key = "s";
       action = "<CMD>lua require('flash').jump()<CR>";
-      options = { noremap = true; silent = true; desc = "Flash"; };
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Flash";
+      };
     }
     {
       mode = [ "n" "x" "o" ];
       key = "S";
       action = "<CMD>lua require('flash').treesitter()<CR>";
-      options = { noremap = true; silent = true; desc = "Flash Treesitter"; };
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Flash Treesitter";
+      };
     }
-
 
     # bufferline
     {
       mode = [ "n" "i" "n" ];
       key = "<F1>";
       action = ":BufferPrevious<CR>";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = [ "n" "i" "n" ];
       key = "<F2>";
       action = ":BufferNext<CR>";
-      options = { noremap = true; silent = true; };
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
 
     # telescope
@@ -258,7 +303,7 @@
     {
       mode = "n";
       key = "<leader>gB";
-      action = '':GitBlameToggle<CR>'';
+      action = ":GitBlameToggle<CR>";
       options = { desc = "Git Blame"; };
     }
     {
@@ -270,7 +315,7 @@
     {
       mode = "n";
       key = "<leader>gn";
-      action = ''<CMD>lua require('neogit').neogit.open()<CR>'';
+      action = "<CMD>Neogit <CR>";
       options = { desc = "Neogit"; };
     }
     {
@@ -282,7 +327,8 @@
     {
       mode = "n";
       key = "<leader>fb";
-      action = ''<CMD>lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
+      action = ''
+        <CMD>lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
       options = { desc = "File Browser"; };
     }
     {
@@ -294,7 +340,7 @@
     {
       mode = "n";
       key = "<leader>fg";
-      action = ''<CMD>lua Live_grep_from_project_git_root()<CR>'';
+      action = "<CMD>lua Live_grep_from_project_git_root()<CR>";
       options = { desc = "Live Grep (root)"; };
     }
     {
@@ -312,7 +358,8 @@
     {
       mode = "n";
       key = "<leader>fp";
-      action = ''<CMD>lua require("telescope").extensions.project.project({})<CR>'';
+      action =
+        ''<CMD>lua require("telescope").extensions.project.project({})<CR>'';
       options = { desc = "Projects"; };
     }
     {
@@ -326,87 +373,123 @@
     {
       mode = "n";
       key = "<A-j>";
-      action = ''<CMD>wincmd h<CR>'';
-      options = { noremap = true; silent = true; };
+      action = "<CMD>wincmd h<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "n";
       key = "<A-;>";
-      action = ''<CMD>wincmd l<CR>'';
-      options = { noremap = true; silent = true; };
+      action = "<CMD>wincmd l<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "n";
       key = "<A-t>";
-      action = ''<CMD>wincmd j<CR>'';
-      options = { noremap = true; silent = true; };
+      action = "<CMD>wincmd j<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "i";
       key = "<A-j>";
-      action = ''<CMD>wincmd h<CR>'';
-      options = { noremap = true; silent = true; };
+      action = "<CMD>wincmd h<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "i";
       key = "<A-;>";
-      action = ''<CMD>wincmd l<CR>'';
-      options = { noremap = true; silent = true; };
+      action = "<CMD>wincmd l<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
     {
       mode = "i";
       key = "<A-k>";
-      action = ''<CMD>wincmd j<CR>'';
-      options = { noremap = true; silent = true; };
+      action = "<CMD>wincmd j<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
     }
 
     # code action
     {
       mode = [ "n" "v" ];
       key = "<leader>cq";
-      action = ''<CMD>lua codeAction()<CR>'';
-      options = { noremap = true; silent = true; desc = "Code Action"; };
+      action = "<CMD>lua codeAction()<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Code Action";
+      };
     }
     {
       mode = [ "n" "v" ];
       key = "<leader>cQ";
-      action = ''<CMD>lua codeRefactor()<CR>'';
-      options = { noremap = true; silent = true; desc = "Code Refactor"; };
+      action = "<CMD>lua codeRefactor()<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Code Refactor";
+      };
     }
-
 
     # window movement
     {
       mode = [ "n" "i" "v" ];
       key = "<C-=>>";
-      action = ''change_scale_factor(1.25)'';
+      action = "change_scale_factor(1.25)";
     }
     {
       mode = [ "n" "i" "v" ];
       key = "<C-->";
-      action = ''change_scale_factor(1 / 1.25)'';
+      action = "change_scale_factor(1 / 1.25)";
     }
 
     # window movement
     {
       mode = [ "n" "i" "v" ];
       key = "<A-f>";
-      action = '':Neotree toggle focus right reveal_force_cwd=true<CR>'';
-      options = { desc = "File Tree"; noremap = true; silent = true; };
+      action = ":Neotree toggle focus right reveal_force_cwd=true<CR>";
+      options = {
+        desc = "File Tree";
+        noremap = true;
+        silent = true;
+      };
     }
 
     # lsp
     {
       mode = [ "n" "i" "v" ];
       key = "<F4>";
-      action = ''<CMD>lua require("conform").format({async = true, lsp_format = "prefer"})<CR>'';
-      options = { desc = "Format"; silent = true; };
+      action = ''
+        <CMD>lua require("conform").format({async = true, lsp_format = "prefer"})<CR>'';
+      options = {
+        desc = "Format";
+        silent = true;
+      };
     }
     {
       mode = [ "n" "v" ];
       key = "<leader>cs";
       action = ''<CMD>lua require("telescope.builtin").lsp_references()<CR>'';
-      options = { desc = "Goto References"; silent = true; };
+      options = {
+        desc = "Goto References";
+        silent = true;
+      };
     }
 
     # DAP
@@ -431,7 +514,7 @@
     {
       mode = "n";
       key = "<leader>dc";
-      action = ''<CMD>lua debugAction()<CR>'';
+      action = "<CMD>lua debugAction()<CR>";
       options = { desc = "Continue"; };
     }
     {
@@ -451,14 +534,20 @@
     {
       mode = [ "n" "i" "v" ];
       key = "<A-l>";
-      action = ''<CMD>lua require('neoscroll').ctrl_u({ duration = 250 })<CR>'';
-      options = { desc = "Scroll Up"; silent = true; };
+      action = "<CMD>lua require('neoscroll').ctrl_u({ duration = 250 })<CR>";
+      options = {
+        desc = "Scroll Up";
+        silent = true;
+      };
     }
     {
       mode = [ "n" "i" "v" ];
       key = "<A-k>";
-      action = ''<CMD>lua require('neoscroll').ctrl_d({ duration = 250 })<CR>'';
-      options = { desc = "Scroll Down"; silent = true; };
+      action = "<CMD>lua require('neoscroll').ctrl_d({ duration = 250 })<CR>";
+      options = {
+        desc = "Scroll Down";
+        silent = true;
+      };
     }
     # {
     #   mode = [ "n" "i" "v" ];
@@ -477,14 +566,20 @@
     {
       mode = "n";
       key = "by";
-      action = '':BetterYank<CR>'';
-      options = { desc = "BetterYank"; silent = true; };
+      action = ":BetterYank<CR>";
+      options = {
+        desc = "BetterYank";
+        silent = true;
+      };
     }
     {
       mode = "n";
       key = "bd";
-      action = '':BetterDelete<CR>'';
-      options = { desc = "BetterDelete"; silent = true; };
+      action = ":BetterDelete<CR>";
+      options = {
+        desc = "BetterDelete";
+        silent = true;
+      };
     }
   ];
   extraConfigLua = ''

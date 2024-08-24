@@ -32,7 +32,7 @@
         {
           name = "diff";
           extraConfig = {
-            sources = [ ''diff_source()'' ];
+            sources = [ "diff_source()" ];
             symbols = {
               added = " ";
               modified = "󰝤 ";
@@ -42,9 +42,7 @@
         }
         {
           name = "filetype";
-          extraConfig = {
-            icon_only = true;
-          };
+          extraConfig = { icon_only = true; };
         }
       ];
       lualine_y = [ "progress" "location" ];

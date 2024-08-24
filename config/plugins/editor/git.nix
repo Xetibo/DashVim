@@ -1,8 +1,6 @@
 {
   plugins = {
-    gitblame = {
-      enable = true;
-    };
+    gitblame = { enable = true; };
     gitgutter = {
       enable = false;
       signs = {
@@ -11,28 +9,16 @@
         removed = "|";
       };
     };
-    gitignore = {
-      enable = true;
-    };
-    gitlinker = {
-      enable = true;
-    };
+    gitignore = { enable = true; };
+    gitlinker = { enable = true; };
     gitsigns = {
       enable = true;
       settings = {
         signs = {
-          added = {
-            text = "";
-          };
-          changedelete = {
-            text = "󰝤";
-          };
-          delete = {
-            text = "";
-          };
-          topdelete = {
-            text = "";
-          };
+          added = { text = ""; };
+          changedelete = { text = "󰝤"; };
+          delete = { text = ""; };
+          topdelete = { text = ""; };
         };
       };
     };

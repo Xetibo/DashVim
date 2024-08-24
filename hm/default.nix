@@ -1,15 +1,14 @@
-self: { lib
-      , config
-      , pkgs
-      , options
-      , ...
-      }:
+self:
+{ lib, config, pkgs, options, ... }:
 let
   cfg = config.programs.dashvim;
   system = pkgs.stdenv.hostPlatform.system;
-  dashvim = (import ../lib { inherit system pkgs; inputs = self.inputs; config' = cfg; });
-in
-{
+  dashvim = (import ../lib {
+    inherit system pkgs;
+    inputs = self.inputs;
+    config' = cfg;
+  });
+in {
   imports = [ ../modules ];
   meta.maintainers = with lib.maintainers; [ DashieTM ];
   options.programs.dashvim = with lib; {
@@ -26,12 +25,9 @@ in
       '';
     };
   };
-  config = lib.mkIf cfg.enable
-    (lib.optionalAttrs (options?home.packages)
-      {
-        home.packages = lib.optional (cfg.package != null) cfg.package;
-      } //
-    lib.optionalAttrs (options?environment.systemPackages) {
-      environment.systemPackages = lib.optional (cfg.package != null) cfg.package;
-    });
+  config = lib.mkIf cfg.enable (lib.optionalAttrs (options ? home.packages) {
+    home.packages = lib.optional (cfg.package != null) cfg.package;
+  } // lib.optionalAttrs (options ? environment.systemPackages) {
+    environment.systemPackages = lib.optional (cfg.package != null) cfg.package;
+  });
 }

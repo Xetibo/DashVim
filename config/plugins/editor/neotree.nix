@@ -45,14 +45,17 @@
             show_path = "none"; # "none", "relative", "absolute"
           };
         };
-        A = "add_directory"; # also accepts the config.show_path and config.insert_as options.
+        A =
+          "add_directory"; # also accepts the config.show_path and config.insert_as options.
         d = "delete";
         r = "rename";
         y = "copy_to_clipboard";
         x = "cut_to_clipboard";
         p = "paste_from_clipboard";
-        c = "copy"; # takes text input for destination, also accepts the config.show_path and config.insert_as options
-        m = "move"; # takes text input for destination, also accepts the config.show_path and config.insert_as options
+        c =
+          "copy"; # takes text input for destination, also accepts the config.show_path and config.insert_as options
+        m =
+          "move"; # takes text input for destination, also accepts the config.show_path and config.insert_as options
         e = "toggle_auto_expand_width";
         q = "close_window";
         "?" = "show_help";

@@ -1,12 +1,13 @@
 { inputs, pkgs, config', ... }:
 let
   conf_scheme = config'.colorscheme;
-  parsed =
-    (if builtins.isAttrs conf_scheme then conf_scheme else "${pkgs.base16-schemes}/share/themes/${conf_scheme}.yaml");
+  parsed = (if builtins.isAttrs conf_scheme then
+    conf_scheme
+  else
+    "${pkgs.base16-schemes}/share/themes/${conf_scheme}.yaml");
   base16 = pkgs.callPackage inputs.base16.lib { };
   scheme = (base16.mkSchemeAttrs parsed);
-in
-{
+in {
   colorschemes = {
     base16 = {
       enable = true;
@@ -24,19 +25,18 @@ in
       };
     };
   };
-  autoCmd = [
-    {
-      desc = "fix theme";
-      event = [ "ColorScheme" "VimEnter" ];
-      group = "custom_theme";
-      pattern = "*";
-      callback = {
-        __raw = ''function()
-          fix_theme()
-        end'';
-      };
-    }
-  ];
+  autoCmd = [{
+    desc = "fix theme";
+    event = [ "ColorScheme" "VimEnter" ];
+    group = "custom_theme";
+    pattern = "*";
+    callback = {
+      __raw = ''
+        function()
+                  fix_theme()
+                end'';
+    };
+  }];
   extraConfigLua = ''
     local function clamp(component)
       return math.min(math.max(component, 0), 255)
