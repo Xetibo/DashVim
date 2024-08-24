@@ -3,7 +3,7 @@
     prettierd
     black
     stylua
-    nixfmt
+    nixfmt-classic
     yamllint
     yamlfmt
   ];
