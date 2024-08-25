@@ -1,5 +1,6 @@
 {
   plugins = {
+    nix.enable = true;
     neotest = {
       enable = true;
       adapters = {
@@ -7,6 +8,7 @@
           # fsharp doesn't work, cool, thanks
           enable = false;
           settings = {
+            single_file_support = true;
             dap = {
               args = { justMyCode = false; };
               adapter_name = "coreclr";
@@ -75,7 +77,10 @@
         zls.enable = true;
         texlab.enable = true;
         tailwindcss.enable = true;
-        nil-ls.enable = true;
+        nil-ls = {
+          enable = true;
+          settings.formatting.command = [ "nixfmt" ];
+        };
         fsautocomplete = {
           enable = false;
           cmd = [

@@ -1,5 +1,6 @@
 {
   plugins = {
+    cmp-async-path.enable = true;
     cmp = {
       enable = true;
       settings = {
@@ -17,7 +18,7 @@
             name = "nvim_lsp";
           }
           # { name = "treesitter"; }
-          { name = "fuzzy_path"; }
+          # { name = "fuzzy_path"; }
           { name = "nvim_lsp_document_symbol"; }
           { name = "nvim_lsp_signature_help"; }
           {
@@ -26,7 +27,7 @@
             keyword_length = 3;
           }
           {
-            name = "path"; # file system paths
+            name = "async_path"; # file system paths
             keyword_length = 3;
           }
           {
