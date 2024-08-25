@@ -75,7 +75,7 @@
         zls.enable = true;
         texlab.enable = true;
         tailwindcss.enable = true;
-        nixd.enable = true;
+        nil-ls.enable = true;
         fsautocomplete = {
           enable = false;
           cmd = [
