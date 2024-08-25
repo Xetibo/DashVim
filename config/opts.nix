@@ -139,5 +139,17 @@
                   end'';
       };
     }
+    {
+      desc = "Init Overseer";
+      event = [ "BufEnter" ];
+      group = "filetypes";
+      pattern = "*";
+      callback = {
+        __raw = ''
+          function()
+              require("overseer").setup()
+          end'';
+      };
+    }
   ];
 }
