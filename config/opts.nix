@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   globals = {
     fileencoding = "utf-8";
     number = true;
@@ -139,6 +140,19 @@
                   end'';
       };
     }
+    #{
+    #  desc = "Init Ionide";
+    #  event = [ "BufEnter" ];
+    #  group = "filetypes";
+    #  pattern = "*.fs";
+    #  callback = {
+    #    __raw = # lua
+    #      ''
+    #        function()
+    #        require("ionide").setup()
+    #        end'';
+    #  };
+    #}
     {
       desc = "Init Overseer";
       event = [ "BufEnter" ];

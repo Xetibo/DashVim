@@ -10,7 +10,9 @@
           settings = {
             single_file_support = true;
             dap = {
-              args = { justMyCode = false; };
+              args = {
+                justMyCode = false;
+              };
               adapter_name = "coreclr";
             };
           };
@@ -29,9 +31,15 @@
         deno.enable = true;
       };
     };
-    lsp-format = { enable = true; };
-    lsp-lines = { enable = true; };
-    lsp-status = { enable = true; };
+    lsp-format = {
+      enable = true;
+    };
+    lsp-lines = {
+      enable = true;
+    };
+    lsp-status = {
+      enable = true;
+    };
     lsp = {
       enable = true;
       inlayHints = true;
@@ -77,42 +85,45 @@
         zls.enable = true;
         texlab.enable = true;
         tailwindcss.enable = true;
-        nil-ls = {
+        nixd = {
           enable = true;
-          settings.formatting.command = [ "nixfmt" ];
         };
-        fsautocomplete = {
-          enable = false;
-          cmd = [
-            "fsautocomplete"
-            "--adaptive-lsp-server-enabled"
-            "--project-graph-enabled"
-            "--use-fcs-transparent-compiler"
-          ];
-          rootDir =
-            "require('lspconfig').util.root_pattern('*.sln', '*.fsproj', '.git')";
-          settings = {
-            FSharp = {
-              EnableReferenceCodeLens = true;
-              ExternalAutocomplete = false;
-              InterfaceStubGeneration = true;
-              InterfaceStubGenerationMethodBody =
-                ''failwith "Not Implemented"'';
-              InterfaceStubGenerationObjectIdentifier = "this";
-              Linter = true;
-              RecordStubGeneration = true;
-              RecordStubGenerationBody = ''failwith "Not Implemented"'';
-              ResolveNamespaces = true;
-              SimplifyNameAnalyzer = true;
-              UnionCaseStubGeneration = true;
-              UnionCaseStubGenerationBody = ''failwith "nimp"'';
-              UnusedDeclarationsAnalyzer = true;
-              UnusedOpensAnalyzer = true;
-              UseSdkScripts = true;
-              keywordsAutocomplete = true;
-            };
-          };
-        };
+        #fsautocomplete = {
+        #  enable = true;
+        #  cmd = [
+        #    "fsautocomplete"
+        #    "--adaptive-lsp-server-enabled"
+        #    "--project-graph-enabled"
+        #    "--use-fcs-transparent-compiler"
+        #  ];
+        #  rootDir = "require('lspconfig').util.root_pattern('*.sln', '.git')";
+        #  extraOptions = {
+        #    init_options = {
+        #      AutomaticWorkspaceInit = false;
+        #    };
+        #  };
+        #  settings = {
+        #    FSharp = {
+        #      AutomaticWorkspaceInit = false;
+        #      EnableReferenceCodeLens = true;
+        #      ExternalAutocomplete = false;
+        #      InterfaceStubGeneration = true;
+        #      InterfaceStubGenerationMethodBody = ''failwith "Not Implemented"'';
+        #      InterfaceStubGenerationObjectIdentifier = "this";
+        #      Linter = true;
+        #      RecordStubGeneration = true;
+        #      RecordStubGenerationBody = ''failwith "Not Implemented"'';
+        #      ResolveNamespaces = true;
+        #      SimplifyNameAnalyzer = true;
+        #      UnionCaseStubGeneration = true;
+        #      UnionCaseStubGenerationBody = ''failwith "nimp"'';
+        #      UnusedDeclarationsAnalyzer = true;
+        #      UnusedOpensAnalyzer = true;
+        #      UseSdkScripts = true;
+        #      keywordsAutocomplete = true;
+        #    };
+        #  };
+        #};
       };
     };
   };
@@ -120,4 +131,3 @@
     local_border = "rounded"
   '';
 }
-
