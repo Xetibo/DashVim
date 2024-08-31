@@ -88,6 +88,12 @@
         nixd = {
           enable = true;
         };
+        #nil-ls = {
+        #  enable = true;
+        #  settings.formatting.command = [
+        #    "nixfmt"
+        #  ];
+        #};
         #fsautocomplete = {
         #  enable = true;
         #  cmd = [

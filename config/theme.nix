@@ -845,6 +845,34 @@ in {
       vim.cmd("highlight  GitSignsStagedAdd           guifg=#" .. change_color("${scheme.base0B}",-60))
       vim.cmd("highlight  GitSignsStagedDelete        guifg=#" .. change_color("${scheme.base08}",-60))
       vim.cmd("highlight  GitSignsStagedChangeDelete  guifg=#" .. change_color("${scheme.base07}",-60))
+
+
+
+      --vim.cmd("highlight  Identifier  guifg=#${scheme.base0D}")
+      --vim.cmd("highlight  String  guifg=#${scheme.base0B}")
+      --vim.cmd("highlight  Character  guifg=#${scheme.base0B}")
+      --vim.cmd("highlight  Number  guifg=#${scheme.base08}")
+      --vim.cmd("highlight  Boolean  guifg=#${scheme.base08}")
+      --vim.cmd("highlight  Float  guifg=#${scheme.base08}")
+      --vim.cmd("highlight  Function  guifg=#${scheme.base0D}")
+      --vim.cmd("highlight  Conditional  guifg=#${scheme.base0C}")
+      --vim.cmd("highlight  Repeat  guifg=#${scheme.base0D}")
+      --vim.cmd("highlight  Label  guifg=#${scheme.base0D}")
+      --vim.cmd("highlight  Operator  guifg=#${scheme.base09}")
+      --vim.cmd("highlight  Keyword  guifg=#${scheme.base08}")
+      --vim.cmd("highlight  Exception  guifg=#${scheme.base08}")
+      --vim.cmd("highlight  Include  guifg=#${scheme.base0C}")
+      --vim.cmd("highlight  Define  guifg=#${scheme.base0A}")
+      --vim.cmd("highlight  Macro  guifg=#${scheme.base0A}")
+      --vim.cmd("highlight  PreCondit  guifg=#${scheme.base0A}")
+      --vim.cmd("highlight  StorageClass  guifg=#${scheme.base07}")
+      --vim.cmd("highlight  Structure  guifg=#${scheme.base07}")
+      --vim.cmd("highlight  Typedef  guifg=#${scheme.base07}")
+      --vim.cmd("highlight  Tag  guifg=#${scheme.base0D}")
+      --vim.cmd("highlight  SpecialChar  guifg=#${scheme.base08}")
+      --vim.cmd("highlight  Delimiter  guifg=#${scheme.base0F}")
+      --vim.cmd("highlight  SpecialComment  guifg=#${scheme.base06}")
+      --vim.cmd("highlight  Debug  guifg=#${scheme.base06}")
     end
   '';
 }
