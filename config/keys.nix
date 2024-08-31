@@ -124,18 +124,17 @@ lib.mkIf config'.default_keymaps {
     {
       mode = "n";
       key = "<leader>cm";
-      action =
-        "<CMD>lua lsp.inlay_hint.enable(0, not lsp.inlay_hint.is_enabled()) <CR>";
+      action = "<CMD>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) <CR>";
       options = {
         noremap = true;
         silent = true;
+        desc = "Toggle inlay hints";
       };
     }
     {
       mode = "n";
       key = "gx";
-      action =
-        ":silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>";
+      action = ":silent execute '!$BROWSER ' . shellescape(expand('<cfile>'), 1)<CR>";
       options = {
         noremap = true;
         silent = true;
@@ -230,7 +229,12 @@ lib.mkIf config'.default_keymaps {
 
     # terminal
     {
-      mode = [ "t" "n" "i" "v" ];
+      mode = [
+        "t"
+        "n"
+        "i"
+        "v"
+      ];
       key = "<C-t>";
       action = "<CMD>lua require('toggleterm').toggle() <CR>";
       options = {
@@ -241,7 +245,11 @@ lib.mkIf config'.default_keymaps {
 
     # flash
     {
-      mode = [ "n" "x" "o" ];
+      mode = [
+        "n"
+        "x"
+        "o"
+      ];
       key = "s";
       action = "<CMD>lua require('flash').jump()<CR>";
       options = {
@@ -251,7 +259,11 @@ lib.mkIf config'.default_keymaps {
       };
     }
     {
-      mode = [ "n" "x" "o" ];
+      mode = [
+        "n"
+        "x"
+        "o"
+      ];
       key = "S";
       action = "<CMD>lua require('flash').treesitter()<CR>";
       options = {
@@ -263,7 +275,11 @@ lib.mkIf config'.default_keymaps {
 
     # bufferline
     {
-      mode = [ "n" "i" "n" ];
+      mode = [
+        "n"
+        "i"
+        "n"
+      ];
       key = "<F1>";
       action = ":BufferPrevious<CR>";
       options = {
@@ -272,7 +288,11 @@ lib.mkIf config'.default_keymaps {
       };
     }
     {
-      mode = [ "n" "i" "n" ];
+      mode = [
+        "n"
+        "i"
+        "n"
+      ];
       key = "<F2>";
       action = ":BufferNext<CR>";
       options = {
@@ -286,87 +306,113 @@ lib.mkIf config'.default_keymaps {
       mode = "n";
       key = "<leader>gq";
       action = ''<CMD>lua require("telescope.builtin").git_commits()<CR>'';
-      options = { desc = "Commits"; };
+      options = {
+        desc = "Commits";
+      };
     }
     {
       mode = "n";
       key = "<leader>gw";
       action = ''<CMD>lua require("telescope.builtin").git_bcommits()<CR>'';
-      options = { desc = "Commits in branch"; };
+      options = {
+        desc = "Commits in branch";
+      };
     }
     {
       mode = "n";
       key = "<leader>gb";
       action = ''<CMD>lua require("telescope.builtin").git_branches()<CR>'';
-      options = { desc = "Git status"; };
+      options = {
+        desc = "Git branches";
+      };
     }
     {
       mode = "n";
       key = "<leader>gB";
       action = ":GitBlameToggle<CR>";
-      options = { desc = "Git Blame"; };
+      options = {
+        desc = "Git Blame";
+      };
     }
     {
       mode = "n";
       key = "<leader>gs";
       action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
-      options = { desc = "Git stash"; };
+      options = {
+        desc = "Git status";
+      };
     }
     {
       mode = "n";
       key = "<leader>gn";
       action = "<CMD>Neogit <CR>";
-      options = { desc = "Neogit"; };
+      options = {
+        desc = "Neogit";
+      };
     }
     {
       mode = "n";
       key = "<leader>gg";
       action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
-      options = { desc = "Gitui"; };
+      options = {
+        desc = "Gitui";
+      };
     }
     {
       mode = "n";
       key = "<leader>fb";
-      action = ''
-        <CMD>lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
-      options = { desc = "File Browser"; };
+      action = ''<CMD>lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
+      options = {
+        desc = "File Browser";
+      };
     }
     {
       mode = "n";
       key = "<leader>ff";
       action = ''<CMD>lua require("telescope.builtin").find_files()<CR>'';
-      options = { desc = "Find Files"; };
+      options = {
+        desc = "Find Files";
+      };
     }
     {
       mode = "n";
       key = "<leader>fg";
       action = "<CMD>lua Live_grep_from_project_git_root()<CR>";
-      options = { desc = "Live Grep (root)"; };
+      options = {
+        desc = "Live Grep (root)";
+      };
     }
     {
       mode = "n";
       key = "<leader>fG";
       action = ''<CMD>lua require("telescope.builtin").live_grep()<CR>'';
-      options = { desc = "Live Grep (cwd)"; };
+      options = {
+        desc = "Live Grep (cwd)";
+      };
     }
     {
       mode = "n";
       key = "<leader>fh";
       action = ''<CMD>lua require("telescope.builtin").help_tags()<CR>'';
-      options = { desc = "Help"; };
+      options = {
+        desc = "Help";
+      };
     }
     {
       mode = "n";
       key = "<leader>fp";
-      action =
-        ''<CMD>lua require("telescope").extensions.project.project({})<CR>'';
-      options = { desc = "Projects"; };
+      action = ''<CMD>lua require("telescope").extensions.project.project({})<CR>'';
+      options = {
+        desc = "Projects";
+      };
     }
     {
       mode = "n";
       key = "<leader>z";
       action = ''<CMD>lua require("telescope").extensions.zoxide.list({})<CR>'';
-      options = { desc = "Zoxide"; };
+      options = {
+        desc = "Zoxide";
+      };
     }
 
     # window movement
@@ -427,7 +473,10 @@ lib.mkIf config'.default_keymaps {
 
     # code action
     {
-      mode = [ "n" "v" ];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>cq";
       action = "<CMD>lua codeAction()<CR>";
       options = {
@@ -437,7 +486,10 @@ lib.mkIf config'.default_keymaps {
       };
     }
     {
-      mode = [ "n" "v" ];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>cQ";
       action = "<CMD>lua codeRefactor()<CR>";
       options = {
@@ -449,19 +501,31 @@ lib.mkIf config'.default_keymaps {
 
     # window movement
     {
-      mode = [ "n" "i" "v" ];
+      mode = [
+        "n"
+        "i"
+        "v"
+      ];
       key = "<C-=>>";
       action = "change_scale_factor(1.25)";
     }
     {
-      mode = [ "n" "i" "v" ];
+      mode = [
+        "n"
+        "i"
+        "v"
+      ];
       key = "<C-->";
       action = "change_scale_factor(1 / 1.25)";
     }
 
     # window movement
     {
-      mode = [ "n" "i" "v" ];
+      mode = [
+        "n"
+        "i"
+        "v"
+      ];
       key = "<A-f>";
       action = ":Neotree toggle focus right reveal_force_cwd=true<CR>";
       options = {
@@ -473,21 +537,63 @@ lib.mkIf config'.default_keymaps {
 
     # lsp
     {
-      mode = [ "n" "i" "v" ];
+      mode = [
+        "n"
+        "i"
+        "v"
+      ];
       key = "<F4>";
-      action = ''
-        <CMD>lua require("conform").format({async = true, lsp_format = "prefer"})<CR>'';
+      action = ''<CMD>lua require("conform").format({async = true, lsp_format = "prefer"})<CR>'';
       options = {
         desc = "Format";
         silent = true;
       };
     }
     {
-      mode = [ "n" "v" ];
+      mode = [
+        "n"
+        "v"
+      ];
       key = "<leader>cs";
       action = ''<CMD>lua require("telescope.builtin").lsp_references()<CR>'';
       options = {
         desc = "Goto References";
+        silent = true;
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+      ];
+      key = "<leader>fld";
+      action = ''<CMD>lua require("telescope.builtin").lsp_type_definitions()<CR>'';
+      options = {
+        desc = "Find LSP Type Definitions";
+        silent = true;
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+      ];
+      key = "<leader>flw";
+      action = ''<CMD>lua require("telescope.builtin").lsp_workspace_symbols()<CR>'';
+      options = {
+        desc = "Find LSP Workspace symbols";
+        silent = true;
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+      ];
+      key = "<leader>flw";
+      action = ''<CMD>lua require("telescope.builtin").lsp_document_symbols()<CR>'';
+      options = {
+        desc = "Find LSP Document symbols";
         silent = true;
       };
     }
@@ -497,42 +603,58 @@ lib.mkIf config'.default_keymaps {
       mode = "n";
       key = "<leader>db";
       action = ''<CMD>lua require("dap").toggle_breakpoint()<CR>'';
-      options = { desc = "Toggle Breakpoint"; };
+      options = {
+        desc = "Toggle Breakpoint";
+      };
     }
     {
       mode = "n";
       key = "<leader>do";
       action = ''<CMD>lua require("dap").step_over()<CR>'';
-      options = { desc = "Step Over"; };
+      options = {
+        desc = "Step Over";
+      };
     }
     {
       mode = "n";
       key = "<leader>di";
       action = ''<CMD>lua require("dap").step_into()<CR>'';
-      options = { desc = "Step Into"; };
+      options = {
+        desc = "Step Into";
+      };
     }
     {
       mode = "n";
       key = "<leader>dc";
       action = "<CMD>lua debugAction()<CR>";
-      options = { desc = "Continue"; };
+      options = {
+        desc = "Continue";
+      };
     }
     {
       mode = "n";
       key = "<leader>du";
       action = ''<CMD>lua require("dapui").toggle()<CR>'';
-      options = { desc = "Toggle DAP UI"; };
+      options = {
+        desc = "Toggle DAP UI";
+      };
     }
     {
       mode = "n";
       key = "<leader>de";
       action = ''<CMD>lua require("dapui").eval()<CR>'';
-      options = { desc = "DAP Eval"; };
+      options = {
+        desc = "DAP Eval";
+      };
     }
 
     # neoscroll
     {
-      mode = [ "n" "i" "v" ];
+      mode = [
+        "n"
+        "i"
+        "v"
+      ];
       key = "<A-l>";
       action = "<CMD>lua require('neoscroll').ctrl_u({ duration = 250 })<CR>";
       options = {
@@ -541,7 +663,11 @@ lib.mkIf config'.default_keymaps {
       };
     }
     {
-      mode = [ "n" "i" "v" ];
+      mode = [
+        "n"
+        "i"
+        "v"
+      ];
       key = "<A-k>";
       action = "<CMD>lua require('neoscroll').ctrl_d({ duration = 250 })<CR>";
       options = {
