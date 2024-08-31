@@ -1,10 +1,13 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   extraPlugins = with pkgs.vimPlugins; [
     yazi-nvim
     telescope-zoxide
     telescope-project-nvim
   ];
-  plugins.dressing = { enable = true; };
+  plugins.dressing = {
+    enable = true;
+  };
   plugins.telescope = {
     enable = true;
     extensions = {
@@ -14,6 +17,26 @@
       ui-select.enable = true;
       media-files.enable = true;
       undo.enable = true;
+    };
+    settings = {
+      defaults = {
+        layout_strategy = "flex";
+        layout_config = {
+          flex = {
+            height = 0.95;
+            width = 0.95;
+            flip_columns = 100;
+            vertical = {
+              preview_height = 0.5;
+              preview_cutoff = 5;
+            };
+            horizontal = {
+              preview_width = 0.7;
+              preview_cutoff = 99;
+            };
+          };
+        };
+      };
     };
     enabledExtensions = [
       # "project"
