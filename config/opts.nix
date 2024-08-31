@@ -30,6 +30,7 @@
       "--project-graph-enabled"
       "--use-fcs-transparent-compiler"
     ];
+    swapfile = false;
   };
 
   opts = {
