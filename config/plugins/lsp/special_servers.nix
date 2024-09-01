@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 {
   extraPlugins = with pkgs.vimPlugins; [
-    Ionide-vim
+    #Ionide-vim
     overseer-nvim
     #(pkgs.vimUtils.buildVimPlugin {
     #  name = "Ionide-nvim";
@@ -12,6 +12,15 @@
     #    hash = "sha256-R75P08OPD8+IShTglrPfohHHcBKIp9FrhW3OPJLw9Bc=";
     #  };
     #})
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "Ionide-nvim";
+      src = pkgs.fetchFromGitHub {
+        owner = "DashieTM";
+        repo = "Ionide-vim";
+        rev = "bac634bd347ea34b6b9fbadc497dfd48e224298e";
+        hash = "sha256-PdM9sCt5TrFC+UuGDDYOC5rxPDdSh8CDq1yQo1vOnIk=";
+      };
+    })
     haskell-tools-nvim
     # for easy root access
     nvim-lspconfig

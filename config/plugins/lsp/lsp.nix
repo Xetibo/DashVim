@@ -54,8 +54,7 @@
         gopls.enable = true;
         # installed by haskell-tools
         # hls.enable = true;
-        # TODO remove when fixed
-        # html.enable = true;
+        html.enable = true;
         htmx.enable = true;
         jsonls.enable = false;
         cssls.enable = false;
@@ -63,7 +62,8 @@
         kotlin-language-server.enable = true;
         java-language-server.enable = true;
         lua-ls.enable = true;
-        marksman.enable = true;
+        # i hate this server
+        #marksman.enable = true;
         nushell.enable = true;
         ocamllsp.enable = true;
         omnisharp.enable = true;
@@ -102,15 +102,15 @@
         #    "--project-graph-enabled"
         #    "--use-fcs-transparent-compiler"
         #  ];
-        #  rootDir = "require('lspconfig').util.root_pattern('*.sln', '.git')";
+        #  #rootDir = "require('lspconfig').util.root_pattern('*.sln', '.git')";
         #  extraOptions = {
         #    init_options = {
-        #      AutomaticWorkspaceInit = false;
+        #      AutomaticWorkspaceInit = true;
         #    };
         #  };
         #  settings = {
         #    FSharp = {
-        #      AutomaticWorkspaceInit = false;
+        #      AutomaticWorkspaceInit = true;
         #      EnableReferenceCodeLens = true;
         #      ExternalAutocomplete = false;
         #      InterfaceStubGeneration = true;

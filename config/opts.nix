@@ -150,7 +150,7 @@
     #    __raw = # lua
     #      ''
     #        function()
-    #        require("ionide").setup()
+    #        require("ionide").setup{}
     #        end'';
     #  };
     #}
