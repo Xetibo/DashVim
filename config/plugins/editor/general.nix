@@ -1,14 +1,26 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   plugins = {
-    neogit = { enable = true; };
-    trouble = { enable = true; };
-    mini = { enable = true; };
+    fidget.enable = true;
+    neogit = {
+      enable = true;
+    };
+    trouble = {
+      enable = true;
+    };
+    mini = {
+      enable = true;
+    };
     clipboard-image = {
       clipboardPackage = pkgs.wl-clipboard;
       enable = true;
     };
-    refactoring = { enable = true; };
-    nvim-colorizer = { enable = true; };
+    refactoring = {
+      enable = true;
+    };
+    nvim-colorizer = {
+      enable = true;
+    };
     flash = {
       enable = true;
       # highlightUnlabeledPhaseOneTargets = true;
@@ -38,17 +50,25 @@
             width = 60;
             height = 10;
           };
-          border = { style = "rounded"; };
+          border = {
+            style = "rounded";
+          };
           winhighlight = {
             Normal = "NormalFloat";
             FloatBorder = "FloatBorder";
           };
         };
       };
-      notify = { enabled = false; };
-      messages = { enabled = true; };
+      notify = {
+        enabled = false;
+      };
+      messages = {
+        enabled = true;
+      };
       lsp = {
-        message = { enabled = true; };
+        message = {
+          enabled = true;
+        };
         progress = {
           enabled = true;
           view = "mini";
@@ -56,18 +76,32 @@
         signature.enabled = true;
       };
     };
-    coverage = { enable = true; };
-    project-nvim = { enable = true; };
+    coverage = {
+      enable = true;
+    };
+    project-nvim = {
+      enable = true;
+    };
     toggleterm = {
       enable = true;
       settings = {
-        highlights = { FloatBorder = { link = "FloatBorder"; }; };
+        highlights = {
+          FloatBorder = {
+            link = "FloatBorder";
+          };
+        };
         direction = "float";
-        float_opts = { border = "curved"; };
+        float_opts = {
+          border = "curved";
+        };
       };
     };
-    surround = { enable = true; };
-    spectre = { enable = true; };
+    surround = {
+      enable = true;
+    };
+    spectre = {
+      enable = true;
+    };
     treesitter = {
       settings.highlight.enable = true;
       grammarPackages = with pkgs.tree-sitter-grammars; [
@@ -76,11 +110,21 @@
       ];
       enable = true;
     };
-    diffview = { enable = true; };
-    edgy = { enable = true; };
-    dressing = { enable = true; };
-    glow = { enable = true; };
-    instant = { enable = true; };
+    diffview = {
+      enable = true;
+    };
+    edgy = {
+      enable = true;
+    };
+    dressing = {
+      enable = true;
+    };
+    glow = {
+      enable = true;
+    };
+    instant = {
+      enable = true;
+    };
   };
 
 }

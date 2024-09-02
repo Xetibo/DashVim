@@ -2,8 +2,8 @@
 {
   extraPlugins = with pkgs.vimPlugins; [
     nvim-scrollbar
-    #Ionide-vim
     overseer-nvim
+    #Ionide-vim
     #(pkgs.vimUtils.buildVimPlugin {
     #  name = "Ionide-nvim";
     #  src = pkgs.fetchFromGitHub {
@@ -26,6 +26,11 @@
     # for easy root access
     nvim-lspconfig
   ];
+  # enable the plugins above
+  extraConfigLua = ''
+    require("scrollbar").setup()
+    require("scrollbar.handlers.search").setup()
+  '';
   plugins = {
     typescript-tools = {
       enable = true;
