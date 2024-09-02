@@ -1,6 +1,7 @@
 { lib, pkgs, ... }:
 {
   extraPlugins = with pkgs.vimPlugins; [
+    nvim-scrollbar
     #Ionide-vim
     overseer-nvim
     #(pkgs.vimUtils.buildVimPlugin {
@@ -17,7 +18,7 @@
       src = pkgs.fetchFromGitHub {
         owner = "DashieTM";
         repo = "Ionide-vim";
-        rev = "bac634bd347ea34b6b9fbadc497dfd48e224298e";
+        rev = "b4d39521199f7c2e892a759e4b0bcd210d3f0736";
         hash = "sha256-PdM9sCt5TrFC+UuGDDYOC5rxPDdSh8CDq1yQo1vOnIk=";
       };
     })
