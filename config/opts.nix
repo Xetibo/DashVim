@@ -142,6 +142,20 @@
       };
     }
     {
+      desc = "Init fsharp";
+      event = [ "BufEnter" ];
+      group = "filetypes";
+      pattern = "*.fs";
+      once = true;
+      callback = {
+        __raw = # lua
+          ''
+            function()
+              require("ionide").setup({})
+            end'';
+      };
+    }
+    {
       desc = "Init lua";
       event = [ "BufEnter" ];
       group = "filetypes";

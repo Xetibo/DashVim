@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   plugins = {
-    fidget.enable = true;
     neogit = {
       enable = true;
     };
@@ -27,6 +26,13 @@
     };
     noice = {
       enable = true;
+      presets = {
+        bottom_search = false;
+        command_palette = true;
+        inc_rename = true;
+        long_message_to_split = true;
+        lsp_doc_border = true;
+      };
       # extraOptions = {
       # };
       views = {
@@ -103,12 +109,14 @@
       enable = true;
     };
     treesitter = {
+      enable = true;
       settings.highlight.enable = true;
+      ensureInstalled = "all";
+      nixvimInjections = true;
       grammarPackages = with pkgs.tree-sitter-grammars; [
         tree-sitter-norg
         tree-sitter-norg-meta
       ];
-      enable = true;
     };
     diffview = {
       enable = true;
