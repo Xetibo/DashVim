@@ -142,7 +142,7 @@
       };
     }
     {
-      desc = "Init fsharp";
+      desc = "Init ionide first";
       event = [ "BufEnter" ];
       group = "filetypes";
       pattern = "*.fs";
@@ -152,6 +152,19 @@
           ''
             function()
               require("ionide").setup({})
+            end'';
+      };
+    }
+    {
+      desc = "Init ionide";
+      event = [ "BufEnter" ];
+      group = "filetypes";
+      pattern = "*.fs";
+      callback = {
+        __raw = # lua
+          ''
+            function()
+              require("ionide")
             end'';
       };
     }

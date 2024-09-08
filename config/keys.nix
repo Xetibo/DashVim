@@ -138,6 +138,19 @@ lib.mkIf config'.default_keymaps {
       options = {
         noremap = true;
         silent = true;
+        desc = "Execute in browser";
+      };
+    }
+
+    # nvim-colorizer:ColorizerToggle
+    {
+      mode = "n";
+      key = "<leader>lc";
+      action = "<CMD>ColorizerToggle<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Toggle colorizer";
       };
     }
 

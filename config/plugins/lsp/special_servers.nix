@@ -4,13 +4,22 @@
     nvim-scrollbar
     overseer-nvim
     # Ionide-vim
+    #(pkgs.vimUtils.buildVimPlugin {
+    #  name = "Ionide-vim";
+    #  src = pkgs.fetchFromGitHub {
+    #    owner = "ionide";
+    #    repo = "Ionide-vim";
+    #    rev = "268955cc106f8328a232b160a7360cf331c0a323";
+    #    hash = "sha256-tEpolSQcAt1Y/y7ZG5vW1THm8raBnXqTBTsIc1M4zVM=";
+    #  };
+    #})
     (pkgs.vimUtils.buildVimPlugin {
       name = "Ionide-nvim";
       src = pkgs.fetchFromGitHub {
         owner = "DashieTM";
         repo = "Ionide-nvim";
-        rev = "87f6fe9c2723f0de7e2eaa402cc4504ea4725279";
-        hash = "sha256-8saOv7gcWh/TxQw3ItQkwBLsHtMGeNBCYWnXJRddoeo=";
+        rev = "5f4f257dc68ed39c122377c342396d598cb17583";
+        hash = "sha256-JuFuwsw64YIbKLBLyunudFBpikslfypJxgx4dR8yjFY=";
       };
     })
     haskell-tools-nvim

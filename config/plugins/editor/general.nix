@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
   plugins = {
+    indent-blankline = {
+      enable = true;
+    };
     neogit = {
       enable = true;
     };
@@ -110,13 +113,11 @@
     };
     treesitter = {
       enable = true;
-      settings.highlight.enable = true;
-      ensureInstalled = "all";
+      settings = {
+        highlight.enable = true;
+      };
       nixvimInjections = true;
-      grammarPackages = with pkgs.tree-sitter-grammars; [
-        tree-sitter-norg
-        tree-sitter-norg-meta
-      ];
+      grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars;
     };
     diffview = {
       enable = true;
