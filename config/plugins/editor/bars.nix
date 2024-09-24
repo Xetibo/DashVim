@@ -8,53 +8,53 @@
   };
   plugins.lualine = {
     enable = true;
-    globalstatus = true;
-    sections = {
-      lualine_a = [ "mode" ];
-      lualine_b = [
-        "branch"
-        # "diff"
-        {
-          name = "require'lsp-status'.status()";
-          extraConfig = {
-            # sources = [ "lsp_stat()" ];
+    settings = {
+      globalstatus = true;
+      sections = {
+        lualine_a = [ "mode" ];
+        lualine_b = [
+          "branch"
+          {
+            __unkeyed-1 = "require'lsp-status'.status()";
             symbols = {
               error = " ";
               warn = " ";
               info = " ";
               hint = "󰝶 ";
             };
-          };
-        }
-      ];
-      lualine_c = [ "filename" ];
-      lualine_x = [
-        {
-          name = "diff";
-          extraConfig = {
+
+          }
+        ];
+        lualine_c = [ "filename" ];
+        lualine_x = [
+          {
+            __unkeyed-1 = "diff";
             sources = [ "diff_source()" ];
             symbols = {
               added = " ";
               modified = "󰝤 ";
               removed = " ";
             };
-          };
-        }
-        {
-          name = "filetype";
-          extraConfig = { icon_only = true; };
-        }
-      ];
-      lualine_y = [ "progress" "location" ];
-      lualine_z = [ "' ' .. os.date('%a')" ];
-    };
-    inactiveSections = {
-      lualine_c = [ "filename" ];
-      lualine_x = [ "location" ];
-    };
-    disabledFiletypes = {
-      statusline = [ "alpha" ];
-      winbar = [ "alpha" ];
+          }
+          {
+            __unkeyed-1 = "filetype";
+            icon_only = true;
+          }
+        ];
+        lualine_y = [
+          "progress"
+          "location"
+        ];
+        lualine_z = [ "' ' .. os.date('%a')" ];
+      };
+      inactiveSections = {
+        lualine_c = [ "filename" ];
+        lualine_x = [ "location" ];
+      };
+      disabledFiletypes = {
+        statusline = [ "alpha" ];
+        winbar = [ "alpha" ];
+      };
     };
   };
 

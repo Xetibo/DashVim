@@ -1,4 +1,26 @@
 { pkgs, ... }:
+let
+  # because this amazing language doesn't even have a regular parser....
+  fsharp-src = pkgs.fetchFromGitHub {
+    owner = "ionide";
+    repo = "tree-sitter-fsharp";
+    rev = "dcbd07b8860fbde39f207dbc03b36a791986cd96";
+    hash = "sha256-9YSywEoXxmLbyj3K888DbrHUBG4DrGTbYesW/SeDVvs=";
+  };
+  treesitter-fsharp-grammar =
+    (pkgs.tree-sitter.buildGrammar {
+      language = "fsharp";
+      version = "0.1.0";
+      location = "fsharp";
+      src = fsharp-src;
+    }).overrideAttrs
+      (prev: {
+        fixupPhase = ''
+          mkdir -p $out/queries/fsharp
+          cp ${prev.src}/queries/*.scm $out/queries/fsharp/
+        '';
+      });
+in
 {
   plugins = {
     indent-blankline = {
@@ -105,7 +127,7 @@
         };
       };
     };
-    surround = {
+    vim-surround = {
       enable = true;
     };
     spectre = {
@@ -117,7 +139,9 @@
         highlight.enable = true;
       };
       nixvimInjections = true;
-      grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars;
+      grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars ++ [
+        treesitter-fsharp-grammar
+      ];
     };
     diffview = {
       enable = true;
@@ -135,5 +159,24 @@
       enable = true;
     };
   };
-
+  # fsharp treesitter stuff
+  extraConfigLua = ''
+    do
+      local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+      parser_config.fsharp = {
+        install_info = {
+          --url = "${fsharp-src}",
+          url = 'https://github.com/ionide/tree-sitter-fsharp',
+          branch = "main",
+          files = {"src/scanner.c", "src/parser.c"},
+          location = "fsharp",
+        },
+        requires_generate_from_grammar = false,
+        filetype = "fsharp",
+      }
+    end
+  '';
+  extraPlugins = [
+    treesitter-fsharp-grammar
+  ];
 }

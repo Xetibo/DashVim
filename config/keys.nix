@@ -427,6 +427,14 @@ lib.mkIf config'.default_keymaps {
         desc = "Zoxide";
       };
     }
+    {
+      mode = "n";
+      key = "<leader>/";
+      action = ''<CMD>lua require("telescope.builtin").current_buffer_fuzzy_find({})<CR>'';
+      options = {
+        desc = "search buffer";
+      };
+    }
 
     # window movement
     {

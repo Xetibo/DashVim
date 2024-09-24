@@ -18,8 +18,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "DashieTM";
         repo = "Ionide-nvim";
-        rev = "5f4f257dc68ed39c122377c342396d598cb17583";
-        hash = "sha256-JuFuwsw64YIbKLBLyunudFBpikslfypJxgx4dR8yjFY=";
+        rev = "d035479f612e92259d87b01258a2a6d1a7d87665";
+        hash = "sha256-vFZ4zsXloJ4ll0Zl/EjFHHmStpQhKhWcsx74bG1c7+4=";
       };
     })
     haskell-tools-nvim

@@ -98,7 +98,7 @@
         taplo.enable = true;
         sqls.enable = true;
         tinymist.enable = true;
-        tsserver.enable = true;
+        ts-ls.enable = true;
         vuels.enable = true;
         yamlls.enable = true;
         zls.enable = true;
