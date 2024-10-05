@@ -1,8 +1,12 @@
-{ lib, pkgs, ... }:
 {
+  lib,
+  pkgs,
+  config',
+  ...
+}:
+lib.mkIf config'.lsp.useDefaultSpecialLspServers {
   extraPlugins = with pkgs.vimPlugins; [
     nvim-scrollbar
-    overseer-nvim
     # Ionide-vim
     #(pkgs.vimUtils.buildVimPlugin {
     #  name = "Ionide-vim";

@@ -1,1 +1,8 @@
-{ imports = [ ./lsp.nix ./special_servers.nix ./conform.nix ]; }
+{ config', ... }:
+{
+  imports = [
+    ./lsp.nix
+    ./special_servers.nix
+    ./conform.nix
+  ];
+}

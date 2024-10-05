@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  config',
+  ...
+}:
 {
   globals = {
     fileencoding = "utf-8";
@@ -141,7 +146,7 @@
                   end'';
       };
     }
-    {
+    (lib.mkIf config'.lsp.useDefaultSpecialLspServers {
       desc = "Init ionide first";
       event = [ "BufEnter" ];
       group = "filetypes";
@@ -154,8 +159,8 @@
               require("ionide").setup({})
             end'';
       };
-    }
-    {
+    })
+    (lib.mkIf config'.lsp.useDefaultSpecialLspServers {
       desc = "Init ionide";
       event = [ "BufEnter" ];
       group = "filetypes";
@@ -167,7 +172,7 @@
               require("ionide")
             end'';
       };
-    }
+    })
     {
       desc = "Init lua";
       event = [ "BufEnter" ];

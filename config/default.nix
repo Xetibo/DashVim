@@ -1,3 +1,10 @@
-{ config', ... }: {
-  imports = [ ./opts.nix ./keys.nix config'.keymaps ./plugins ./theme.nix ];
+{ config', ... }:
+{
+  imports = [
+    ./opts.nix
+    ./keys.nix
+    ./plugins
+    ./theme.nix
+    config'.additionalConfig
+  ];
 }

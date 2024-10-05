@@ -1,37 +1,46 @@
+{ lib, config', ... }:
 {
   plugins = {
-    cmp-async-path.enable = true;
-    cmp = {
+    cmp = lib.mkIf config'.useDefaultCmpConfig {
       enable = true;
       settings = {
         autoEnableSources = true;
-        experimental = { ghost_text = true; };
+        experimental = {
+          ghost_text = true;
+        };
         performance = {
           debounce = 60;
           fetchingTimeout = 200;
           maxViewEntries = 30;
         };
-        snippet = { expand = "luasnip"; };
-        formatting = { fields = [ "kind" "abbr" "menu" ]; };
+        snippet = {
+          expand = "luasnip";
+        };
+        formatting = {
+          fields = [
+            "kind"
+            "abbr"
+            "menu"
+          ];
+        };
         sources = [
           {
             name = "nvim_lsp";
           }
-          # { name = "treesitter"; }
-          # { name = "fuzzy_path"; }
-          { name = "nvim_lsp_document_symbol"; }
-          { name = "nvim_lsp_signature_help"; }
+          #{
+          #  name = "buffer";
+          #  keyword_length = 3;
+          #}
           {
-            name = "buffer"; # text within current buffer
-            option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
+            name = "treesitter";
             keyword_length = 3;
           }
           {
-            name = "async_path"; # file system paths
+            name = "async_path";
             keyword_length = 3;
           }
           {
-            name = "luasnip"; # snippets
+            name = "luasnip";
             keyword_length = 3;
           }
         ];
@@ -40,14 +49,12 @@
           completion = {
             border = "rounded";
             scrollbar = false;
-            winhighlight =
-              "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
+            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
           };
           documentation = {
             border = "rounded";
             scrollbar = false;
-            winhighlight =
-              "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
+            winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";
           };
         };
         mapping = {
@@ -106,13 +113,24 @@
         };
       };
     };
-    luasnip = { enable = true; };
-    cmp-treesitter = { enable = true; };
-    cmp_luasnip = { enable = true; };
-    cmp-nvim-lsp = { enable = true; };
-    cmp-nvim-lsp-document-symbol = { enable = true; };
-    cmp-nvim-lsp-signature-help = { enable = true; };
-    cmp-fuzzy-path = { enable = true; };
+    cmp-async-path = {
+      enable = true;
+    };
+    luasnip = {
+      enable = true;
+      settings = {
+        enable_autosnippets = true;
+      };
+    };
+    cmp-treesitter = {
+      enable = true;
+    };
+    cmp_luasnip = {
+      enable = true;
+    };
+    cmp-nvim-lsp = {
+      enable = true;
+    };
   };
 
   extraConfigLua = ''

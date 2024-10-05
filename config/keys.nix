@@ -1,5 +1,5 @@
 { config', lib, ... }:
-lib.mkIf config'.default_keymaps {
+lib.mkIf config'.useDefaultKeybinds {
   # which key topics
   plugins.lsp = {
     keymaps = {

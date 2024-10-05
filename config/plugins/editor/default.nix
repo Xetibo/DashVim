@@ -1,13 +1,13 @@
 {
   imports = [
-    ./general.nix
     ./alpha.nix
+    ./bars.nix
+    ./general.nix
     ./git.nix
-    ./telescope.nix
+    ./neorg.nix
     ./neoscroll.nix
     ./neotree.nix
-    ./bars.nix
-    ./neorg.nix
     ./special.nix
+    ./telescope.nix
   ];
 }

@@ -7,29 +7,73 @@
     base16.url = "github:SenchoPens/base16.nix";
   };
 
-  outputs = { flake-parts, ... }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } {
+  outputs =
+    { flake-parts, ... }@inputs:
+    flake-parts.lib.mkFlake { inherit inputs; } (
+      peng@{ ... }:
+      {
+        imports = [
+          ./modules
+        ];
+        systems = [
+          "x86_64-linux"
+          "aarch64-linux"
+          "x86_64-darwin"
+          "aarch64-darwin"
+        ];
 
-      systems =
-        [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+        perSystem =
+          {
+            pkgs,
+            system,
+            lib,
+            ...
+          }:
+          let
+            customConfig = peng.config.programs.dashvim // {
+              lsp = {
+                useDefaultSpecialLspServers = false;
+                lspServers = { };
+              };
+            };
+            package = (
+              import ./lib {
+                inherit system inputs pkgs;
+                config' = peng.config.programs.dashvim;
+              }
+            );
+            custom = (
+              import ./lib {
+                inherit system inputs pkgs;
+                config' = customConfig;
+              }
+            );
+          in
+          {
+            checks = {
+              default = package.test_dashvim;
+            };
+            packages = {
+              default = package.build_dashvim;
+              minimal = custom.build_dashvim;
+              docs = import ./docs {
+                inherit inputs pkgs lib;
+              };
+            };
+          };
 
-      perSystem = { pkgs, system, ... }@orig:
-        let package = (import ./lib { inherit system inputs pkgs; });
-        in {
-          checks = { default = package.test_dashvim; };
-
-          packages = { default = package.build_dashvim; };
-        };
-
-      flake = toplevel@{ ... }: rec {
-        nixosModules = {
-          home-manager = homeManagerModules.default;
-          dashvim = import ./hm inputs.self;
-        };
-        homeManagerModules = rec {
-          dashvim = import ./hm inputs.self;
-          default = dashvim;
-        };
-      };
-    };
+        flake =
+          { ... }:
+          rec {
+            nixosModules = {
+              home-manager = homeManagerModules.default;
+              dashvim = import ./hm inputs.self;
+            };
+            homeManagerModules = rec {
+              dashvim = import ./hm inputs.self;
+              default = dashvim;
+            };
+          };
+      }
+    );
 }
