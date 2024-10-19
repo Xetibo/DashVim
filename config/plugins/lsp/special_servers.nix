@@ -38,8 +38,9 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     typescript-tools = {
       enable = true;
     };
+    #seems to brick a lot rn
     rustaceanvim = {
-      enable = true;
+      enable = false;
     };
     crates-nvim = {
       enable = true;

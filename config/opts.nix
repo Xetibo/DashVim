@@ -35,7 +35,7 @@
       "--project-graph-enabled"
       "--use-fcs-transparent-compiler"
     ];
-    swapfile = false;
+    swapfile = true;
   };
 
   opts = {
@@ -157,19 +157,6 @@
           ''
             function()
               require("ionide").setup({})
-            end'';
-      };
-    })
-    (lib.mkIf config'.lsp.useDefaultSpecialLspServers {
-      desc = "Init ionide";
-      event = [ "BufEnter" ];
-      group = "filetypes";
-      pattern = "*.fs";
-      callback = {
-        __raw = # lua
-          ''
-            function()
-              require("ionide")
             end'';
       };
     })

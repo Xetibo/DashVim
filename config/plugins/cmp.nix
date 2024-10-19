@@ -1,6 +1,102 @@
-{ lib, config', ... }:
 {
+  lib,
+  inputs,
+  config',
+  ...
+}:
+{
+  #extraPlugins = [
+  #  inputs.blink.packages."x86_64-linux".blink-cmp
+  #];
+  #extraConfigLua = ''
+  #  require("blink.cmp").setup({
+  #    keymap = {
+  #      show = '<C-space>',
+  #      hide = '<C-e>',
+  #      accept = '<Enter>',
+  #      select_and_accept = {'<Enter>'},
+  #      select_prev = { '<S-Tab>', '<C-p>' },
+  #      select_next = { '<Tab>', '<C-n>' },
+
+  #      show_documentation = '<C-space>',
+  #      hide_documentation = '<C-space>',
+  #      scroll_documentation_up = '<C-b>',
+  #      scroll_documentation_down = '<C-f>',
+
+  #      snippet_forward = '<Tab>',
+  #      snippet_backward = '<S-Tab>',
+  #    },
+  #    trigger = {
+  #      sources = {
+  #          -- similar to nvim-cmp's sources, but we point directly to the source's lua module
+  #          -- multiple groups can be provided, where it'll fallback to the next group if the previous
+  #          -- returns no completion items
+  #          -- WARN: This API will have breaking changes during the beta
+  #          providers = {
+  #            { 'blink.cmp.sources.lsp', name = 'LSP' },
+  #            { 'blink.cmp.sources.path', name = 'Path', score_offset = 3 },
+  #            --{ 'blink.cmp.sources.snippets', name = 'Snippets', score_offset = -3 },
+  #            { 'blink.cmp.sources.buffer', name = 'Buffer', fallback_for = { 'LSP' } },
+  #          },
+  #          -- WARN: **For reference only** to see what options are available. **See above for the default config**
+  #          providers = {
+  #            -- all of these properties work on every source
+  #            {
+  #                'blink.cmp.sources.lsp',
+  #                name = 'LSP',
+  #                keyword_length = 0,
+  #                score_offset = 0,
+  #                trigger_characters = { 'f', 'o', 'o' },
+  #            },
+  #            -- the following two sources have additional options
+  #            {
+  #              'blink.cmp.sources.path',
+  #              name = 'Path',
+  #              score_offset = 3,
+  #              keyword_length = 4,
+  #              opts = {
+  #                trailing_slash = false,
+  #                label_trailing_slash = true,
+  #                get_cwd = function(context) return vim.fn.expand(('#%d:p:h'):format(context.bufnr)) end,
+  #                show_hidden_files_by_default = true,
+  #              }
+  #            },
+  #            {
+  #              'blink.cmp.sources.snippets',
+  #              name = 'Snippets',
+  #              score_offset = -3,
+  #              -- similar to https://github.com/garymjr/nvim-snippets
+  #              opts = {
+  #                friendly_snippets = true,
+  #                search_paths = { vim.fn.stdpath('config') .. '/snippets' },
+  #                global_snippets = { 'all' },
+  #                extended_filetypes = {},
+  #                ignored_filetypes = {},
+  #              },
+  #            },
+  #            {
+  #              'blink.cmp.sources.buffer',
+  #              name = 'Buffer',
+  #              fallback_for = { 'LSP' },
+  #              keyword_length = 4,
+  #            }
+  #          }
+  #        },
+  #    },
+  #    windows = {
+  #      autocomplete = {
+  #        border = 'rounded',
+  #      },
+  #      documentation = {
+  #        border = 'rounded',
+  #        auto_show = true,
+  #      },
+  #    },
+  #  }) 
+  #'';
   plugins = {
+    # once again fsharp blocks me from using an awesome plugin
+    # this langauge is starting to get on my nerves.
     cmp = lib.mkIf config'.useDefaultCmpConfig {
       enable = true;
       settings = {
@@ -9,7 +105,7 @@
           ghost_text = true;
         };
         performance = {
-          debounce = 60;
+          debounce = 10;
           fetchingTimeout = 200;
           maxViewEntries = 30;
         };
@@ -27,17 +123,13 @@
           {
             name = "nvim_lsp";
           }
-          #{
-          #  name = "buffer";
-          #  keyword_length = 3;
-          #}
           {
-            name = "treesitter";
-            keyword_length = 3;
+            name = "buffer";
+            keyword_length = 5;
           }
           {
             name = "async_path";
-            keyword_length = 3;
+            keyword_length = 5;
           }
           {
             name = "luasnip";
@@ -121,9 +213,6 @@
       settings = {
         enable_autosnippets = true;
       };
-    };
-    cmp-treesitter = {
-      enable = true;
     };
     cmp_luasnip = {
       enable = true;

@@ -103,16 +103,6 @@ lib.mkIf config'.useDefaultKeybinds {
   keymaps = [
     {
       mode = "n";
-      key = "<leader>cll";
-      action = "<CMD>lua require('lsp_lines').toggle() <CR>";
-      options = {
-        noremap = true;
-        silent = true;
-        desc = "Toggle lsp lines";
-      };
-    }
-    {
-      mode = "n";
       key = "<leader>ccr";
       action = "<CMD>LspRestart <CR>";
       options = {
@@ -770,31 +760,31 @@ lib.mkIf config'.useDefaultKeybinds {
     end
 
     function debugAction()
-      if vim.bo.filetype == "rust" then
-        vim.cmd.RustLsp("debuggables")
-      else
-        require("dap").continue()
-      end
+      -- if vim.bo.filetype == "rust" then
+      --   vim.cmd.RustLsp("debuggables")
+      -- else
+      require("dap").continue()
+      --end
     end
 
     function codeAction()
-      if vim.bo.filetype == "rust" then
-        vim.cmd.RustLsp('codeAction')
-      else 
-        vim.lsp.buf.code_action({
-            context = {
-              only = {
-                "quickfix",
-                "quickfix.ltex",
-                "source",
-                "source.fixAll",
-                "source.organizeImports",
-                "",
-              },
-            },
-          })
-      end 
-    end
+      -- if vim.bo.filetype == "rust" then
+      --   vim.cmd.RustLsp('codeAction')
+      -- else 
+      vim.lsp.buf.code_action({
+        context = {
+          only = {
+            "quickfix",
+            "quickfix.ltex",
+            "source",
+            "source.fixAll",
+            "source.organizeImports",
+            "",
+          },
+        },
+      })
+    end 
+    -- end
     function codeRefactor()
       vim.lsp.buf.code_action({
         context = {
