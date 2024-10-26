@@ -22,7 +22,6 @@
     loaded_netrw = true;
     loaded_netrwPlugin = true;
     autoformat = false;
-    mkdp_browser = "${pkgs.firefox}/bin/firefox";
     neovide_refresh_rate = 180;
     neovide_refresh_rate_idle = 5;
     neovide_hide_mouse_when_typing = true;
