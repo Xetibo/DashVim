@@ -447,8 +447,17 @@ lib.mkIf config'.useDefaultKeybinds {
     }
     {
       mode = "n";
-      key = "<A-t>";
+      key = "<A-k>";
       action = "<CMD>wincmd j<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
+    {
+      mode = "n";
+      key = "<A-l>";
+      action = "<CMD>wincmd k<CR>";
       options = {
         noremap = true;
         silent = true;
@@ -476,6 +485,15 @@ lib.mkIf config'.useDefaultKeybinds {
       mode = "i";
       key = "<A-k>";
       action = "<CMD>wincmd j<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+      };
+    }
+    {
+      mode = "i";
+      key = "<A-l>";
+      action = "<CMD>wincmd k<CR>";
       options = {
         noremap = true;
         silent = true;
@@ -666,7 +684,7 @@ lib.mkIf config'.useDefaultKeybinds {
         "i"
         "v"
       ];
-      key = "<A-l>";
+      key = "<C-l>";
       action = "<CMD>lua require('neoscroll').ctrl_u({ duration = 250 })<CR>";
       options = {
         desc = "Scroll Up";
@@ -679,7 +697,7 @@ lib.mkIf config'.useDefaultKeybinds {
         "i"
         "v"
       ];
-      key = "<A-k>";
+      key = "<C-k>";
       action = "<CMD>lua require('neoscroll').ctrl_d({ duration = 250 })<CR>";
       options = {
         desc = "Scroll Down";
