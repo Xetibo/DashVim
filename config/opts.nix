@@ -155,7 +155,24 @@
         __raw = # lua
           ''
             function()
-              require("ionide").setup({})
+              require("ionide").setup({
+                settings = {
+                  FSharp = {
+                    fsac = {
+                      conserveMemory = false,
+                      cachedTypeCheckCount = 10000,
+                      gc = {
+                        conserveMemory = 0,
+                        heapCount = 2,
+                        noAffinitize = true,
+                        server = true,
+                      },
+                    },
+                    linter = false,
+                    excludeProjectDirectories = { "paket-files", ".fable", "packages", "node_modules", "tools", "dist" },
+                  }
+                }
+              })
             end'';
       };
     })
