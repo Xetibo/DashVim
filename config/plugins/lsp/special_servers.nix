@@ -22,8 +22,8 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
       src = pkgs.fetchFromGitHub {
         owner = "DashieTM";
         repo = "Ionide-nvim";
-        rev = "493acca1e7ffdfe01b6ce70a24ad2f45a3d70b01";
-        hash = "sha256-3HNJWkgKlLHw0uSiLue1uqPK2OvXEl+49Tb5ErzWu6o=";
+        rev = "d6449c83f9647f39a0c64676ecf9f1f788a13a66";
+        hash = "sha256-dVNU3NSGCLWk4/mw2P+bDTc5TnAQTztq+ATbYmq3MGc=";
       };
     })
     haskell-tools-nvim
