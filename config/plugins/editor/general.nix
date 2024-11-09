@@ -11,14 +11,16 @@
     lsp-format = {
       enable = true;
     };
-    lsp-status = {
-      enable = true;
-    };
     indent-blankline = {
       enable = true;
     };
     neogit = {
       enable = true;
+      settings.mappings.status = {
+        # cursed movement
+        l = "MoveUp";
+        k = "MoveDown";
+      };
     };
     trouble = {
       enable = true;
@@ -53,8 +55,6 @@
         long_message_to_split = true;
         lsp_doc_border = true;
       };
-      # extraOptions = {
-      # };
       views = {
         cmdline_popup = {
           position = {
@@ -96,14 +96,12 @@
           enabled = true;
         };
         progress = {
+          # todo fix this
           enabled = true;
           view = "mini";
         };
         signature.enabled = true;
       };
-    };
-    coverage = {
-      enable = true;
     };
     project-nvim = {
       enable = true;
@@ -131,7 +129,10 @@
     treesitter = {
       enable = true;
       settings = {
-        highlight.enable = true;
+        highlight = {
+          enable = true;
+          additional_vim_regex_highlighting = false;
+        };
       };
       nixvimInjections = true;
       grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars;

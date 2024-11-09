@@ -55,8 +55,5 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     nix = {
       enable = true;
     };
-    nix-develop = {
-      enable = true;
-    };
   };
 }

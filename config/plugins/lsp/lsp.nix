@@ -7,6 +7,7 @@
       adapters = {
         dotnet = {
           # fsharp doesn't work, cool, thanks
+          # aka C# also can't work
           enable = false;
           settings = {
             single_file_support = true;

@@ -25,15 +25,15 @@
     neovide_refresh_rate = 180;
     neovide_refresh_rate_idle = 5;
     neovide_hide_mouse_when_typing = true;
-    "fsharp#workspace_mode_peek_deep_level" = 100;
-    "fsharp#exclude_project_directories" = [ "paket-files" ];
-    "fsharp#automatic_workspace_init" = 0;
-    "fsharp#fsautocomplete_command" = [
-      "fsautocomplete"
-      "--adaptive-lsp-server-enabled"
-      "--project-graph-enabled"
-      "--use-fcs-transparent-compiler"
-    ];
+    #"fsharp#workspace_mode_peek_deep_level" = 100;
+    #"fsharp#exclude_project_directories" = [ "paket-files" ];
+    #"fsharp#automatic_workspace_init" = 0;
+    #"fsharp#fsautocomplete_command" = [
+    #  "fsautocomplete"
+    #  "--adaptive-lsp-server-enabled"
+    #  "--project-graph-enabled"
+    #  "--use-fcs-transparent-compiler"
+    #];
     swapfile = true;
   };
 
@@ -202,6 +202,19 @@
           function()
               require("overseer").setup()
           end'';
+      };
+    }
+    {
+      desc = "Init Nvim-colorizer";
+      event = [ "BufEnter" ];
+      group = "filetypes";
+      pattern = "*";
+      callback = {
+        __raw = ''
+          function()
+            vim.cmd("ColorizerToggle")
+          end
+        '';
       };
     }
   ];
