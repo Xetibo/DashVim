@@ -5,7 +5,6 @@
 }:
 {
   globals = {
-    smartcase = true;
     fileencoding = "utf-8";
     number = true;
     showmode = true;
@@ -42,6 +41,8 @@
     foldenable = false;
     foldmethod = "manual";
     termguicolors = true;
+    smartcase = true;
+    ignorecase = true;
     number = true;
     shell = "fish";
   };
