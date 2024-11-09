@@ -62,11 +62,10 @@ lib.mkIf config'.useDefaultKeybinds {
         desc = "+prev";
       }
       {
-        __unkeyed-1 = "<leader><tab>";
-        desc = "+tabs";
+        __unkeyed-1 = "<leader><b>";
+        desc = "+buffers";
       }
       {
-        # "<leader>b" = "+buffer";
         __unkeyed-1 = "<leader>c";
         desc = "+code";
       }
@@ -83,12 +82,12 @@ lib.mkIf config'.useDefaultKeybinds {
         desc = "+git";
       }
       {
-        __unkeyed-1 = "<leader>x";
-        desc = "+diagnostics/quickfix";
-      }
-      {
         __unkeyed-1 = "<leader>d";
         desc = "+debug";
+      }
+      {
+        __unkeyed-1 = "<leader>l";
+        desc = "+misc";
       }
     ];
   };
@@ -367,6 +366,14 @@ lib.mkIf config'.useDefaultKeybinds {
       action = ''<CMD>lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
       options = {
         desc = "File Browser";
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>b";
+      action = ''<CMD>lua require("telescope.builtin").buffers()<CR>'';
+      options = {
+        desc = "Buffers";
       };
     }
     {

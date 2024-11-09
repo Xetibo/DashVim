@@ -1,11 +1,11 @@
 {
-  pkgs,
   lib,
   config',
   ...
 }:
 {
   globals = {
+    smartcase = true;
     fileencoding = "utf-8";
     number = true;
     showmode = true;

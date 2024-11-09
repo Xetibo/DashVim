@@ -18,6 +18,7 @@
       enable = true;
       settings.mappings.status = {
         # cursed movement
+        # TODO make this work
         l = "MoveUp";
         k = "MoveDown";
       };
@@ -44,7 +45,6 @@
     };
     flash = {
       enable = true;
-      # highlightUnlabeledPhaseOneTargets = true;
     };
     noice = {
       enable = true;
@@ -120,7 +120,7 @@
         };
       };
     };
-    vim-surround = {
+    nvim-surround = {
       enable = true;
     };
     spectre = {
