@@ -40,7 +40,12 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     };
     #seems to brick a lot rn
     rustaceanvim = {
-      enable = false;
+      enable = true;
+      settings = {
+        tools = {
+          hover_actions.replace_bui = false;
+        };
+      };
     };
     crates-nvim = {
       enable = true;

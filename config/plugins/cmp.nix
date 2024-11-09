@@ -1,10 +1,4 @@
-{
-  lib,
-  inputs,
-  config',
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   extraPlugins = with pkgs.vimPlugins; [
     blink-cmp
@@ -14,7 +8,7 @@
       keymap = {
         ['<C-space>'] = {'show', 'fallback'},
         ['<C-e>'] = {'hide', 'fallback'},
-        ['<Enter>'] = {'accept', 'select_and_accept', 'fallback'},
+        ['<Enter>'] = {'select_and_accept', 'accept',  'fallback'},
         ['<S-Tab>'] = {'select_prev', 'fallback'},
         ['<Tab>'] = {'select_next', 'fallback'},
         ['<C-b>'] = {'scroll_documentation_up', 'fallback'},
@@ -26,14 +20,14 @@
       accept = {
         auto_brackets = { enabled = true }
       },
-      trigger = {
-        sources = {
-          providers = {
-            { 'blink.cmp.sources.lsp', name = 'LSP' },
-            { 'blink.cmp.sources.path', name = 'Path', score_offset = 3 },
-            --{ 'blink.cmp.sources.snippets', name = 'Snippets', score_offset = -3 },
-            { 'blink.cmp.sources.buffer', name = 'Buffer', fallback_for = { 'LSP' } },
-          },
+      sources = {
+        completion = {
+          enabled_providers = { 'lsp', 'path', 'buffer' },
+        },
+        providers = {
+          lsp = { module = 'blink.cmp.sources.lsp', name = 'lsp', enabled = true },
+          path = { module = 'blink.cmp.sources.path', name = 'path', min_keyword_length = 3, enabled = true},
+          buffer = { module = 'blink.cmp.sources.buffer', name = 'buffer', min_keyword_length = 5, fallback_for = { }, enabled = true },
         },
       },
       windows = {
