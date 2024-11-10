@@ -91,6 +91,7 @@ Could potentially be outdated.
 | \<leader\>fh  | help for functions etc    |
 | \<leader\>fp  | find projects             |
 | \<leader\>fb  | file browser              |
+| \<leader\>b  | buffer browser           |
 
 ### telescope git
 | key        | Description               |
@@ -145,7 +146,7 @@ Note, these require the cmp list view to be open to do anything!
 | \<C-f\>       | scroll docs down                                          |
 | \<C-e\>       | cancel cmp                                                |
 | Enter       | write selected suggestion (does nothing if not selected)  |
-| Tab         |scroll down through suggestion list                        |
+| Tab         | scroll down through suggestion list                       |
 | Shift + Tab | scroll up through suggestion list                         |
 
 ## LSP 

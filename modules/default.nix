@@ -175,6 +175,7 @@
           #    "nixfmt"
           #  ];
           #};
+          # handled by ionide
           #fsautocomplete = {
           #  enable = true;
           #  cmd = [
