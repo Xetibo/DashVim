@@ -9,5 +9,6 @@
     ./neotree.nix
     ./special.nix
     ./telescope.nix
+    ./live-share.nix
   ];
 }
