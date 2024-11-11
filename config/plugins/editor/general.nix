@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config', ... }:
 {
   extraPlugins = with pkgs.vimPlugins; [
     overseer-nvim
@@ -151,6 +151,7 @@
     };
     instant = {
       enable = true;
+      settings.username = config'.instantUsername;
     };
   };
 }

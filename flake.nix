@@ -11,7 +11,7 @@
   outputs =
     { flake-parts, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } (
-      peng@{ ... }:
+      orig@{ ... }:
       {
         imports = [
           ./modules
@@ -32,7 +32,7 @@
             ...
           }:
           let
-            customConfig = peng.config.programs.dashvim // {
+            customConfig = orig.config.programs.dashvim // {
               lsp = {
                 useDefaultSpecialLspServers = false;
                 lspServers = { };
@@ -41,7 +41,7 @@
             package = (
               import ./lib {
                 inherit system inputs pkgs;
-                config' = peng.config.programs.dashvim;
+                config' = orig.config.programs.dashvim;
               }
             );
             custom = (

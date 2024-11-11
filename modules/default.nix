@@ -104,6 +104,15 @@
       '';
     };
 
+    instantUsername = lib.mkOption {
+      default = "DashVim";
+      example = "yourUserName";
+      type = lib.types.str;
+      description = ''
+        Username for instant.nvim
+      '';
+    };
+
     lsp = {
       useDefaultSpecialLspServers = lib.mkOption {
         default = true;
