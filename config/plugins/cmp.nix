@@ -26,8 +26,8 @@
         },
         providers = {
           lsp = { module = 'blink.cmp.sources.lsp', name = 'lsp', enabled = true },
-          path = { module = 'blink.cmp.sources.path', name = 'path', min_keyword_length = 3, enabled = true},
-          buffer = { module = 'blink.cmp.sources.buffer', name = 'buffer', min_keyword_length = 5, fallback_for = { }, enabled = true },
+          path = { module = 'blink.cmp.sources.path', name = 'path', min_keyword_length = 3, enabled = true, score_offset = -10 },
+          buffer = { module = 'blink.cmp.sources.buffer', name = 'buffer', min_keyword_length = 5, fallback_for = { }, enabled = true, score_offset = -10 },
         },
       },
       windows = {
