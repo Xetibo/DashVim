@@ -146,37 +146,37 @@
                   end'';
       };
     }
-    (lib.mkIf config'.lsp.useDefaultSpecialLspServers {
-      desc = "Init ionide first";
-      event = [ "BufEnter" ];
-      group = "filetypes";
-      pattern = "*.fs";
-      once = true;
-      callback = {
-        __raw = # lua
-          ''
-            function()
-              require("ionide").setup({
-                settings = {
-                  FSharp = {
-                    fsac = {
-                      conserveMemory = false,
-                      cachedTypeCheckCount = 10000,
-                      gc = {
-                        conserveMemory = 0,
-                        heapCount = 2,
-                        noAffinitize = true,
-                        server = true,
-                      },
-                    },
-                    linter = false,
-                    excludeProjectDirectories = { "paket-files", ".fable", "packages", "node_modules", "tools", "dist" },
-                  }
-                }
-              })
-            end'';
-      };
-    })
+    # (lib.mkIf config'.lsp.useDefaultSpecialLspServers {
+    #   desc = "Init ionide first";
+    #   event = [ "BufEnter" ];
+    #   group = "filetypes";
+    #   pattern = "*.fs";
+    #   once = true;
+    #   callback = {
+    #     __raw = # lua
+    #       ''
+    #         function()
+    #           require("ionide").setup({
+    #             settings = {
+    #               FSharp = {
+    #                 fsac = {
+    #                   conserveMemory = false,
+    #                   cachedTypeCheckCount = 10000,
+    #                   gc = {
+    #                     conserveMemory = 0,
+    #                     heapCount = 2,
+    #                     noAffinitize = true,
+    #                     server = true,
+    #                   },
+    #                 },
+    #                 linter = false,
+    #                 excludeProjectDirectories = { "paket-files", ".fable", "packages", "node_modules", "tools", "dist" },
+    #               }
+    #             }
+    #           })
+    #         end'';
+    #   };
+    # })
     {
       desc = "Init lua";
       event = [ "BufEnter" ];

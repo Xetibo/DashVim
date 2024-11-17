@@ -185,42 +185,41 @@
           #  ];
           #};
           # handled by ionide
-          #fsautocomplete = {
-          #  enable = true;
-          #  cmd = [
-          #    "fsautocomplete"
-          #    "--adaptive-lsp-server-enabled"
-          #    "--project-graph-enabled"
-          #    "--use-fcs-transparent-compiler"
-          #  ];
-          #  #rootDir = "require('lspconfig').util.root_pattern('*.sln', '.git')";
-          #  extraOptions = {
-          #    init_options = {
-          #      AutomaticWorkspaceInit = true;
-          #    };
-          #  };
-          #  settings = {
-          #    FSharp = {
-          #      AutomaticWorkspaceInit = true;
-          #      EnableReferenceCodeLens = true;
-          #      ExternalAutocomplete = false;
-          #      InterfaceStubGeneration = true;
-          #      InterfaceStubGenerationMethodBody = ''failwith "Not Implemented"'';
-          #      InterfaceStubGenerationObjectIdentifier = "this";
-          #      Linter = true;
-          #      RecordStubGeneration = true;
-          #      RecordStubGenerationBody = ''failwith "Not Implemented"'';
-          #      ResolveNamespaces = true;
-          #      SimplifyNameAnalyzer = true;
-          #      UnionCaseStubGeneration = true;
-          #      UnionCaseStubGenerationBody = ''failwith "nimp"'';
-          #      UnusedDeclarationsAnalyzer = true;
-          #      UnusedOpensAnalyzer = true;
-          #      UseSdkScripts = true;
-          #      keywordsAutocomplete = true;
-          #    };
-          #  };
-          #};
+          fsautocomplete = {
+            enable = true;
+            cmd = [
+              "fsautocomplete"
+              "--adaptive-lsp-server-enabled"
+              "--project-graph-enabled"
+              "--use-fcs-transparent-compiler"
+            ];
+            extraOptions = {
+              init_options = {
+                AutomaticWorkspaceInit = true;
+              };
+            };
+            settings = {
+              FSharp = {
+                AutomaticWorkspaceInit = true;
+                EnableReferenceCodeLens = true;
+                ExternalAutocomplete = false;
+                InterfaceStubGeneration = true;
+                InterfaceStubGenerationMethodBody = '''';
+                InterfaceStubGenerationObjectIdentifier = "this";
+                Linter = true;
+                RecordStubGeneration = true;
+                RecordStubGenerationBody = '''';
+                ResolveNamespaces = true;
+                SimplifyNameAnalyzer = true;
+                UnionCaseStubGeneration = true;
+                UnionCaseStubGenerationBody = '''';
+                UnusedDeclarationsAnalyzer = true;
+                UnusedOpensAnalyzer = true;
+                UseSdkScripts = true;
+                keywordsAutocomplete = true;
+              };
+            };
+          };
         };
         example = { };
         type = with lib.types; attrsOf anything;

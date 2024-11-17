@@ -48,59 +48,61 @@
     };
     noice = {
       enable = true;
-      presets = {
-        bottom_search = false;
-        command_palette = true;
-        inc_rename = true;
-        long_message_to_split = true;
-        lsp_doc_border = true;
-      };
-      views = {
-        cmdline_popup = {
-          position = {
-            row = 5;
-            col = "50%";
+      settings = {
+        presets = {
+          bottom_search = false;
+          command_palette = true;
+          inc_rename = true;
+          long_message_to_split = true;
+          lsp_doc_border = true;
+        };
+        views = {
+          cmdline_popup = {
+            position = {
+              row = 5;
+              col = "50%";
+            };
+            size = {
+              width = 60;
+              height = "auto";
+            };
           };
-          size = {
-            width = 60;
-            height = "auto";
+          popupmenu = {
+            relative = "editor";
+            position = {
+              row = 8;
+              col = "50%";
+            };
+            size = {
+              width = 60;
+              height = 10;
+            };
+            border = {
+              style = "rounded";
+            };
+            winhighlight = {
+              Normal = "NormalFloat";
+              FloatBorder = "FloatBorder";
+            };
           };
         };
-        popupmenu = {
-          relative = "editor";
-          position = {
-            row = 8;
-            col = "50%";
-          };
-          size = {
-            width = 60;
-            height = 10;
-          };
-          border = {
-            style = "rounded";
-          };
-          winhighlight = {
-            Normal = "NormalFloat";
-            FloatBorder = "FloatBorder";
-          };
+        notify = {
+          enabled = false;
         };
-      };
-      notify = {
-        enabled = false;
-      };
-      messages = {
-        enabled = true;
-      };
-      lsp = {
-        message = {
+        messages = {
           enabled = true;
         };
-        progress = {
-          # todo fix this
-          enabled = true;
-          view = "mini";
+        lsp = {
+          message = {
+            enabled = true;
+          };
+          progress = {
+            # todo fix this
+            enabled = true;
+            view = "mini";
+          };
+          signature.enabled = true;
         };
-        signature.enabled = true;
       };
     };
     project-nvim = {

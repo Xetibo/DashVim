@@ -17,15 +17,15 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     #    hash = "sha256-tEpolSQcAt1Y/y7ZG5vW1THm8raBnXqTBTsIc1M4zVM=";
     #  };
     #})
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "Ionide-nvim";
-      src = pkgs.fetchFromGitHub {
-        owner = "DashieTM";
-        repo = "Ionide-nvim";
-        rev = "d6449c83f9647f39a0c64676ecf9f1f788a13a66";
-        hash = "sha256-dVNU3NSGCLWk4/mw2P+bDTc5TnAQTztq+ATbYmq3MGc=";
-      };
-    })
+    # (pkgs.vimUtils.buildVimPlugin {
+    #   name = "Ionide-nvim";
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "DashieTM";
+    #     repo = "Ionide-nvim";
+    #     rev = "78f8a13d390680370f072a574017f578bf83d8f9";
+    #     hash = "sha256-RAZgdEpK3UsnZc4+uuphmDrtBFukHGL+2CeAteG0dfo=";
+    #   };
+    # })
     haskell-tools-nvim
   ];
   # enable the plugins above
