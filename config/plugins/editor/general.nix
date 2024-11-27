@@ -14,15 +14,6 @@
     indent-blankline = {
       enable = true;
     };
-    neogit = {
-      enable = true;
-      settings.mappings.status = {
-        # cursed movement
-        # TODO make this work
-        l = "MoveUp";
-        k = "MoveDown";
-      };
-    };
     trouble = {
       enable = true;
     };

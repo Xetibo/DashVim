@@ -26,9 +26,7 @@ in
     package = mkOption {
       type = with types; nullOr package;
       default = dashvim.build_dashvim;
-      defaultText = literalExpression ''
-        dashvim.packages.''${pkgs.stdenv.hostPlatform.system}.default
-      '';
+      example = null;
       description = mdDoc ''
         Package to run
       '';
@@ -36,7 +34,14 @@ in
   };
   config = lib.mkIf cfg.enable (
     lib.optionalAttrs (options ? home.packages) {
-      home.packages = lib.optional (cfg.package != null) cfg.package;
+      home.packages = [
+        (lib.mkIf (cfg.package != null) cfg.package)
+        pkgs.yazi
+        pkgs.ripgrep
+        pkgs.fd
+        pkgs.zoxide
+        pkgs.neovide
+      ];
     }
     // lib.optionalAttrs (options ? environment.systemPackages) {
       environment.systemPackages = lib.optional (cfg.package != null) cfg.package;
