@@ -41,7 +41,8 @@
     };
     lsp = {
       enable = true;
-      inlayHints = true;
+      # these can be turned on via toggle
+      inlayHints = false;
       preConfig = # lua
         ''
           local border = {
