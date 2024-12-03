@@ -168,6 +168,7 @@
           ruby_lsp.enable = true;
           svelte.enable = true;
           taplo.enable = true;
+          gleam.enable = true;
           sqls.enable = true;
           tinymist.enable = true;
           ts_ls.enable = true;
