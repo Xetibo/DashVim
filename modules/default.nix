@@ -218,6 +218,7 @@
                 UnusedOpensAnalyzer = true;
                 UseSdkScripts = true;
                 keywordsAutocomplete = true;
+                excludeProjectDirectories = [".git" "paket-files" ".fable" "packages" "node_modules" "tools"];
               };
             };
           };

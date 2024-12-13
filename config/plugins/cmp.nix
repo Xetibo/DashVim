@@ -30,15 +30,17 @@
           buffer = { module = 'blink.cmp.sources.buffer', name = 'buffer', min_keyword_length = 5, fallback_for = { }, enabled = true, score_offset = -10 },
         },
       },
-      windows = {
-        autocomplete = {
+      completion = {
+        menu = {
           border = 'rounded',
           winhighlight = 'Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
         },
         documentation = {
-          border = 'rounded',
-          winhighlight = 'Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
           auto_show = true,
+          window = {
+            border = 'rounded',
+            winhighlight = 'Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
+          },
         },
         ghost_text = {
           enabled = false,
