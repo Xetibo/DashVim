@@ -185,9 +185,9 @@
           #    "nixfmt"
           #  ];
           #};
-          # handled by ionide
           fsautocomplete = {
             enable = true;
+            #autostart = false;
             cmd = [
               "fsautocomplete"
               "--adaptive-lsp-server-enabled"
@@ -218,7 +218,14 @@
                 UnusedOpensAnalyzer = true;
                 UseSdkScripts = true;
                 keywordsAutocomplete = true;
-                excludeProjectDirectories = [".git" "paket-files" ".fable" "packages" "node_modules" "tools"];
+                excludeProjectDirectories = [
+                  ".git"
+                  "paket-files"
+                  ".fable"
+                  "packages"
+                  "node_modules"
+                  "tools"
+                ];
               };
             };
           };

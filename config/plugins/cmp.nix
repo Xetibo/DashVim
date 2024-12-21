@@ -34,9 +34,18 @@
         menu = {
           border = 'rounded',
           winhighlight = 'Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
+          draw = {
+            treesitter = true,
+          },
         },
         documentation = {
           auto_show = true,
+          window = {
+            border = 'rounded',
+            winhighlight = 'Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
+          },
+        },
+        signature = {
           window = {
             border = 'rounded',
             winhighlight = 'Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',

@@ -6,7 +6,6 @@
     ./git.nix
     ./live-share.nix
     ./neogit.nix
-    ./neorg.nix
     ./neoscroll.nix
     ./neotree.nix
     ./special.nix

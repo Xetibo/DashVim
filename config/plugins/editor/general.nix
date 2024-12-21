@@ -5,6 +5,12 @@
   ];
   plugins = {
     # this needs to be here in order to not cause errors with other plugins
+    markview = {
+      enable = true;
+    };
+    scrollview = {
+      enable = true;
+    };
     lsp = {
       enable = true;
     };
@@ -31,7 +37,7 @@
     refactoring = {
       enable = true;
     };
-    nvim-colorizer = {
+    colorizer = {
       enable = true;
     };
     flash = {

@@ -6,7 +6,6 @@
 }:
 lib.mkIf config'.lsp.useDefaultSpecialLspServers {
   extraPlugins = with pkgs.vimPlugins; [
-    nvim-scrollbar
     # Ionide-vim
     #(pkgs.vimUtils.buildVimPlugin {
     #  name = "Ionide-vim";
@@ -17,23 +16,18 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     #    hash = "sha256-tEpolSQcAt1Y/y7ZG5vW1THm8raBnXqTBTsIc1M4zVM=";
     #  };
     #})
-    # (pkgs.vimUtils.buildVimPlugin {
-    #   name = "Ionide-nvim";
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "DashieTM";
-    #     repo = "Ionide-nvim";
-    #     rev = "78f8a13d390680370f072a574017f578bf83d8f9";
-    #     hash = "sha256-RAZgdEpK3UsnZc4+uuphmDrtBFukHGL+2CeAteG0dfo=";
-    #   };
-    # })
+    #(pkgs.vimUtils.buildVimPlugin {
+    #  name = "Ionide-nvim";
+    #  src = pkgs.fetchFromGitHub {
+    #    owner = "WillEhrendreich";
+    #    repo = "Ionide-nvim";
+    #    rev = "68e648562ff6b6454eca8b42767980ab07b7a742";
+    #    hash = "sha256-4K5wNBHAs/7flVT54mU4hAfZDmxouKLrqWETJ2Zisa8=";
+    #  };
+    #})
     haskell-tools-nvim
   ];
   # enable the plugins above
-  extraConfigLua = ''
-    --require("ionide").setup({})
-    require("scrollbar").setup()
-    require("scrollbar.handlers.search").setup()
-  '';
   plugins = {
     typescript-tools = {
       enable = true;
@@ -47,7 +41,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
         };
       };
     };
-    crates-nvim = {
+    crates = {
       enable = true;
     };
     nvim-jdtls = {

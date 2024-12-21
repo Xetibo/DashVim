@@ -5,10 +5,10 @@
     };
     gitgutter = {
       enable = false;
-      signs = {
-        added = "|";
-        modified = "|";
-        removed = "|";
+      settings = {
+        sign_added = "|";
+        sign_modified = "|";
+        sign_removed = "|";
       };
     };
     gitignore = {
