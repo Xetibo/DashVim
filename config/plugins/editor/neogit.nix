@@ -1,20 +1,5 @@
-{ pkgs, ... }:
-let
-  neogitPackage = (
-    pkgs.vimUtils.buildVimPlugin {
-      name = "Neogit";
-      src = pkgs.fetchFromGitHub {
-        owner = "NeogitOrg";
-        repo = "neogit";
-        rev = "efd2a182024e422a4c4061683b9264c782eb684a";
-        hash = "sha256-Wi+/+ED304YgfUN2XTvYy/0n/P4OxSwrWaqgF38Z1YY=";
-      };
-    }
-  );
-in
 {
   plugins.neogit = {
-    package = neogitPackage;
     enable = true;
     settings = {
       use_default_keymaps = false;
