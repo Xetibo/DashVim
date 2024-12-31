@@ -165,7 +165,8 @@
           };
           omnisharp.enable = true;
           pyright.enable = true;
-          ruby_lsp.enable = true;
+          # TODO prism broken, thanks
+          ruby_lsp.enable = false;
           svelte.enable = true;
           taplo.enable = true;
           gleam.enable = true;
