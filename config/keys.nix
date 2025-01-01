@@ -143,7 +143,7 @@ lib.mkIf config'.useDefaultKeybinds {
       };
     }
 
-    # trouble 
+    # trouble
     {
       mode = "n";
       key = "<leader>t";
@@ -744,7 +744,7 @@ lib.mkIf config'.useDefaultKeybinds {
       };
     }
   ];
-  extraConfigLua = ''
+  extraConfigLuaPre = ''
     -- better yank
     function Better_yank(opts)
     	local current_line = unpack(vim.api.nvim_win_get_cursor(0))

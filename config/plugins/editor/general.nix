@@ -89,6 +89,14 @@
         messages = {
           enabled = true;
         };
+        cmdline = {
+          enabled = true;
+          view = "cmdline_popup";
+        };
+        popupmenu = {
+          enabled = true;
+          backend = "nui";
+        };
         lsp = {
           message = {
             enabled = true;

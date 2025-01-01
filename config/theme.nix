@@ -861,9 +861,15 @@ in {
 
       vim.cmd("highlight!  link WinSeparator  FloatBorder")
       vim.cmd("highlight!  link TelescopeBorder  FloatBorder")
+      vim.cmd("highlight!  link TelescopeNormal  FloatBorder")
       vim.cmd("highlight!  link NoiceCmdlinePopupBorder  FloatBorder")
       vim.cmd("highlight  FloatBorder  guifg=#${scheme.base0D} guibg=nil")
 
+      vim.cmd("highlight  NonText guifg=#" .. change_color("${scheme.base03}",40))
+      vim.cmd("highlight  Comment guifg=#" .. change_color("${scheme.base03}",40))
+      vim.cmd("highlight  TSComment guifg=#" .. change_color("${scheme.base03}",40))
+      vim.cmd("highlight  LspInlayHint guifg=#" .. change_color("${scheme.base03}",40))
+      vim.cmd("highlight!  link CmpGhostText  Comment")
 
       vim.cmd("highlight  GitGutterChange  guifg=#${scheme.base0A}")
       vim.cmd("highlight  GitGutterAdd  guifg=#${scheme.base0B}")
