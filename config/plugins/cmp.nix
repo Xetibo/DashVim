@@ -65,11 +65,10 @@ in
             enabled = true;
           };
         };
-        list.selection = lib.nixvim.mkRaw ''
-          function(ctx)
-             return "manual"
-          end
-        '';
+        list.selection = {
+          preselect = false;
+          auto_insert = false;
+        };
         menu = {
           border = "rounded";
           winhighlight = "Normal:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None";

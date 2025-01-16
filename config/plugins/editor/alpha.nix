@@ -69,7 +69,7 @@
           position = "center";
         };
         type = "text";
-        val = "https://github.com/DashieTM/dotFiles";
+        val = "https://github.com/DashieTM/DashNix";
       }
     ];
   };

@@ -51,6 +51,11 @@
             );
           in
           {
+            devShells.default = pkgs.mkShell {
+              packages = with pkgs; [
+                nuget
+              ];
+            };
             checks = {
               default = package.test_dashvim;
             };

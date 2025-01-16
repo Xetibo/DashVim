@@ -26,6 +26,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     #  };
     #})
     haskell-tools-nvim
+    easy-dotnet-nvim
   ];
   # enable the plugins above
   plugins = {
@@ -55,4 +56,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
       enable = true;
     };
   };
+  extraConfigLua = ''
+    require("easy-dotnet").setup()
+  '';
 }
