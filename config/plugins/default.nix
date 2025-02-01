@@ -1,1 +1,8 @@
-{ imports = [ ./lsp ./cmp.nix ./dap.nix ./editor ]; }
+{
+  imports = [
+    ./cmp.nix
+    ./dap.nix
+    ./editor
+    ./lsp
+  ];
+}
