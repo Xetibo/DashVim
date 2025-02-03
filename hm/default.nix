@@ -36,6 +36,7 @@ in
     lib.optionalAttrs (options ? home.packages) {
       home.packages = [
         (lib.mkIf (cfg.package != null) cfg.package)
+        pkgs.roslyn-ls
         pkgs.yazi
         pkgs.ripgrep
         pkgs.fd

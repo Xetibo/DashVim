@@ -535,6 +535,47 @@ lib.mkIf config'.useDefaultKeybinds {
       };
     }
 
+    # ng.nvim
+    {
+      mode = [
+        "n"
+        "v"
+      ];
+      key = "<leader>cgc";
+      action = "<CMD>lua require('ng').goto_template_for_component()<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Angular goto template";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+      ];
+      key = "<leader>cgt";
+      action = "<CMD>lua require('ng').goto_component_with_template_file()<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Angular goto component";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+      ];
+      key = "<leader>cgw";
+      action = "<CMD>lua require('ng').get_template_tcb()<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Angular template?";
+      };
+    }
+
     # window movement
     {
       mode = [
@@ -785,31 +826,31 @@ lib.mkIf config'.useDefaultKeybinds {
     end
 
     function debugAction()
-      -- if vim.bo.filetype == "rust" then
-      --   vim.cmd.RustLsp("debuggables")
-      -- else
-      require("dap").continue()
+      --if vim.bo.filetype == "rust" then
+      --  vim.cmd.RustLsp("debuggables")
+      --else
+        require("dap").continue()
       --end
     end
 
     function codeAction()
-      -- if vim.bo.filetype == "rust" then
-      --   vim.cmd.RustLsp('codeAction')
-      -- else 
-      vim.lsp.buf.code_action({
-        context = {
-          only = {
-            "quickfix",
-            "quickfix.ltex",
-            "source",
-            "source.fixAll",
-            "source.organizeImports",
-            "",
+      --if vim.bo.filetype == "rust" then
+      --  vim.cmd.RustLsp('codeAction')
+      --else 
+        vim.lsp.buf.code_action({
+          context = {
+            only = {
+              "quickfix",
+              "quickfix.ltex",
+              "source",
+              "source.fixAll",
+              "source.organizeImports",
+              "",
+            },
           },
-        },
-      })
-    end 
-    -- end
+        })
+      --end 
+    end
     function codeRefactor()
       vim.lsp.buf.code_action({
         context = {

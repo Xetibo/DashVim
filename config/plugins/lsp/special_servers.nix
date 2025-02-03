@@ -25,20 +25,43 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     #    hash = "sha256-4K5wNBHAs/7flVT54mU4hAfZDmxouKLrqWETJ2Zisa8=";
     #  };
     #})
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "roslyn";
+      src = pkgs.fetchFromGitHub {
+        owner = "seblj";
+        repo = "roslyn.nvim";
+        rev = "490fd2d0f76249032ef6ce503e43ccdaeed9616e";
+        hash = "sha256-zBFrc9SaJCeFxotErkKN5XjKGUia+hLIgN1ad0B6WJY=";
+      };
+    })
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "ng";
+      src = pkgs.fetchFromGitHub {
+        owner = "joeveiga";
+        repo = "ng.nvim";
+        rev = "38af07e77f066e2d6e3f74d966816662075ff4cd";
+        hash = "sha256-Dh7RUB7JfurQFtl0UGANs8Tc38IaEum+i0ghN9iCsQk=";
+      };
+    })
     haskell-tools-nvim
     easy-dotnet-nvim
+
+    #roslyn-nvim
   ];
   # enable the plugins above
   plugins = {
     typescript-tools = {
       enable = true;
     };
-    #seems to brick a lot rn
     rustaceanvim = {
-      enable = true;
+      # codeactions aren't nicely decorated :(
+      enable = false;
       settings = {
         tools = {
           hover_actions.replace_bui = false;
+        };
+        float_win_config = {
+          border = "rounded";
         };
       };
     };
@@ -58,5 +81,9 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
   };
   extraConfigLua = ''
     require("easy-dotnet").setup()
+    require("roslyn").setup({
+      exe = 'Microsoft.CodeAnalysis.LanguageServer',
+    })
+    require("ng")
   '';
 }

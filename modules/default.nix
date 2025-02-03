@@ -37,10 +37,13 @@
         ];
       description = ''
         
-                Base16 colorscheme.
-                Can be an attribute set with base00 to base0F,
-                a string that leads to a yaml file in base16-schemes path,
-                or a path to a custom yaml file.
+                
+                        
+                                
+                                        Base16 colorscheme.
+                                        Can be an attribute set with base00 to base0F,
+                                        a string that leads to a yaml file in base16-schemes path,
+                                        or a path to a custom yaml file.
       '';
     };
 
@@ -50,8 +53,11 @@
       type = lib.types.bool;
       description = ''
         
-                Enables the default keybinds for DashVim.
-                Keep in mind that regular keymaps from plugin defaults and Neovim are still active.
+                
+                        
+                                
+                                        Enables the default keybinds for DashVim.
+                                        Keep in mind that regular keymaps from plugin defaults and Neovim are still active.
       '';
     };
 
@@ -94,7 +100,10 @@
       type = with lib.types; listOf str;
       description = ''
         
-                The Ascii picture for alpha.nvim.
+                
+                        
+                                
+                                        The Ascii picture for alpha.nvim.
       '';
     };
 
@@ -104,7 +113,10 @@
       type = lib.types.bool;
       description = ''
         
-                Enables Lsp Config, conform and DAP.
+                
+                        
+                                
+                                        Enables Lsp Config, conform and DAP.
       '';
     };
 
@@ -114,7 +126,10 @@
       type = lib.types.str;
       description = ''
         
-                Username for instant.nvim
+                
+                        
+                                
+                                        Username for instant.nvim
       '';
     };
 
@@ -125,8 +140,11 @@
         type = lib.types.bool;
         description = ''
           
-                    These are LSP servers which are installed via plugins. For example rustaceanvim for rust.
-                    Disabling this will remove all special servers. You can install specific ones using the additionalConfig.
+                    
+                              
+                                        
+                                                  These are LSP servers which are installed via plugins. For example rustaceanvim for rust.
+                                                  Disabling this will remove all special servers. You can install specific ones using the additionalConfig.
         '';
       };
 
@@ -170,7 +188,7 @@
             enable = true;
             package = null;
           };
-          omnisharp.enable = true;
+          #omnisharp.enable = true;
           pyright.enable = true;
           # TODO prism broken, thanks
           ruby_lsp.enable = false;
@@ -193,6 +211,9 @@
           #    "nixfmt"
           #  ];
           #};
+          rust-analyzer = {
+            enable = true;
+          };
           fsautocomplete = {
             enable = true;
             #autostart = false;
@@ -242,7 +263,10 @@
         type = with lib.types; attrsOf anything;
         description = ''
           
-                    LspServers to enable.
+                    
+                              
+                                        
+                                                  LspServers to enable.
         '';
       };
     };
@@ -252,7 +276,10 @@
       type = with lib.types; attrsOf anything;
       description = ''
         
-                NixVim configuration to be added to DashVim.
+                
+                        
+                                
+                                        NixVim configuration to be added to DashVim.
       '';
     };
   };
