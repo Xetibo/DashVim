@@ -7,7 +7,8 @@
     nvim-dap-go
     telescope-dap-nvim
   ];
-  extraPackages = with pkgs; [ vscode-extensions.vadimcn.vscode-lldb.adapter ];
+  # TODO reenable when no longer broken
+  #extraPackages = with pkgs; [ vscode-extensions.vadimcn.vscode-lldb.adapter ];
   plugins = {
     dap-python = {
       enable = true;
@@ -32,9 +33,10 @@
     dap = {
       adapters = {
         executables = {
-          codelldb = {
-            command = "${pkgs.lldb_17}/bin/lldb-vscode";
-          };
+          # TODO reenable when no longer broken
+          #codelldb = {
+          #  command = "${pkgs.lldb_17}/bin/lldb-vscode";
+          #};
           coreclr = {
             command = "${pkgs.netcoredbg}/bin/netcoredbg";
             args = [ "--interpreter=vscode" ];
@@ -62,20 +64,20 @@
             type = "delve";
           }
         ];
-        cpp = [
-          {
-            name = "Debug CPP";
-            request = "launch";
-            type = "codelldb";
-          }
-        ];
-        c = [
-          {
-            name = "Debug C";
-            request = "launch";
-            type = "codelldb";
-          }
-        ];
+        #cpp = [
+        #  {
+        #    name = "Debug CPP";
+        #    request = "launch";
+        #    type = "codelldb";
+        #  }
+        #];
+        #c = [
+        #  {
+        #    name = "Debug C";
+        #    request = "launch";
+        #    type = "codelldb";
+        #  }
+        #];
         # no file picker possible here?
         # cs = [{
         #   name = "Debug C#";
