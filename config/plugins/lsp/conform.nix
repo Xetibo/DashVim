@@ -49,6 +49,7 @@
             "prettier"
           ]
         ];
+        fsharp = [ "fantomas" ];
         python = [ "black" ];
         lua = [ "stylua" ];
         nix = [ "nixfmt" ];
