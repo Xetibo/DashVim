@@ -102,7 +102,7 @@
             enabled = true;
           };
           progress = {
-            # todo fix this
+            # TODO fix this
             enabled = true;
             view = "mini";
           };

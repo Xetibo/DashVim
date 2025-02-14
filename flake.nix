@@ -51,6 +51,12 @@
             );
           in
           {
+            _module.args.pkgs = import inputs.nixpkgs {
+              inherit system;
+              config = {
+                allowBroken = true;
+              };
+            };
             devShells.default = pkgs.mkShell {
               packages = with pkgs; [
                 nuget

@@ -36,14 +36,10 @@
           path
         ];
       description = ''
-        
-                
-                        
-                                
-                                        Base16 colorscheme.
-                                        Can be an attribute set with base00 to base0F,
-                                        a string that leads to a yaml file in base16-schemes path,
-                                        or a path to a custom yaml file.
+        Base16 colorscheme.
+        Can be an attribute set with base00 to base0F,
+        a string that leads to a yaml file in base16-schemes path,
+        or a path to a custom yaml file.
       '';
     };
 
@@ -52,12 +48,8 @@
       example = false;
       type = lib.types.bool;
       description = ''
-        
-                
-                        
-                                
-                                        Enables the default keybinds for DashVim.
-                                        Keep in mind that regular keymaps from plugin defaults and Neovim are still active.
+        Enables the default keybinds for DashVim.
+        Keep in mind that regular keymaps from plugin defaults and Neovim are still active.
       '';
     };
 
@@ -99,11 +91,7 @@
       example = [ "yourpicture" ];
       type = with lib.types; listOf str;
       description = ''
-        
-                
-                        
-                                
-                                        The Ascii picture for alpha.nvim.
+        The Ascii picture for alpha.nvim.
       '';
     };
 
@@ -112,11 +100,7 @@
       example = false;
       type = lib.types.bool;
       description = ''
-        
-                
-                        
-                                
-                                        Enables Lsp Config, conform and DAP.
+        Enables Lsp Config, conform and DAP.
       '';
     };
 
@@ -125,11 +109,7 @@
       example = "yourUserName";
       type = lib.types.str;
       description = ''
-        
-                
-                        
-                                
-                                        Username for instant.nvim
+      Username for instant.nvim
       '';
     };
 
@@ -139,12 +119,8 @@
         example = false;
         type = lib.types.bool;
         description = ''
-          
-                    
-                              
-                                        
-                                                  These are LSP servers which are installed via plugins. For example rustaceanvim for rust.
-                                                  Disabling this will remove all special servers. You can install specific ones using the additionalConfig.
+          These are LSP servers which are installed via plugins. For example rustaceanvim for rust.
+          Disabling this will remove all special servers. You can install specific ones using the additionalConfig.
         '';
       };
 
@@ -188,10 +164,8 @@
             enable = true;
             package = null;
           };
-          #omnisharp.enable = true;
           pyright.enable = true;
-          # TODO prism broken, thanks
-          ruby_lsp.enable = false;
+          ruby_lsp.enable = true;
           svelte.enable = true;
           taplo.enable = true;
           gleam.enable = true;
@@ -211,7 +185,14 @@
           #    "nixfmt"
           #  ];
           #};
-          rust-analyzer = {
+          rust_analyzer = {
+            enable = true;
+            # version mismatches cause issues
+            # Include the right version in a flake instead
+            installCargo = false;
+            installRustc = false;
+          };
+          phpactor = {
             enable = true;
           };
           fsautocomplete = {
@@ -262,11 +243,7 @@
         example = { };
         type = with lib.types; attrsOf anything;
         description = ''
-          
-                    
-                              
-                                        
-                                                  LspServers to enable.
+          LspServers to enable.
         '';
       };
     };
@@ -275,11 +252,7 @@
       default = { };
       type = with lib.types; attrsOf anything;
       description = ''
-        
-                
-                        
-                                
-                                        NixVim configuration to be added to DashVim.
+        NixVim configuration to be added to DashVim.
       '';
     };
   };

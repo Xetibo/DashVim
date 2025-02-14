@@ -63,6 +63,10 @@
           "yamllint"
           "yamlfmt"
         ];
+        php = [
+          "prettierd"
+          "prettier"
+        ];
       };
     };
   };
