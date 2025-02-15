@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   vim = {
     enableLuaLoader = true;
 
@@ -14,6 +15,9 @@
 
     git = {
       gitsigns = {
+        enable = true;
+      };
+      git-conflict = {
         enable = true;
       };
 
