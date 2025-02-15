@@ -7,6 +7,7 @@
     ./theme.nix
     ./treesitter.nix
     ./filetree.nix
+    ./statusline.nix
     ##config'.additionalConfig
   ];
 }
