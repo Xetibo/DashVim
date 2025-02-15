@@ -1,8 +1,10 @@
-{ lib, pkgs, ... }:
-let
-  blinkPkg = pkgs.vimPlugins.blink-cmp;
-in
 {
+  lib,
+  pkgs,
+  ...
+}: let
+  blinkPkg = pkgs.vimPlugins.blink-cmp;
+in {
   plugins.blink-cmp = {
     package = blinkPkg;
     enable = true;
@@ -113,7 +115,7 @@ in
             module = "blink.cmp.sources.buffer";
             name = "buffer";
             min_keyword_length = 5;
-            fallback_for = { };
+            fallback_for = {};
             enabled = true;
             score_offset = -10;
           };

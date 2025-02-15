@@ -1,5 +1,4 @@
-{ config', ... }:
-{
+{config', ...}: {
   imports = [
     ./opts.nix
     ./keys.nix

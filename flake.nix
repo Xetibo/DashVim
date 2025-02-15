@@ -7,11 +7,9 @@
     base16.url = "github:SenchoPens/base16.nix";
   };
 
-  outputs =
-    { flake-parts, ... }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } (
-      orig@{ ... }:
-      {
+  outputs = {flake-parts, ...} @ inputs:
+    flake-parts.lib.mkFlake {inherit inputs;} (
+      orig @ {...}: {
         imports = [
           ./modules
         ];
@@ -23,69 +21,66 @@
           "aarch64-apple-darwin"
         ];
 
-        perSystem =
-          {
-            pkgs,
-            system,
-            lib,
-            ...
-          }:
-          let
-            customConfig = orig.config.programs.dashvim // {
+        perSystem = {
+          pkgs,
+          system,
+          lib,
+          ...
+        }: let
+          customConfig =
+            orig.config.programs.dashvim
+            // {
               lsp = {
                 useDefaultSpecialLspServers = false;
-                lspServers = { };
+                lspServers = {};
               };
             };
-            package = (
-              import ./lib {
-                inherit system inputs pkgs;
-                config' = orig.config.programs.dashvim;
-              }
-            );
-            custom = (
-              import ./lib {
-                inherit system inputs pkgs;
-                config' = customConfig;
-              }
-            );
-          in
-          {
-            _module.args.pkgs = import inputs.nixpkgs {
-              inherit system;
-              config = {
-                allowBroken = true;
-              };
-            };
-            devShells.default = pkgs.mkShell {
-              packages = with pkgs; [
-                nuget
-              ];
-            };
-            checks = {
-              default = package.test_dashvim;
-            };
-            packages = {
-              default = package.build_dashvim;
-              minimal = custom.build_dashvim;
-              docs = import ./docs {
-                inherit inputs pkgs lib;
-              };
+          package = (
+            import ./lib {
+              inherit system inputs pkgs;
+              config' = orig.config.programs.dashvim;
+            }
+          );
+          custom = (
+            import ./lib {
+              inherit system inputs pkgs;
+              config' = customConfig;
+            }
+          );
+        in {
+          _module.args.pkgs = import inputs.nixpkgs {
+            inherit system;
+            config = {
+              allowBroken = true;
             };
           };
+          devShells.default = pkgs.mkShell {
+            packages = with pkgs; [
+              nuget
+            ];
+          };
+          checks = {
+            default = package.test_dashvim;
+          };
+          packages = {
+            default = package.build_dashvim;
+            minimal = custom.build_dashvim;
+            docs = import ./docs {
+              inherit inputs pkgs lib;
+            };
+          };
+        };
 
-        flake =
-          { ... }:
-          rec {
-            nixosModules = {
-              home-manager = homeManagerModules.default;
-              dashvim = import ./hm inputs.self;
-            };
-            homeManagerModules = rec {
-              dashvim = import ./hm inputs.self;
-              default = dashvim;
-            };
+        flake = {...}: rec {
+          nixosModules = {
+            home-manager = homeManagerModules.default;
+            dashvim = import ./hm inputs.self;
           };
+          homeManagerModules = rec {
+            dashvim = import ./hm inputs.self;
+            default = dashvim;
+          };
+        };
       }
     );
 }

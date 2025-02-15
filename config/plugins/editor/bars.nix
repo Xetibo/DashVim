@@ -11,7 +11,7 @@
     settings = {
       globalstatus = true;
       sections = {
-        lualine_a = [ "mode" ];
+        lualine_a = ["mode"];
         lualine_b = [
           "branch"
           {
@@ -22,14 +22,13 @@
               info = " ";
               hint = "󰝶 ";
             };
-
           }
         ];
-        lualine_c = [ "filename" ];
+        lualine_c = ["filename"];
         lualine_x = [
           {
             __unkeyed-1 = "diff";
-            sources = [ "diff_source()" ];
+            sources = ["diff_source()"];
             symbols = {
               added = " ";
               modified = "󰝤 ";
@@ -45,15 +44,15 @@
           "progress"
           "location"
         ];
-        lualine_z = [ "' ' .. os.date('%a')" ];
+        lualine_z = ["' ' .. os.date('%a')"];
       };
       inactiveSections = {
-        lualine_c = [ "filename" ];
-        lualine_x = [ "location" ];
+        lualine_c = ["filename"];
+        lualine_x = ["location"];
       };
       disabledFiletypes = {
-        statusline = [ "alpha" ];
-        winbar = [ "alpha" ];
+        statusline = ["alpha"];
+        winbar = ["alpha"];
       };
     };
   };
@@ -74,7 +73,7 @@
     end
 
     function lsp_stat()
-      if vim.lsp.buf_get_clients() > 0 then 
+      if vim.lsp.buf_get_clients() > 0 then
         require('lsp-status').status()
       end
     end

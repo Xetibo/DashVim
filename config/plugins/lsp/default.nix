@@ -1,5 +1,4 @@
-{ config', ... }:
-{
+{config', ...}: {
   imports = [
     ./lsp.nix
     ./special_servers.nix

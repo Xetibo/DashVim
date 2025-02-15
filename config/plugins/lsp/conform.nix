@@ -1,10 +1,9 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   extraPackages = with pkgs; [
     prettierd
     black
     stylua
-    nixfmt-rfc-style
+    alejandra
     yamllint
     yamlfmt
   ];
@@ -49,10 +48,10 @@
             "prettier"
           ]
         ];
-        fsharp = [ "fantomas" ];
-        python = [ "black" ];
-        lua = [ "stylua" ];
-        nix = [ "nixfmt" ];
+        fsharp = ["fantomas"];
+        python = ["black"];
+        lua = ["stylua"];
+        nix = ["alejandra"];
         markdown = [
           [
             "prettierd"

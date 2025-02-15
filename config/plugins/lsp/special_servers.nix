@@ -70,7 +70,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     };
     nvim-jdtls = {
       enable = true;
-      cmd = [ (lib.getExe pkgs.jdt-language-server) ];
+      cmd = [(lib.getExe pkgs.jdt-language-server)];
     };
     clangd-extensions = {
       enable = true;

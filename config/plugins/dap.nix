@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   extraPlugins = with pkgs.vimPlugins; [
     nvim-dap-ui
     nvim-dap-virtual-text
@@ -7,7 +6,7 @@
     nvim-dap-go
     telescope-dap-nvim
   ];
-  extraPackages = with pkgs; [ vscode-extensions.vadimcn.vscode-lldb.adapter ];
+  extraPackages = with pkgs; [vscode-extensions.vadimcn.vscode-lldb.adapter];
   plugins = {
     dap-python = {
       enable = true;
@@ -37,7 +36,7 @@
           };
           coreclr = {
             command = "${pkgs.netcoredbg}/bin/netcoredbg";
-            args = [ "--interpreter=vscode" ];
+            args = ["--interpreter=vscode"];
           };
           java = {
             command = "${pkgs.vscode-extensions.vscjava.vscode-java-debug}/bin/java-debug-adapter";

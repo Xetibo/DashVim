@@ -1,12 +1,16 @@
-{ inputs, pkgs, config', ... }:
-let
+{
+  inputs,
+  pkgs,
+  config',
+  ...
+}: let
   conf_scheme = config'.colorscheme;
-  parsed = (if builtins.isAttrs conf_scheme then
-    conf_scheme
-  else
-    "${pkgs.base16-schemes}/share/themes/${conf_scheme}.yaml");
-  base16 = pkgs.callPackage inputs.base16.lib { };
-  scheme = (base16.mkSchemeAttrs parsed);
+  parsed =
+    if builtins.isAttrs conf_scheme
+    then conf_scheme
+    else "${pkgs.base16-schemes}/share/themes/${conf_scheme}.yaml";
+  base16 = pkgs.callPackage inputs.base16.lib {};
+  scheme = base16.mkSchemeAttrs parsed;
 in {
   colorschemes = {
     base16 = {
@@ -25,18 +29,20 @@ in {
       };
     };
   };
-  autoCmd = [{
-    desc = "fix theme";
-    event = [ "ColorScheme" "VimEnter" ];
-    group = "custom_theme";
-    pattern = "*";
-    callback = {
-      __raw = ''
-        function()
-                  fix_theme()
-                end'';
-    };
-  }];
+  autoCmd = [
+    {
+      desc = "fix theme";
+      event = ["ColorScheme" "VimEnter"];
+      group = "custom_theme";
+      pattern = "*";
+      callback = {
+        __raw = ''
+          function()
+                    fix_theme()
+                  end'';
+      };
+    }
+  ];
   extraConfigLua = ''
     local function clamp(component)
       return math.min(math.max(component, 0), 255)
@@ -825,7 +831,7 @@ in {
 
       vim.cmd("highlight  NeoTreeDirectoryIcon  guifg=#${scheme.base0D}")
       vim.cmd("highlight  NeoTreeDirectoryName  guifg=#${scheme.base0D}")
-      
+
       vim.cmd("highlight  NeoTreeNormal  guifg=#${scheme.base05} guibg=#${scheme.base01}")
       vim.cmd("highlight  NeoTreeNormalNC  guifg=#${scheme.base05} guibg=#${scheme.base01}")
       vim.cmd("highlight  NeoTreeExpander  guifg=#" .. overlay0)
@@ -833,7 +839,7 @@ in {
       vim.cmd("highlight  NeoTreeRootName cterm=bold gui=bold guifg=#${scheme.base0D}")
       vim.cmd("highlight  NeoTreeSymbolicLinkTarget  guifg=#${scheme.base0F}")
       vim.cmd("highlight  NeoTreeModified  guifg=#${scheme.base09}")
-      
+
       vim.cmd("highlight  NeoTreeGitAdded  guifg=#${scheme.base0B}")
       vim.cmd("highlight  NeoTreeGitConflict  guifg=#${scheme.base08}")
       vim.cmd("highlight  NeoTreeGitDeleted  guifg=#${scheme.base08}")
@@ -842,11 +848,11 @@ in {
       vim.cmd("highlight  NeoTreeGitUnstaged  guifg=#${scheme.base08}")
       vim.cmd("highlight  NeoTreeGitUntracked  guifg=#${scheme.base0E}")
       vim.cmd("highlight  NeoTreeGitStaged  guifg=#${scheme.base0B}")
-      
+
       vim.cmd("highlight!  link NeoTreeFloatBorder  FloatBorder")
       vim.cmd("highlight!  link NeoTreeFloatTitle  FloatTitle")
       vim.cmd("highlight  NeoTreeTitleBar  guifg=#${scheme.base01}  guibg=#${scheme.base0D}")
-      
+
       vim.cmd("highlight  NeoTreeFileNameOpened  guifg=#${scheme.base0F}")
       vim.cmd("highlight  NeoTreeDimText  guifg=#" .. overlay1)
       vim.cmd("highlight  NeoTreeFilterTerm cterm=bold gui=bold guifg=#${scheme.base0B}")

@@ -1,12 +1,10 @@
-self:
-{
+self: {
   lib,
   config,
   pkgs,
   options,
   ...
-}:
-let
+}: let
   cfg = config.programs.dashvim;
   system = pkgs.stdenv.hostPlatform.system;
   dashvim = (
@@ -16,10 +14,9 @@ let
       config' = cfg;
     }
   );
-in
-{
-  imports = [ ../modules ];
-  meta.maintainers = with lib.maintainers; [ DashieTM ];
+in {
+  imports = [../modules];
+  meta.maintainers = with lib.maintainers; [DashieTM];
   options.programs.dashvim = with lib; {
     enable = mkEnableOption "dashvim";
 

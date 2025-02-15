@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
       name = "live-share";
@@ -11,7 +10,8 @@
       };
     })
   ];
-  extraConfigLua = # lua
+  extraConfigLua =
+    # lua
     ''
       require("live-share").setup({
         port_internal = 8765,

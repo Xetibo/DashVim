@@ -1,5 +1,4 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   options.programs.dashvim = {
     colorscheme = lib.mkOption {
       default = "catppuccin-mocha";
@@ -28,8 +27,7 @@
         base0E = "BB9AF7";
         base0F = "F7768E";
       };
-      type =
-        with lib.types;
+      type = with lib.types;
         oneOf [
           str
           attrs
@@ -88,7 +86,7 @@
         "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡙⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          "
         "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣦⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          "
       ];
-      example = [ "yourpicture" ];
+      example = ["yourpicture"];
       type = with lib.types; listOf str;
       description = ''
         The Ascii picture for alpha.nvim.
@@ -109,7 +107,7 @@
       example = "yourUserName";
       type = lib.types.str;
       description = ''
-      Username for instant.nvim
+        Username for instant.nvim
       '';
     };
 
@@ -178,6 +176,9 @@
           tailwindcss.enable = true;
           nixd = {
             enable = true;
+            settings.formatting.command = [
+              "alejandra"
+            ];
           };
           #nil-ls = {
           #  enable = true;
@@ -240,7 +241,7 @@
             };
           };
         };
-        example = { };
+        example = {};
         type = with lib.types; attrsOf anything;
         description = ''
           LspServers to enable.
@@ -249,7 +250,7 @@
     };
 
     additionalConfig = lib.mkOption {
-      default = { };
+      default = {};
       type = with lib.types; attrsOf anything;
       description = ''
         NixVim configuration to be added to DashVim.

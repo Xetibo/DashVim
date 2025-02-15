@@ -1,5 +1,8 @@
-{ pkgs, config', ... }:
 {
+  pkgs,
+  config',
+  ...
+}: {
   extraPlugins = with pkgs.vimPlugins; [
     overseer-nvim
   ];
@@ -27,7 +30,7 @@
       enable = true;
       mockDevIcons = true;
       modules = {
-        icons = { };
+        icons = {};
       };
     };
     clipboard-image = {

@@ -1,12 +1,10 @@
 {
-  config' ? { },
+  config' ? {},
   system,
   inputs,
   pkgs,
   ...
-}:
-let
-
+}: let
   nixvimLib = inputs.nixvim.lib.${system};
   nixvim' = inputs.nixvim.legacyPackages.${system};
   nixvimModule = {
@@ -16,9 +14,7 @@ let
       inherit inputs config';
     };
   };
-
-in
-{
+in {
   build_dashvim = nixvim'.makeNixvimWithModule nixvimModule;
   test_dashvim = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
 }

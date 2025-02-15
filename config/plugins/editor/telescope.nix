@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   extraPlugins = with pkgs.vimPlugins; [
     yazi-nvim
     telescope-zoxide

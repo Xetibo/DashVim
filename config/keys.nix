@@ -1,4 +1,8 @@
-{ config', lib, ... }:
+{
+  config',
+  lib,
+  ...
+}:
 lib.mkIf config'.useDefaultKeybinds {
   # which key topics
   plugins.lsp = {
@@ -836,7 +840,7 @@ lib.mkIf config'.useDefaultKeybinds {
     function codeAction()
       --if vim.bo.filetype == "rust" then
       --  vim.cmd.RustLsp('codeAction')
-      --else 
+      --else
         vim.lsp.buf.code_action({
           context = {
             only = {
@@ -849,7 +853,7 @@ lib.mkIf config'.useDefaultKeybinds {
             },
           },
         })
-      --end 
+      --end
     end
     function codeRefactor()
       vim.lsp.buf.code_action({

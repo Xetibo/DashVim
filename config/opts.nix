@@ -2,8 +2,7 @@
   lib,
   config',
   ...
-}:
-{
+}: {
   globals = {
     fileencoding = "utf-8";
     number = true;
@@ -49,16 +48,16 @@
 
   clipboard.register = "unnamedplus";
   autoGroups = {
-    custom_theme = { };
-    highlight_yank = { };
-    resize = { };
-    neotree = { };
-    filetypes = { };
+    custom_theme = {};
+    highlight_yank = {};
+    resize = {};
+    neotree = {};
+    filetypes = {};
   };
   autoCmd = [
     {
       desc = "Haskell mappings";
-      event = [ "FileType" ];
+      event = ["FileType"];
       group = "filetypes";
       pattern = "haskell";
       callback = {
@@ -74,7 +73,7 @@
     }
     {
       desc = "Neotree directory";
-      event = [ "BufEnter" ];
+      event = ["BufEnter"];
       group = "neotree";
       pattern = "*";
       callback = {
@@ -93,7 +92,7 @@
     }
     {
       desc = "yank highlight";
-      event = [ "TextYankPost" ];
+      event = ["TextYankPost"];
       group = "highlight_yank";
       pattern = "*";
       callback = {
@@ -105,7 +104,7 @@
     }
     {
       desc = "Resize splits";
-      event = [ "VimResized" ];
+      event = ["VimResized"];
       group = "resize";
       pattern = "*";
       callback = {
@@ -119,7 +118,7 @@
     }
     {
       desc = "Disable lsp-lines by default";
-      event = [ "BufEnter" ];
+      event = ["BufEnter"];
       group = "filetypes";
       pattern = "*";
       callback = {
@@ -131,7 +130,7 @@
     }
     {
       desc = "Add typst as filetype";
-      event = [ "BufEnter" ];
+      event = ["BufEnter"];
       group = "filetypes";
       pattern = "*";
       callback = {
@@ -179,11 +178,12 @@
     # })
     {
       desc = "Init lua";
-      event = [ "BufEnter" ];
+      event = ["BufEnter"];
       group = "filetypes";
       pattern = "*.lua";
       callback = {
-        __raw = # lua
+        __raw =
+          # lua
           ''
             function()
               vim.opt_local.expandtab = true
@@ -195,7 +195,7 @@
     }
     {
       desc = "Init Overseer";
-      event = [ "BufEnter" ];
+      event = ["BufEnter"];
       group = "filetypes";
       pattern = "*";
       callback = {
@@ -207,7 +207,7 @@
     }
     {
       desc = "Init Nvim-colorizer";
-      event = [ "BufEnter" ];
+      event = ["BufEnter"];
       group = "filetypes";
       pattern = "*";
       callback = {
