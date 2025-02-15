@@ -2,7 +2,7 @@
   description = "A nixvim configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixvim.url = "github:nix-community/nixvim";
+    nvf.url = "github:notashelf/nvf";
     flake-parts.url = "github:hercules-ci/flake-parts";
     base16.url = "github:SenchoPens/base16.nix";
   };
@@ -59,12 +59,13 @@
               nuget
             ];
           };
-          checks = {
-            default = package.test_dashvim;
-          };
+          # TODO should this exist?
+          #checks = {
+          #  default = package.test_dashvim;
+          #};
           packages = {
-            default = package.build_dashvim;
-            minimal = custom.build_dashvim;
+            default = package.neovim;
+            minimal = custom.neovim;
             docs = import ./docs {
               inherit inputs pkgs lib;
             };

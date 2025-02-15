@@ -1,9 +1,12 @@
 {config', ...}: {
   imports = [
-    ./opts.nix
-    ./keys.nix
-    ./plugins
+    ./base.nix
+    ./blink.nix
+    ./fzf.nix
+    ./lsp.nix
     ./theme.nix
-    config'.additionalConfig
+    ./treesitter.nix
+    ./filetree.nix
+    ##config'.additionalConfig
   ];
 }
