@@ -4,12 +4,24 @@
   ...
 }: let
   fsharp = dashLib.mkLsp {
-    name = "fsautocomplete";
-    package = pkgs.fsautocomplete;
-    ft = "fsharp";
+    lspName = "fsautocomplete";
+    lspPackage = pkgs.fsautocomplete;
+    lspFt = "fsharp";
     formatterPkg = pkgs.fantomas;
     formatterCommand = "fantomas";
     formatterPreferLsp = "fallback";
+    adapterName = "corecrl";
+    adapterCommand = "${pkgs.netcoredbg}/bin/netcoredbg";
+    adapterArgs = ["--interpreter=vscode"];
+    pickerFn =
+      /*
+      lua
+      */
+      ''
+        function()
+            return vim.fn.input('Path to dll', vim.fn.getcwd() .. '/bin/Debug/', 'file')
+        end
+      '';
   };
 in {
   vim.lazy.plugins = with pkgs.vimPlugins; {

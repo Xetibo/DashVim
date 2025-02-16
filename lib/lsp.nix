@@ -1,13 +1,19 @@
 {lib, ...}: {
   mkLsp = {
-    name,
-    package,
-    ft,
+    lspName,
+    lspPackage,
+    lspFt,
+    lspArgs ? [],
     formatterPkg ? null,
     formatterCommand ? null,
     formatterPreferLsp ? null,
+    adapterName ? null,
+    adapterCommand ? null,
+    adapterArgs ? null,
+    pickerFn ? null,
   }
   : let
+    splitArgs = args: "{" + (lib.lists.foldr (a: b: "\"" + a + "\"" + ", " + "\"" + b + "\"") "" args) + "},";
     lspLua =
       #-- TODO make this use an arg
       /*
@@ -17,13 +23,13 @@
           local capabilities = vim.lsp.protocol.make_client_capabilities()
           capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-          lspconfig.${name}.setup {
+          lspconfig.${lspName}.setup {
             capabilities = capabilities;
             on_attach = default_on_attach;
             cmd = ${
-          if lib.isList package
-          then lib.expToLua package
-          else ''{"${package}/bin/${name}", ""}''
+          if lib.isList lspPackage
+          then lib.expToLua lspPackage
+          else splitArgs (["${lspPackage}/bin/${lspName}"] ++ lspArgs)
         }
         }
       '';
@@ -48,7 +54,7 @@
                 }
               ''
           }
-            require("conform").formatters_by_ft.${ft} = {
+            require("conform").formatters_by_ft.${lspFt} = {
               "${formatterCommand}",
               ${
             if builtins.isNull formatterPreferLsp
@@ -57,6 +63,43 @@
           }
           }
         '';
+    dapLua =
+      if builtins.isNull adapterName || builtins.isNull pickerFn
+      then ''''
+      else
+        /*
+        lua
+        */
+        ''
+          local dap = require('dap')
+          ${
+            if builtins.isNull adapterCommand
+            then ''''
+            else
+              /*
+              lua
+              */
+              ''
+                dap.adapters.${adapterName} = {
+                    type = "executable",
+                    command = "${adapterCommand}",
+                    args = ${
+                  if builtins.isNull adapterArgs
+                  then ""
+                  else (splitArgs adapterArgs)
+                }
+                }
+              ''
+          }
+          dap.configurations.${lspFt} = {
+                 {
+                   type = "${adapterName}",
+                   name = "Debug ${lspFt}",
+                   request = "launch",
+                   program = ${pickerFn},
+                 },
+          }
+        '';
   in
-    lspLua + formatterLua;
+    lspLua + formatterLua + dapLua;
 }
