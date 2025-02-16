@@ -51,7 +51,7 @@
       '';
     };
 
-    alphaPicture = lib.mkOption {
+    dashboardAscii = lib.mkOption {
       default = [
         " _______       ___           _______. __    __   __   _______ "
         "|       \\     /   \\         /       ||  |  |  | |  | |   ____|"
@@ -85,11 +85,13 @@
         "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠫⡆⣇⠇⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          "
         "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡙⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          "
         "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣦⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          "
+        "                                                              "
+        "                                                              "
       ];
       example = ["yourpicture"];
       type = with lib.types; listOf str;
       description = ''
-        The Ascii picture for alpha.nvim.
+        The Ascii picture for dashboard.nvim.
       '';
     };
 

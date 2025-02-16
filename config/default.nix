@@ -1,5 +1,4 @@
-{ config', ... }:
-{
+{config', ...}: {
   imports = [
     ./base.nix
     ./blink.nix
@@ -12,6 +11,7 @@
     ./mini.nix
     ./dap.nix
     ./custom.nix
+    ./keybinds.nix
     ##config'.additionalConfig
   ];
 }

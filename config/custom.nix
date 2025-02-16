@@ -1,28 +1,36 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   vim.lazy.plugins = with pkgs.vimPlugins; {
     neogit = {
       package = neogit;
 
       setupModule = "neogit";
-      setupOpts = { };
+      setupOpts = {};
 
       after = "print('test')";
     };
     "toggleterm.nvim" = {
       package = toggleterm-nvim;
       setupModule = "toggleterm";
-      setupOpts = { };
+      setupOpts = {};
     };
     "flash.nvim" = {
       package = flash-nvim;
       setupModule = "flash";
-      setupOpts = { };
+      setupOpts = {};
     };
     "indent-blankline.nvim" = {
       package = indent-blankline-nvim;
       setupModule = "ibl";
-      setupOpts = { };
+      setupOpts = {
+        exclude = {
+          filetypes = ["dashboard"];
+        };
+      };
+    };
+    "yazi.nvim" = {
+      package = yazi-nvim;
+      setupModule = "yazi";
+      setupOpts = {};
     };
   };
 }

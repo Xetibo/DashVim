@@ -1,5 +1,5 @@
 {...}: {
-  vim.fzf-lua = {
+  vim.telescope = {
     enable = true;
   };
 }
