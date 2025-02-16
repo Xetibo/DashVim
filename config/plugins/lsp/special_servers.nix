@@ -51,9 +51,11 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
   # enable the plugins above
   plugins = {
     typescript-tools = {
+      lazyLoad.settings.ft = "typescript";
       enable = true;
     };
     rustaceanvim = {
+      lazyLoad.settings.ft = "rust";
       # codeactions aren't nicely decorated :(
       enable = false;
       settings = {
@@ -66,6 +68,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
       };
     };
     crates = {
+      lazyLoad.settings.ft = "toml";
       enable = true;
     };
     nvim-jdtls = {
@@ -73,6 +76,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
       cmd = [(lib.getExe pkgs.jdt-language-server)];
     };
     clangd-extensions = {
+      lazyLoad.settings.event = "BufEnter";
       enable = true;
     };
     nix = {

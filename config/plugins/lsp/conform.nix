@@ -9,6 +9,7 @@
   ];
   plugins.conform-nvim = {
     enable = true;
+    lazyLoad.settings.event = "BufEnter";
     settings = {
       notify_on_error = true;
       formatters_by_ft = {

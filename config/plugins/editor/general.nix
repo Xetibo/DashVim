@@ -7,6 +7,9 @@
     overseer-nvim
   ];
   plugins = {
+    lz-n = {
+      enable = true;
+    };
     # this needs to be here in order to not cause errors with other plugins
     markview = {
       enable = true;

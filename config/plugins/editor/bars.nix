@@ -1,5 +1,6 @@
 {
   plugins.barbar = {
+    lazyLoad.settings.event = "BufEnter";
     enable = true;
     settings = {
       auto_hide = 1;
@@ -7,9 +8,16 @@
     };
   };
   plugins.lualine = {
+    lazyLoad.settings.event = "BufEnter";
     enable = true;
     settings = {
-      globalstatus = true;
+      options = {
+        globalstatus = true;
+        disabled_filetypes = {
+          statusline = ["alpha"];
+          winbar = ["alpha"];
+        };
+      };
       sections = {
         lualine_a = ["mode"];
         lualine_b = [
@@ -49,10 +57,6 @@
       inactiveSections = {
         lualine_c = ["filename"];
         lualine_x = ["location"];
-      };
-      disabledFiletypes = {
-        statusline = ["alpha"];
-        winbar = ["alpha"];
       };
     };
   };

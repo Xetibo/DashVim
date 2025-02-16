@@ -2,6 +2,7 @@
   plugins = {
     nix.enable = true;
     neotest = {
+      lazyLoad.settings.event = "BufEnter";
       enable = true;
       adapters = {
         dotnet = {
@@ -33,12 +34,15 @@
       };
     };
     lsp-format = {
+      lazyLoad.settings.event = "BufEnter";
       enable = true;
     };
     lsp-status = {
+      # lazy load issues due to lualine
       enable = true;
     };
     lsp = {
+      lazyLoad.settings.event = "BufEnter";
       enable = true;
       # these can be turned on via toggle
       inlayHints = false;

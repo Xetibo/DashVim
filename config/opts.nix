@@ -1,8 +1,6 @@
 {
-  lib,
-  config',
-  ...
-}: {
+  luaLoader.enable = true;
+
   globals = {
     fileencoding = "utf-8";
     number = true;

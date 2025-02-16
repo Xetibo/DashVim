@@ -8,6 +8,8 @@ in {
   plugins.blink-cmp = {
     package = blinkPkg;
     enable = true;
+    # broken right now
+    #lazyLoad.settings.event = "VimEnter";
     settings = {
       enabled = lib.mkForce (
         lib.nixvim.mkRaw ''
