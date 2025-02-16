@@ -1,5 +1,9 @@
 {config', ...}: {
   vim = {
+    options = {
+      shell = "fish";
+    };
+
     enableLuaLoader = true;
 
     binds.whichKey = {
@@ -82,13 +86,16 @@
       git-conflict = {
         enable = true;
       };
-
       # TODO neogit
     };
 
+    ui.noice = {
+      enable = true;
+    };
+
     visuals.rainbow-delimiters.enable = true;
-    additionalRuntimePaths = [
-      ./lua
+    extraLuaFiles = [
+      ./lua/yankAndPaste.lua
     ];
   };
 }

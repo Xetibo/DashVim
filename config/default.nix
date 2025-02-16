@@ -12,6 +12,6 @@
     ./dap.nix
     ./custom.nix
     ./keybinds.nix
-    ##config'.additionalConfig
+    config'.additionalConfig
   ];
 }

@@ -330,7 +330,7 @@
         "v"
       ];
       key = "<leader>cq";
-      action = "<CMD>lua codeAction()<CR>";
+      action = "<CMD>lua CodeAction()<CR>";
       noremap = true;
       silent = true;
       desc = "Code Action";
@@ -341,7 +341,7 @@
         "v"
       ];
       key = "<leader>cQ";
-      action = "<CMD>lua codeRefactor()<CR>";
+      action = "<CMD>lua CodeRefactor()<CR>";
       noremap = true;
       silent = true;
       desc = "Code Refactor";
@@ -424,7 +424,7 @@
         "v"
       ];
       key = "<F4>";
-      action = ''<CMD>lua require("conform").format({async = true, lsp_format = "prefer"})<CR>'';
+      action = ''<CMD>lua require("conform").format({async = true})<CR>'';
       desc = "Format";
       silent = true;
     }
@@ -491,7 +491,7 @@
     {
       mode = "n";
       key = "<leader>dc";
-      action = "<CMD>lua debugAction()<CR>";
+      action = "<CMD>lua DebugAction()<CR>";
       desc = "Continue";
     }
     {

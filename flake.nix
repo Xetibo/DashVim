@@ -27,6 +27,7 @@
           lib,
           ...
         }: let
+          dashLib = import ./lib/lsp.nix {inherit lib;};
           customConfig =
             orig.config.programs.dashvim
             // {
@@ -37,13 +38,13 @@
             };
           package = (
             import ./lib {
-              inherit system inputs pkgs;
+              inherit system inputs pkgs dashLib;
               config' = orig.config.programs.dashvim;
             }
           );
           custom = (
             import ./lib {
-              inherit system inputs pkgs;
+              inherit system inputs pkgs dashLib;
               config' = customConfig;
             }
           );
@@ -67,7 +68,7 @@
             default = package.neovim;
             minimal = custom.neovim;
             docs = import ./docs {
-              inherit inputs pkgs lib;
+              inherit inputs pkgs lib dashLib;
             };
           };
         };

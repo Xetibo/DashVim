@@ -1,4 +1,29 @@
-{...}: {
+{
+  dashLib,
+  pkgs,
+  ...
+}: let
+  fsharp = dashLib.mkLsp {
+    name = "fsautocomplete";
+    package = pkgs.fsautocomplete;
+    ft = "fsharp";
+    formatterPkg = pkgs.fantomas;
+    formatterCommand = "fantomas";
+    formatterPreferLsp = "fallback";
+  };
+in {
+  vim.lazy.plugins = with pkgs.vimPlugins; {
+    "conform.nvim" = {
+      package = conform-nvim;
+
+      setupModule = "conform";
+      setupOpts = {};
+    };
+  };
+  vim.luaConfigRC.fsharp = fsharp;
+  vim.lsp = {
+    trouble.enable = true;
+  };
   vim.languages = {
     enableLSP = true;
     enableTreesitter = true;
