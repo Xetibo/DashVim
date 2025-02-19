@@ -3,6 +3,7 @@
   system,
   inputs,
   pkgs,
+  dashLib,
   ...
 }: let
   nixvimLib = inputs.nixvim.lib.${system};
@@ -11,7 +12,7 @@
     inherit pkgs;
     module = import ../config;
     extraSpecialArgs = {
-      inherit inputs config';
+      inherit inputs config' dashLib;
     };
   };
 in {

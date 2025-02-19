@@ -93,6 +93,14 @@ lib.mkIf config'.useDefaultKeybinds {
         __unkeyed-1 = "<leader>l";
         desc = "+misc";
       }
+      {
+        __unkeyed-1 = "<leader>m";
+        desc = "+MultiCursor";
+      }
+      {
+        __unkeyed-1 = "<leader>s";
+        desc = "+Swap";
+      }
     ];
   };
   # "g" = "+goto";
@@ -536,6 +544,121 @@ lib.mkIf config'.useDefaultKeybinds {
         noremap = true;
         silent = true;
         desc = "Code Refactor";
+      };
+    }
+
+    # Pattern.nvim
+    {
+      mode = [
+        "n"
+        "v"
+      ];
+      key = "<leader>p";
+      action = "<CMD>Pattern()<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Regex inspector";
+      };
+    }
+
+    # Multicursor.nvim
+    {
+      mode = [
+        "n"
+        "v"
+        "x"
+      ];
+      key = "<leader>mc";
+      action =
+        /*
+        lua
+        */
+        ''
+          <CMD> lua
+          local mc = require('multicursor-nvim')
+          function()
+              if not mc.cursorsEnabled() then
+                  mc.enableCursors()
+              elseif mc.hasCursors() then
+                  mc.clearCursors()
+          end
+          <CR>
+        '';
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Clear all cursors";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+        "x"
+      ];
+      key = "<leader>mn";
+      action = "<CMD> lua require('multicursor-nvim').matchSkipCursor(1)<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Multicursor Skip 1";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+        "x"
+      ];
+      key = "<leader>mb";
+      action = "<CMD> lua require('multicursor-nvim').restoreCursors<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Restore cursors";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+        "x"
+      ];
+      key = "<leader>mn";
+      action = "<CMD> lua require('multicursor-nvim').matchAddCursor(1)<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Multicursor Add 1";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+        "x"
+      ];
+      key = "<leader>mo";
+      action = "<CMD> lua require('multicursor-nvim').matchSkipCursor(-1)<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Multicursor Skip -1";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "v"
+        "x"
+      ];
+      key = "<leader>mp";
+      action = "<CMD> lua require('multicursor-nvim').matchAddCursor(-1)<CR>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Multicursor Add -1";
       };
     }
 

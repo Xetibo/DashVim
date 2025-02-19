@@ -3,13 +3,14 @@ self: {
   config,
   pkgs,
   options,
+  dashLib,
   ...
 }: let
   cfg = config.programs.dashvim;
   system = pkgs.stdenv.hostPlatform.system;
   dashvim = (
     import ../lib {
-      inherit system pkgs;
+      inherit system pkgs dashLib;
       inputs = self.inputs;
       config' = cfg;
     }

@@ -2,10 +2,47 @@
   pkgs,
   config',
   ...
-}: {
+}: let
+  treesitter-patterns = pkgs.tree-sitter.buildGrammar {
+    language = "lua_patterns";
+    version = "0.0.1";
+    src = pkgs.fetchFromGitHub {
+      owner = "OXY2DEV";
+      repo = "tree-sitter-lua_patterns";
+      rev = "30540892ddbb97b09837db78a97556ce563c90a9";
+      hash = "sha256-5665/Phv5csnOkQlxUiqvqaVGA3ngIOY6dechqh49Cs=";
+    };
+    meta.homepage = "https://github.com/OXY2DEV/tree-sitter-lua_patterns";
+  };
+in {
   extraPlugins = with pkgs.vimPlugins; [
     overseer-nvim
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "patterns.nvim";
+      src = pkgs.fetchFromGitHub {
+        owner = "OXY2DEV";
+        repo = "patterns.nvim";
+        rev = "0315318de9295fbf10b660a1f3cd1cc23e655744";
+        hash = "sha256-jx6HHDhoH+M8QTJFPbS5jo4QZa8nyND5qdT9h6mTT0g=";
+      };
+    })
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "multicursor.nvim";
+      src = pkgs.fetchFromGitHub {
+        owner = "jake-stewart";
+        repo = "multicursor.nvim";
+        rev = "86537c3771f1989592568c9d92da2e201297867a";
+        hash = "sha256-/UV+oHQ2Lr4zNiqgJM44o1RhkftrfSzf3U58loszEz8=";
+      };
+    })
   ];
+  extraConfigLua =
+    /*
+    lua
+    */
+    ''
+      require("multicursor-nvim").setup()
+    '';
   plugins = {
     lz-n = {
       enable = true;
@@ -148,7 +185,25 @@
         };
       };
       nixvimInjections = true;
-      grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars;
+      grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars ++ [treesitter-patterns];
+    };
+    treesitter-textobjects = {
+      enable = true;
+      swap = {
+        enable = true;
+        swapPrevious = {
+          "<leader>sp" = {
+            query = "@parameter.inner";
+            desc = "Swap previous parameter";
+          };
+        };
+        swapNext = {
+          "<leader>sn" = {
+            query = "@parameter.inner";
+            desc = "Swap next parameter";
+          };
+        };
+      };
     };
     diffview = {
       enable = true;
@@ -165,6 +220,9 @@
     instant = {
       enable = true;
       settings.username = config'.instantUsername;
+    };
+    csvview = {
+      enable = true;
     };
   };
 }
