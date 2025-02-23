@@ -47,7 +47,9 @@ in {
           "scroll_documentation_down"
           "fallback"
         ];
-        cmdline = {
+      };
+      cmdline = {
+        keymap = {
           "<Tab>" = [
             "select_next"
           ];
