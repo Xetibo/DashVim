@@ -1,9 +1,10 @@
 {
-  lib,
-  pkgs,
+  inputs,
+  system,
   ...
 }: let
-  blinkPkg = pkgs.vimPlugins.blink-cmp;
+  # TODO revert to nixpkgs when fixed
+  blinkPkg = inputs.blink.packages.${system}.default;
 in {
   plugins.blink-cmp = {
     package = blinkPkg;
@@ -11,13 +12,12 @@ in {
     # broken right now
     #lazyLoad.settings.event = "VimEnter";
     settings = {
-      enabled = lib.mkForce (
-        lib.nixvim.mkRaw ''
-          function(ctx)
-            return vim.bo.buftype == "" and not vim.tbl_contains({ '/', '?' }, vim.fn.getcmdtype())
-          end
-        ''
-      );
+      fuzzy = {
+        implementation = "prefer_rust";
+        prebuilt_binaries = {
+          download = false;
+        };
+      };
       keymap = {
         "<C-space>" = [
           "show"
@@ -50,13 +50,13 @@ in {
       };
       cmdline = {
         keymap = {
-          "<Tab>" = [
-            "select_next"
-          ];
           "<S-Tab>" = [
             "select_prev"
           ];
           "<Enter>" = [
+            "fallback"
+          ];
+          "<C-Enter>" = [
             "accept"
             "fallback"
           ];

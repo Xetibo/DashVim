@@ -5,6 +5,7 @@
     nixvim.url = "github:nix-community/nixvim";
     flake-parts.url = "github:hercules-ci/flake-parts";
     base16.url = "github:SenchoPens/base16.nix";
+    blink.url = "github:Saghen/blink.cmp";
   };
 
   outputs = {flake-parts, ...} @ inputs:

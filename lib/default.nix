@@ -12,7 +12,7 @@
     inherit pkgs;
     module = import ../config;
     extraSpecialArgs = {
-      inherit inputs config' dashLib;
+      inherit inputs system config' dashLib;
     };
   };
 in {

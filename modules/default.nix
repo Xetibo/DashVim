@@ -218,7 +218,7 @@
                 InterfaceStubGeneration = true;
                 InterfaceStubGenerationMethodBody = '''';
                 InterfaceStubGenerationObjectIdentifier = "this";
-                Linter = true;
+                Linter = false;
                 RecordStubGeneration = true;
                 RecordStubGenerationBody = '''';
                 ResolveNamespaces = true;
