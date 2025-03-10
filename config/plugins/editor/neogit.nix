@@ -3,6 +3,10 @@
     enable = true;
     settings = {
       use_default_keymaps = false;
+      integrations = {
+        diffview = true;
+        telescope = true;
+      };
       mappings = {
         commit_editor = {
           "q" = "Close";
