@@ -222,7 +222,8 @@
                 RecordStubGeneration = true;
                 RecordStubGenerationBody = '''';
                 ResolveNamespaces = true;
-                SimplifyNameAnalyzer = true;
+                SimplifyNameAnalyzer = false;
+                UnnecessaryParenthesesAnalyzer = false;
                 UnionCaseStubGeneration = true;
                 UnionCaseStubGenerationBody = '''';
                 UnusedDeclarationsAnalyzer = true;
