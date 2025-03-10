@@ -35,6 +35,24 @@ in {
         hash = "sha256-/UV+oHQ2Lr4zNiqgJM44o1RhkftrfSzf3U58loszEz8=";
       };
     })
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "endec.nvim";
+      src = pkgs.fetchFromGitHub {
+        owner = "ovk";
+        repo = "endec.nvim";
+        rev = "949ece728ecc0cacf3c6c81bbcda186fe3fef5cf";
+        hash = "sha256-Tai94rM9EnL0TRAdgiuT3Hx1NVMQJf53N7xwwRC+uKk=";
+      };
+    })
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "clasp.nvim";
+      src = pkgs.fetchFromGitHub {
+        owner = "xzbdmw";
+        repo = "clasp.nvim";
+        rev = "e4361348b76684154ec88c8e0fbf5aa8dbd3e048";
+        hash = "sha256-11atWGsDWAQF48rFozf26X3tU+sRNAWTz5b3QXpvsIM=";
+      };
+    })
   ];
   extraConfigLua =
     /*
@@ -84,6 +102,9 @@ in {
       enable = true;
     };
     flash = {
+      enable = true;
+    };
+    helpview = {
       enable = true;
     };
     noice = {

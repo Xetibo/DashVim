@@ -5,6 +5,8 @@
     | |/ / (_| \__ \ | | \ \_/ / | | | | | |
     |___/ \__,_|___/_| |_|\___/|_|_| |_| |_|
 
+
+![Logo of dashvim](./dashvim.png)
 # Installation
 
 Can either be done as a NixOS or home-manager module.
