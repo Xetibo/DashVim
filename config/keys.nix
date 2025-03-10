@@ -366,6 +366,14 @@ lib.mkIf config'.useDefaultKeybinds {
     }
     {
       mode = "n";
+      key = "<leader>gd";
+      action = "<CMD>Neogit diff<CR>";
+      options = {
+        desc = "Neogit diff";
+      };
+    }
+    {
+      mode = "n";
       key = "<leader>gg";
       action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
       options = {

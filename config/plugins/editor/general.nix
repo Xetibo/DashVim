@@ -107,6 +107,9 @@ in {
     helpview = {
       enable = true;
     };
+    image = {
+      enable = true;
+    };
     noice = {
       enable = true;
       settings = {
