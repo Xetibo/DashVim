@@ -1,6 +1,7 @@
 {
   inputs,
   system,
+  lib,
   ...
 }: let
   # TODO revert to nixpkgs when fixed
