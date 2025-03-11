@@ -58,14 +58,6 @@ lib.mkIf config'.useDefaultKeybinds {
     enable = true;
     settings.spec = [
       {
-        __unkeyed-1 = "]";
-        desc = "+next";
-      }
-      {
-        __unkeyed-1 = "[";
-        desc = "+prev";
-      }
-      {
         __unkeyed-1 = "<leader><b>";
         desc = "+buffers";
       }
@@ -158,12 +150,54 @@ lib.mkIf config'.useDefaultKeybinds {
     # trouble
     {
       mode = "n";
-      key = "<leader>t";
+      key = "<leader>ct";
       action = "<cmd>Trouble diagnostics toggle filter.buf=0<cr>";
       options = {
         noremap = true;
         silent = true;
         desc = "Trouble";
+      };
+    }
+
+    # Neotest
+    {
+      mode = "n";
+      key = "<leader>tn";
+      action = "<cmd>lua require('neotest').run.run()<cr>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Run nearest test";
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>tf";
+      action = "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Run this file";
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>tN";
+      action = "<cmd>lua require('neotest').run.run({strategy = 'dap')<cr>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Debug nearest test";
+      };
+    }
+    {
+      mode = "n";
+      key = "<leader>ts";
+      action = "<cmd>lua require('neotest').run.stop()<cr>";
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "Stop neotest";
       };
     }
 
@@ -374,14 +408,6 @@ lib.mkIf config'.useDefaultKeybinds {
     }
     {
       mode = "n";
-      key = "<leader>gg";
-      action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
-      options = {
-        desc = "Gitui";
-      };
-    }
-    {
-      mode = "n";
       key = "<leader>fb";
       action = ''<CMD>lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
       options = {
@@ -441,15 +467,69 @@ lib.mkIf config'.useDefaultKeybinds {
       key = "<leader>z";
       action = ''<CMD>lua require("telescope").extensions.zoxide.list({})<CR>'';
       options = {
-        desc = "Zoxide";
+        desc = " Zoxide";
       };
     }
     {
       mode = "n";
+      key = "<leader>y";
+      action = ''<CMD>lua require('yazi').yazi()<CR>'';
+      options = {
+        desc = " Yazi";
+      };
+    }
+    {
+      mode = "";
       key = "<leader>/";
       action = ''<CMD>lua require("telescope.builtin").current_buffer_fuzzy_find({})<CR>'';
       options = {
         desc = "search buffer";
+      };
+    }
+
+    # clasp
+    {
+      mode = [
+        "n"
+        "i"
+      ];
+      key = "<C-n>";
+      action =
+        /*
+        lua
+        */
+        ''
+          <CMD>lua
+            local clasp = require('clasp')
+            clasp.setup()
+            clasp.wrap('next')
+          <CR>'';
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "wraps next token";
+      };
+    }
+    {
+      mode = [
+        "n"
+        "i"
+      ];
+      key = "<C-m>";
+      action =
+        /*
+        lua
+        */
+        ''
+          <CMD>lua
+            local clasp = require('clasp')
+            clasp.setup()
+            clasp.wrap('prev')
+          <CR>'';
+      options = {
+        noremap = true;
+        silent = true;
+        desc = "wraps previous token";
       };
     }
 
@@ -707,7 +787,7 @@ lib.mkIf config'.useDefaultKeybinds {
       options = {
         noremap = true;
         silent = true;
-        desc = "Angular template?";
+        desc = "Angular template";
       };
     }
 

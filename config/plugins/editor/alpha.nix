@@ -45,15 +45,10 @@
           };
         in [
           (mkButton "f" "require('telescope.builtin').find_files({hidden = true})" " Find File" "Keyword")
+          (mkButton "c" "require('telescope.builtin').oldfiles({hidden = true})" " Previous Files" "Keyword")
           (mkButton "y" "require('yazi').yazi()" " Yazi" "Keyword")
           (mkButton "p" "require('telescope').extensions.project.project{}" "󰺄 Projects" "Keyword")
           (mkButton "t" "require('telescope').extensions.zoxide.list{}" " Zoxide" "Keyword")
-          (
-            mkButton "c"
-            "vim.cmd('Neotree dir=~/gits/dotFiles/nix')  vim.cmd('e  ~/gits/dotFiles/nix/flake.nix')"
-            " Configuration"
-            "Keyword"
-          )
           (mkButton "q" "vim.cmd('qa')" "⏻ Quit Neovim" "Keyword")
         ];
       }

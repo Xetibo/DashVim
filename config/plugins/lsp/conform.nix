@@ -14,50 +14,36 @@
       notify_on_error = true;
       formatters_by_ft = {
         html = [
-          [
-            "prettierd"
-            "prettier"
-          ]
+          "prettierd"
+          "prettier"
         ];
         css = [
-          [
-            "prettierd"
-            "prettier"
-          ]
+          "prettierd"
+          "prettier"
         ];
         javascript = [
-          [
-            "prettierd"
-            "prettier"
-          ]
+          "prettierd"
+          "prettier"
         ];
         javascriptreact = [
-          [
-            "prettierd"
-            "prettier"
-          ]
+          "prettierd"
+          "prettier"
         ];
         typescript = [
-          [
-            "prettierd"
-            "prettier"
-          ]
+          "prettierd"
+          "prettier"
         ];
         typescriptreact = [
-          [
-            "prettierd"
-            "prettier"
-          ]
+          "prettierd"
+          "prettier"
         ];
         fsharp = ["fantomas"];
         python = ["black"];
         lua = ["stylua"];
         nix = ["alejandra"];
         markdown = [
-          [
-            "prettierd"
-            "prettier"
-          ]
+          "prettierd"
+          "prettier"
         ];
         yaml = [
           "yamllint"
