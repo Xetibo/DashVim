@@ -15,6 +15,7 @@
     meta.homepage = "https://github.com/OXY2DEV/tree-sitter-lua_patterns";
   };
 in {
+  package = pkgs.neovim-unwrapped;
   extraPlugins = with pkgs.vimPlugins; [
     overseer-nvim
     (pkgs.vimUtils.buildVimPlugin {
