@@ -488,50 +488,51 @@ lib.mkIf config'.useDefaultKeybinds {
     }
 
     # clasp
-    {
-      mode = [
-        "n"
-        "i"
-      ];
-      key = "<C-n>";
-      action =
-        /*
-        lua
-        */
-        ''
-          <CMD>lua
-            local clasp = require('clasp')
-            clasp.setup()
-            clasp.wrap('next')
-          <CR>'';
-      options = {
-        noremap = true;
-        silent = true;
-        desc = "wraps next token";
-      };
-    }
-    {
-      mode = [
-        "n"
-        "i"
-      ];
-      key = "<C-m>";
-      action =
-        /*
-        lua
-        */
-        ''
-          <CMD>lua
-            local clasp = require('clasp')
-            clasp.setup()
-            clasp.wrap('prev')
-          <CR>'';
-      options = {
-        noremap = true;
-        silent = true;
-        desc = "wraps previous token";
-      };
-    }
+    # TODO enable when no longer broken
+    #{
+    #  mode = [
+    #    "n"
+    #    "i"
+    #  ];
+    #  key = "<C-n>";
+    #  action =
+    #    /*
+    #    lua
+    #    */
+    #    ''
+    #      <CMD>lua
+    #        local clasp = require('clasp')
+    #        clasp.setup()
+    #        clasp.wrap('next')
+    #      <CR>'';
+    #  options = {
+    #    noremap = true;
+    #    silent = true;
+    #    desc = "wraps next token";
+    #  };
+    #}
+    #{
+    #  mode = [
+    #    "n"
+    #    "i"
+    #  ];
+    #  key = "<C-m>";
+    #  action =
+    #    /*
+    #    lua
+    #    */
+    #    ''
+    #      <CMD>lua
+    #        local clasp = require('clasp')
+    #        clasp.setup()
+    #        clasp.wrap('prev')
+    #      <CR>'';
+    #  options = {
+    #    noremap = true;
+    #    silent = true;
+    #    desc = "wraps previous token";
+    #  };
+    #}
 
     # window movement
     {

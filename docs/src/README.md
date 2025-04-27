@@ -18,9 +18,9 @@ programs.dashvim = {
 
 ## Try before Installation
 
-`nix run` inside the directory, or `nix run github:DashieTM/DashVim`.
+`nix run` inside the directory, or `nix run github:Xetibo/DashVim`.
 
-Note: If you wish to try DashVim out, you might want test the minimal configuration first. -> `nix run github:DashieTM/DashVim#minimal`.
+Note: If you wish to try DashVim out, you might want test the minimal configuration first. -> `nix run github:Xetibo/DashVim#minimal`.
 
 # Keys
 

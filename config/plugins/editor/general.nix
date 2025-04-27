@@ -15,6 +15,7 @@
     meta.homepage = "https://github.com/OXY2DEV/tree-sitter-lua_patterns";
   };
 in {
+  package = pkgs.neovim-unwrapped;
   extraPlugins = with pkgs.vimPlugins; [
     overseer-nvim
     (pkgs.vimUtils.buildVimPlugin {
@@ -44,15 +45,16 @@ in {
         hash = "sha256-Tai94rM9EnL0TRAdgiuT3Hx1NVMQJf53N7xwwRC+uKk=";
       };
     })
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "clasp.nvim";
-      src = pkgs.fetchFromGitHub {
-        owner = "xzbdmw";
-        repo = "clasp.nvim";
-        rev = "e4361348b76684154ec88c8e0fbf5aa8dbd3e048";
-        hash = "sha256-11atWGsDWAQF48rFozf26X3tU+sRNAWTz5b3QXpvsIM=";
-      };
-    })
+    # TODO enable when no longer broken
+    #(pkgs.vimUtils.buildVimPlugin {
+    #  name = "clasp.nvim";
+    #  src = pkgs.fetchFromGitHub {
+    #    owner = "xzbdmw";
+    #    repo = "clasp.nvim";
+    #    rev = "e4361348b76684154ec88c8e0fbf5aa8dbd3e048";
+    #    hash = "sha256-11atWGsDWAQF48rFozf26X3tU+sRNAWTz5b3QXpvsIM=";
+    #  };
+    #})
   ];
   extraConfigLua =
     /*
