@@ -62,7 +62,7 @@
           position = "center";
         };
         type = "text";
-        val = "https://github.com/DashieTM/DashVim";
+        val = "https://github.com/Xetibo/DashVim";
       }
     ];
   };
