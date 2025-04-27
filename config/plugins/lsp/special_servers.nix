@@ -71,9 +71,9 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
       lazyLoad.settings.ft = "toml";
       enable = true;
     };
-    nvim-jdtls = {
+    jdtls = {
       enable = true;
-      cmd = [(lib.getExe pkgs.jdt-language-server)];
+      settings.cmd = [(lib.getExe pkgs.jdt-language-server)];
     };
     clangd-extensions = {
       lazyLoad.settings.event = "BufEnter";
