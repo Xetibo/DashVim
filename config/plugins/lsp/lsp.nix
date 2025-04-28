@@ -1,4 +1,9 @@
-{config', ...}: {
+{
+  config',
+  pkgs,
+  lib,
+  ...
+}: {
   plugins = {
     nix.enable = true;
     neotest = {
@@ -66,7 +71,15 @@
             return orig_util_open_floating_preview(contents, syntax, opts, ...)
           end
         '';
-      servers = config'.lsp.lspServers;
+      servers =
+        {
+          ltex_plus = {
+            # needed as its missing in nixvim right now
+            # TODO remove when available
+            package = lib.mkForce pkgs.ltex-ls-plus;
+          };
+        }
+        // config'.lsp.lspServers;
     };
   };
   extraConfigLua = ''
