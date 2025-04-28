@@ -143,6 +143,10 @@
             enable = true;
             package = null;
           };
+          ltex_plus = {
+            enable = true;
+            package = null;
+          };
           kotlin_language_server.enable = true;
           java_language_server.enable = true;
           lua_ls.enable = true;
