@@ -50,6 +50,9 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
   ];
   # enable the plugins above
   plugins = {
+    ltex-extra = {
+      enable = true;
+    };
     typescript-tools = {
       lazyLoad.settings.ft = "typescript";
       enable = true;
