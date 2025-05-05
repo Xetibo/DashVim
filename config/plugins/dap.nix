@@ -79,7 +79,31 @@
     };
   };
   extraConfigLua = ''
-    require('dap').configurations.cs = {
+    local dap = require('dap')
+
+    dap.adapters["chrome"] = {
+      type = "server",
+      host = "localhost",
+      port = "$\{port\}",
+      executable = {
+        command = "${pkgs.vscode-js-debug}/bin/js-debug",
+        args = {"$\{port\}"},
+      }
+    }
+
+    dap.configurations.typescript = {
+      {
+        type = "chrome",
+        request = "launch",
+        name = "Launch chrome",
+        url = "http://localhost:4200",
+        webRoot = "$\{workspaceFolder\}",
+        sourceMaps = true,
+      },
+    }
+    dap.configurations.javascript = dap.configurations.typescript
+
+    dap.configurations.cs = {
       {
         type = "coreclr",
         name = "Debug .Net",
@@ -89,7 +113,8 @@
         end,
       },
     }
-    require('dap').configurations.fsharp = {
+
+    dap.configurations.fsharp = {
       {
         type = "coreclr",
         name = "Debug .Net",
@@ -99,8 +124,9 @@
         end,
       },
     }
-    require('dap').listeners.after.event_initialized['dapui_config'] = require('dapui').open
-    require('dap').listeners.before.event_terminated['dapui_config'] = require('dapui').close
-    require('dap').listeners.before.event_exited['dapui_config'] = require('dapui').close
+
+    dap.listeners.after.event_initialized['dapui_config'] = require('dapui').open
+    dap.listeners.before.event_terminated['dapui_config'] = require('dapui').close
+    dap.listeners.before.event_exited['dapui_config'] = require('dapui').close
   '';
 }
