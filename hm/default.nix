@@ -4,21 +4,21 @@ self: {
   pkgs,
   options,
   dashLib,
-  deps,
   ...
 }: let
   cfg = config.programs.dashvim;
   system = pkgs.stdenv.hostPlatform.system;
+  deps = import ../lib/dependencies.nix pkgs;
   dashvim = (
     import ../lib {
-      inherit system pkgs dashLib;
+      inherit system pkgs dashLib deps;
       inputs = self.inputs;
       config' = cfg;
     }
   );
 in {
   imports = [../modules];
-  meta.maintainers = with lib.maintainers; [DashieTM];
+  meta.maintainers = with lib.maintainers; [dashietm];
   options.programs.dashvim = with lib; {
     enable = mkEnableOption "dashvim";
 

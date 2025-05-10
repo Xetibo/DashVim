@@ -100,6 +100,7 @@ Could potentially be outdated.
 | \<leader\>gs | show git status        |
 | \<leader\>gd | Neogit diff            |
 | \<leader\>gn | neogit                 |
+| \<leader\>gh | Github cli             |
 
 ### project telescope
 

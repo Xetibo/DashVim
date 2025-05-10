@@ -29,15 +29,7 @@
           lib,
           ...
         }: let
-          deps = with pkgs; [
-            roslyn-ls
-            yazi
-            ripgrep
-            fd
-            zoxide
-            neovide
-            gh
-          ];
+          deps = import ./lib/dependencies.nix pkgs;
           dashLib = import ./lib/lsp.nix {inherit lib pkgs;};
           customConfig =
             orig.config.programs.dashvim
@@ -77,10 +69,11 @@
             default = package.test_dashvim;
           };
           packages = {
+            dependencies = deps;
             default = package.build_dashvim;
             minimal = custom.build_dashvim;
             docs = import ./docs {
-              inherit inputs pkgs lib dashLib;
+              inherit inputs pkgs lib dashLib deps;
             };
           };
         };

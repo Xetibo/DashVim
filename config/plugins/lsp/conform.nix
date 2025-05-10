@@ -21,6 +21,10 @@
           "prettierd"
           "prettier"
         ];
+        scss = [
+          "prettierd"
+          "prettier"
+        ];
         javascript = [
           "prettierd"
           "prettier"

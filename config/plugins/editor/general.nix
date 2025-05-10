@@ -1,6 +1,7 @@
 {
   pkgs,
   config',
+  config,
   ...
 }: let
   treesitter-patterns = pkgs.tree-sitter.buildGrammar {
@@ -107,9 +108,6 @@ in {
       enable = true;
     };
     helpview = {
-      enable = true;
-    };
-    image = {
       enable = true;
     };
     noice = {

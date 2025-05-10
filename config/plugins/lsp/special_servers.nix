@@ -44,6 +44,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
         hash = "sha256-Dh7RUB7JfurQFtl0UGANs8Tc38IaEum+i0ghN9iCsQk=";
       };
     })
+    image-nvim
     haskell-tools-nvim
     easy-dotnet-nvim
 
@@ -89,6 +90,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     };
   };
   extraConfigLua = ''
+    local inNeovide = vim.g.neovide or false
     require("easy-dotnet").setup()
     require("roslyn").setup({
       exe = 'Microsoft.CodeAnalysis.LanguageServer',
@@ -96,5 +98,8 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     require("ng")
     require("litee.lib").setup()
     require("litee.gh").setup()
+    if (not inNeovide) then
+      require("image").setup()
+    end
   '';
 }
