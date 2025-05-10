@@ -1,6 +1,25 @@
 {pkgs, ...}: {
   extraPlugins = with pkgs.vimPlugins; [
-    nvim-dap-ui
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "debugmaster-nvim";
+      src = pkgs.fetchFromGitHub {
+        owner = "miroshQa";
+        repo = "debugmaster.nvim";
+        rev = "ddc0fe1ff2c30b67ff1e49ba3b60c9c54ada14d0";
+        hash = "sha256-I6FJEeuAcypFOiWKP326Cogut/llrXxKSQD8fhT5RqA=";
+      };
+      dependencies = [nvim-dap];
+    })
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "debugmaster-nvim";
+      src = pkgs.fetchFromGitHub {
+        owner = "mxsdev";
+        repo = "nvim-dap-vscode-js";
+        rev = "ddc0fe1ff2c30b67ff1e49ba3b60c9c54ada14d0";
+        hash = "sha256-I6FJEeuAcypFOiWKP326Cogut/llrXxKSQD8fhT5RqA=";
+      };
+      dependencies = [nvim-dap];
+    })
     nvim-dap-virtual-text
     nvim-dap-python
     nvim-dap-go
@@ -11,28 +30,14 @@
     dap-python = {
       enable = true;
     };
-    dap-ui = {
-      enable = true;
-      settings = {
-        floating = {
-          mappings = {
-            close = [
-              "<ESC>"
-              "q"
-            ];
-          };
-          border = "rounded";
-        };
-      };
-    };
     dap-virtual-text = {
       enable = true;
     };
     dap = {
       adapters = {
         executables = {
-          codelldb = {
-            command = "${pkgs.lldb_17}/bin/lldb-vscode";
+          lldb = {
+            command = "${pkgs.lldb_20}/bin/lldb-dap";
           };
           coreclr = {
             command = "${pkgs.netcoredbg}/bin/netcoredbg";
@@ -61,27 +66,23 @@
             type = "delve";
           }
         ];
-        cpp = [
-          {
-            name = "Debug CPP";
-            request = "launch";
-            type = "codelldb";
-          }
-        ];
-        c = [
-          {
-            name = "Debug C";
-            request = "launch";
-            type = "codelldb";
-          }
-        ];
       };
     };
   };
   extraConfigLua = ''
     local dap = require('dap')
 
-    dap.adapters["chrome"] = {
+    require("dap").adapters["pwa-node"] = {
+      type = "server",
+      host = "localhost",
+      port = "$\{port\}",
+      executable = {
+        command = "${pkgs.vscode-js-debug}/bin/js-debug",
+        args = {"$\{port\}"},
+      }
+    }
+
+    require("dap").adapters["pwa-chrome"] = {
       type = "server",
       host = "localhost",
       port = "$\{port\}",
@@ -93,12 +94,31 @@
 
     dap.configurations.typescript = {
       {
-        type = "chrome",
-        request = "launch",
-        name = "Launch chrome",
-        url = "http://localhost:4200",
-        webRoot = "$\{workspaceFolder\}",
+        type = 'pwa-chrome',
+        request = 'launch',
+        name = 'Launch Current File (chrome)',
+        cwd = "$\{workspaceFolder\}",
+        args = { '$\{file\}' },
         sourceMaps = true,
+        protocol = 'inspector',
+      },
+      {
+        type = 'pwa-chrome',
+        request = 'launch',
+        name = 'Launch Current File (Typescript)',
+        cwd = "$\{workspaceFolder\}",
+        runtimeArgs = { '--loader=ts-node/esm' },
+        program = "$\{file\}",
+        runtimeExecutable = 'node',
+        -- args = { '$\{file\}' },
+        sourceMaps = true,
+        protocol = 'inspector',
+        outFiles = { "$\{workspaceFolder\}/**/**/*", "!**/node_modules/**" },
+        skipFiles = { '<node_internals>/**', 'node_modules/**' },
+        resolveSourceMapLocations = {
+          "$\{workspaceFolder\}/**",
+          "!**/node_modules/**",
+        },
       },
     }
     dap.configurations.javascript = dap.configurations.typescript
@@ -125,8 +145,39 @@
       },
     }
 
-    dap.listeners.after.event_initialized['dapui_config'] = require('dapui').open
-    dap.listeners.before.event_terminated['dapui_config'] = require('dapui').close
-    dap.listeners.before.event_exited['dapui_config'] = require('dapui').close
+    local rust_dap = vim.fn.getcwd()
+    local filename = ""
+    for w in rust_dap:gmatch("([^/]+)") do
+      filename = w
+    end
+
+    dap.configurations.rust = {
+      {
+        type = "lldb",
+        request = "launch",
+        program = function()
+          return rust_dap .. "/target/debug/" .. filename
+        end,
+        --program = '$\{fileDirname\}/$\{fileBasenameNoExtension\}',
+        cwd = "$\{workspaceFolder\}",
+        stopOnEntry = true,
+        terminal = "integrated",
+      },
+    }
+
+    dap.configurations.cpp = {
+      {
+        name = "debug cpp",
+        type = "lldb",
+        request = "launch",
+        program = function()
+          return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/build/", "file")
+        end,
+        cwd = "$\{workspaceFolder\}",
+        stopOnEntry = true,
+        terminal = "integrated",
+      },
+    }
+    dap.configurations.c = dap.configurations.cpp
   '';
 }

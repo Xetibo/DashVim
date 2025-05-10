@@ -935,19 +935,19 @@ lib.mkIf config'.useDefaultKeybinds {
     {
       mode = "n";
       key = "<leader>du";
-      action = ''<CMD>lua require("dapui").toggle()<CR>'';
+      action = ''<CMD>lua require("debugmaster").mode.toggle()<CR>'';
       options = {
         desc = "Toggle DAP UI";
       };
     }
-    {
-      mode = "n";
-      key = "<leader>de";
-      action = ''<CMD>lua require("dapui").eval()<CR>'';
-      options = {
-        desc = "DAP Eval";
-      };
-    }
+    #{
+    #  mode = "n";
+    #  key = "<leader>de";
+    #  action = ''<CMD>lua require("dapui").eval()<CR>'';
+    #  options = {
+    #    desc = "DAP Eval";
+    #  };
+    #}
 
     # neoscroll
     {
@@ -1054,6 +1054,7 @@ lib.mkIf config'.useDefaultKeybinds {
       --  vim.cmd.RustLsp("debuggables")
       --else
         require("dap").continue()
+        require("debugmaster").mode.toggle()
       --end
     end
 
