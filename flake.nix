@@ -2,6 +2,7 @@
   description = "A nixvim configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    dashpkgs.url = "git+file:///home/dashie/gits/nixpkgs";
     nixvim.url = "github:nix-community/nixvim";
     flake-parts.url = "github:hercules-ci/flake-parts";
     base16.url = "github:SenchoPens/base16.nix";
@@ -28,6 +29,15 @@
           lib,
           ...
         }: let
+          deps = with pkgs; [
+            roslyn-ls
+            yazi
+            ripgrep
+            fd
+            zoxide
+            neovide
+            gh
+          ];
           dashLib = import ./lib/lsp.nix {inherit lib pkgs;};
           customConfig =
             orig.config.programs.dashvim
@@ -39,13 +49,13 @@
             };
           package = (
             import ./lib {
-              inherit system inputs pkgs dashLib;
+              inherit system inputs pkgs dashLib deps;
               config' = orig.config.programs.dashvim;
             }
           );
           custom = (
             import ./lib {
-              inherit system inputs pkgs dashLib;
+              inherit system inputs pkgs dashLib deps;
               config' = customConfig;
             }
           );
@@ -57,9 +67,11 @@
             };
           };
           devShells.default = pkgs.mkShell {
-            packages = with pkgs; [
-              nuget
-            ];
+            packages = with pkgs;
+              [
+                nuget
+              ]
+              ++ deps;
           };
           checks = {
             default = package.test_dashvim;

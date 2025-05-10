@@ -408,6 +408,14 @@ lib.mkIf config'.useDefaultKeybinds {
     }
     {
       mode = "n";
+      key = "<leader>gh";
+      action = ''<CMD>GH<CR>'';
+      options = {
+        desc = "Git cli";
+      };
+    }
+    {
+      mode = "n";
       key = "<leader>fb";
       action = ''<CMD>lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
       options = {

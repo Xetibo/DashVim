@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config',
+  inputs,
   ...
 }:
 lib.mkIf config'.lsp.useDefaultSpecialLspServers {
@@ -46,6 +47,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     haskell-tools-nvim
     easy-dotnet-nvim
 
+    inputs.dashpkgs.legacyPackages."x86_64-linux".vimPlugins.gh-nvim
     #roslyn-nvim
   ];
   # enable the plugins above
@@ -92,5 +94,7 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
       exe = 'Microsoft.CodeAnalysis.LanguageServer',
     })
     require("ng")
+    require("litee.lib").setup()
+    require("litee.gh").setup()
   '';
 }

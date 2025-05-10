@@ -38,6 +38,21 @@
         "type": "github"
       }
     },
+    "dashpkgs": {
+      "locked": {
+        "lastModified": 1746873865,
+        "narHash": "sha256-bABihBhxne5e3HVSa2eUwbYrFimxKqn9sXHbwQLD60E=",
+        "ref": "refs/heads/gh",
+        "rev": "ff804c1ef27aa9997be2c339c375c34c06f83d46",
+        "revCount": 797678,
+        "type": "git",
+        "url": "file:///home/dashie/gits/nixpkgs"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/dashie/gits/nixpkgs"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -301,6 +316,7 @@
       "inputs": {
         "base16": "base16",
         "blink": "blink",
+        "dashpkgs": "dashpkgs",
         "flake-parts": "flake-parts_2",
         "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim"

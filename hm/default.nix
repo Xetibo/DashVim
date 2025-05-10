@@ -4,6 +4,7 @@ self: {
   pkgs,
   options,
   dashLib,
+  deps,
   ...
 }: let
   cfg = config.programs.dashvim;
@@ -32,15 +33,11 @@ in {
   };
   config = lib.mkIf cfg.enable (
     lib.optionalAttrs (options ? home.packages) {
-      home.packages = [
-        (lib.mkIf (cfg.package != null) cfg.package)
-        pkgs.roslyn-ls
-        pkgs.yazi
-        pkgs.ripgrep
-        pkgs.fd
-        pkgs.zoxide
-        pkgs.neovide
-      ];
+      home.packages =
+        [
+          (lib.mkIf (cfg.package != null) cfg.package)
+        ]
+        ++ deps;
     }
     // lib.optionalAttrs (options ? environment.systemPackages) {
       environment.systemPackages = lib.optional (cfg.package != null) cfg.package;
