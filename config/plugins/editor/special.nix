@@ -4,22 +4,27 @@ let
     tabstop = 4;
     expandtab = true;
   };
+  optsSmall = {
+    shiftwidth = 2;
+    tabstop = 2;
+    expandtab = true;
+  };
 in {
   files = {
     "ftplugin/fsharp.lua" = {
-      inherit opts;
+      opts = opts;
     };
     "ftplugin/css.lua" = {
-      inherit opts;
+      opts = optsSmall;
     };
     "ftplugin/scss.lua" = {
-      inherit opts;
+      opts = optsSmall;
     };
     "ftplugin/javascript.lua" = {
-      inherit opts;
+      opts = optsSmall;
     };
     "ftplugin/typescript.lua" = {
-      inherit opts;
+      opts = optsSmall;
     };
   };
 }

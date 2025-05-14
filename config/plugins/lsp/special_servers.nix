@@ -59,6 +59,17 @@ lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     typescript-tools = {
       lazyLoad.settings.ft = "typescript";
       enable = true;
+      settings.on_attach =
+        /*
+        lua
+        */
+        ''
+          function(client, bufnr)
+            if vim.lsp.get_clients({ bufnr = bufnr, name = "angularls" }) then
+              client.server_capabilities.renameProvider = false
+            end
+          end
+        '';
     };
     rustaceanvim = {
       lazyLoad.settings.ft = "rust";
