@@ -1,4 +1,10 @@
-{lib, ...}: {
+{
+  lib,
+  config',
+  ...
+}: let
+  ltexFiletypes = ["typst" "markdown" "gitcommit" "tex" "latex" "org" "plaintext"];
+in {
   options.programs.dashvim = {
     colorscheme = lib.mkOption {
       default = "catppuccin-mocha";
@@ -93,12 +99,12 @@
       '';
     };
 
-    useDefaultCmpConfig = lib.mkOption {
+    useDefaultCmpconfig = lib.mkOption {
       default = true;
       example = false;
       type = lib.types.bool;
       description = ''
-        Enables Lsp Config, conform and DAP.
+        Enables Lsp config, conform and DAP.
       '';
     };
 
@@ -118,13 +124,24 @@
         type = lib.types.bool;
         description = ''
           These are LSP servers which are installed via plugins. For example rustaceanvim for rust.
-          Disabling this will remove all special servers. You can install specific ones using the additionalConfig.
+          Disabling this will remove all special servers. You can install specific ones using the additional config.
         '';
+      };
+
+      special = {
+        useAngular = lib.mkOption {
+          default = false;
+          example = true;
+          type = lib.types.bool;
+          description = ''
+            Whether to enable angular ls. Note this disables Html-ls and removes the typescript renaming function.
+          '';
+        };
       };
 
       lspServers = lib.mkOption {
         default = {
-          angularls.enable = true;
+          angularls.enable = config'.lsp.special.useAngular;
           bashls.enable = true;
           clangd.enable = true;
           cmake.enable = true;
@@ -135,17 +152,29 @@
           gopls.enable = true;
           # installed by haskell-tools
           # hls.enable = true;
-          html.enable = true;
-          htmx.enable = true;
+          # When using angular this is bad
+          html.enable =
+            if config'.lsp.special.useAngular
+            then false
+            else true;
+          htmx.enable =
+            if config'.lsp.special.useAngular
+            then false
+            else true;
           jsonls.enable = false;
-          cssls.enable = false;
+          cssls = {
+            enable = true;
+            filetypes = ["css" "scss"];
+          };
           julials = {
             enable = true;
             package = null;
           };
           ltex_plus = {
-            enable = true;
+            enable = false;
             package = null;
+            settings.ltex.enabled = ltexFiletypes;
+            filetypes = ltexFiletypes;
           };
           kotlin_language_server.enable = true;
           java_language_server.enable = true;
@@ -173,7 +202,6 @@
           gleam.enable = true;
           sqls.enable = true;
           tinymist.enable = true;
-          ts_ls.enable = true;
           yamlls.enable = true;
           zls.enable = true;
           texlab.enable = true;

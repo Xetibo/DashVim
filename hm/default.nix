@@ -6,18 +6,19 @@ self: {
   dashLib,
   ...
 }: let
-  cfg = config.programs.dashvim;
+  config' = config.programs.dashvim;
   system = pkgs.stdenv.hostPlatform.system;
   deps = import ../lib/dependencies.nix pkgs;
   dashvim = (
     import ../lib {
-      inherit system pkgs dashLib deps;
+      inherit system pkgs dashLib deps config';
       inputs = self.inputs;
-      config' = cfg;
     }
   );
 in {
-  imports = [../modules];
+  imports = [
+    (import ../modules {inherit lib config';})
+  ];
   meta.maintainers = with lib.maintainers; [dashietm];
   options.programs.dashvim = with lib; {
     enable = mkEnableOption "dashvim";
@@ -31,16 +32,16 @@ in {
       '';
     };
   };
-  config = lib.mkIf cfg.enable (
+  config = lib.mkIf config'.enable (
     lib.optionalAttrs (options ? home.packages) {
       home.packages =
         [
-          (lib.mkIf (cfg.package != null) cfg.package)
+          (lib.mkIf (config'.package != null) config'.package)
         ]
         ++ deps;
     }
     // lib.optionalAttrs (options ? environment.systemPackages) {
-      environment.systemPackages = lib.optional (cfg.package != null) cfg.package;
+      environment.systemPackages = lib.optional (config'.package != null) config'.package;
     }
   );
 }

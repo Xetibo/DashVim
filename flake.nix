@@ -10,9 +10,13 @@
 
   outputs = {flake-parts, ...} @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} (
-      orig @ {...}: {
+      orig @ {lib, ...}: let
+        config' = {
+          lsp.special.useAngular = false;
+        };
+      in {
         imports = [
-          ./modules
+          (import ./modules {inherit lib config';})
         ];
         systems = [
           "x86_64-linux"

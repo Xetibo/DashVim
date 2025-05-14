@@ -4,8 +4,13 @@
   lib,
   ...
 }: let
+  config' = {
+    lsp.special.useAngular = false;
+  };
   eval = lib.evalModules {
-    modules = [../modules];
+    modules = [
+      (import ../modules {inherit lib config';})
+    ];
   };
   doc = pkgs.nixosOptionsDoc {options = eval.options.programs.dashvim;};
 in
