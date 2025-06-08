@@ -1,7 +1,6 @@
 {
   pkgs,
   config',
-  config,
   ...
 }: let
   treesitter-patterns = pkgs.tree-sitter.buildGrammar {
@@ -46,6 +45,15 @@ in {
         hash = "sha256-Tai94rM9EnL0TRAdgiuT3Hx1NVMQJf53N7xwwRC+uKk=";
       };
     })
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "unified.nvim";
+      src = pkgs.fetchFromGitHub {
+        owner = "axkirillov";
+        repo = "unified.nvim";
+        rev = "0d8eebd3909b86ca30407d79b547a245185082c2";
+        hash = "sha256-26YKaI6OCDlc326Ks4y67SDOXcaK9z99unlSmAdsd+Q=";
+      };
+    })
     # TODO enable when no longer broken
     #(pkgs.vimUtils.buildVimPlugin {
     #  name = "clasp.nvim";
@@ -63,6 +71,7 @@ in {
     */
     ''
       require("multicursor-nvim").setup()
+      require("unified").setup()
     '';
   plugins = {
     lz-n = {

@@ -408,6 +408,14 @@ lib.mkIf config'.useDefaultKeybinds {
     }
     {
       mode = "n";
+      key = "<leader>gv";
+      action = ''<CMD>Unified<CR>'';
+      options = {
+        desc = "Unified diff";
+      };
+    }
+    {
+      mode = "n";
       key = "<leader>fb";
       action = ''<CMD>lua require("telescope").extensions.file_browser.file_browser({})<CR>'';
       options = {
