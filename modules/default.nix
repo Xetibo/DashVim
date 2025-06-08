@@ -11,8 +11,6 @@ in {
       example = {
         # custom tokyo night
         base00 = "1A1B26";
-        # base01 = "16161E";
-        # base01 = "15161e";
         base01 = "191a25";
         base02 = "2F3549";
         base03 = "444B6A";
@@ -25,10 +23,6 @@ in {
         base0A = "0DB9D7";
         base0B = "9ECE6A";
         base0C = "B4F9F8";
-        # base0D = "2AC3DE";
-        # base0D = "A9B1D6";
-        # base0D = "62A0EA";
-        # base0D = "779EF1";
         base0D = "366fea";
         base0E = "BB9AF7";
         base0F = "F7768E";
@@ -141,7 +135,12 @@ in {
 
       lspServers = lib.mkOption {
         default = {
-          angularls.enable = config'.lsp.special.useAngular;
+          angularls = {
+            enable = config'.lsp.special.useAngular;
+            cmd = ["ngserver"];
+            # This should be handled by npm packages as mismatches can lead to breakage
+            package = null;
+          };
           bashls.enable = true;
           clangd.enable = true;
           cmake.enable = true;
@@ -150,8 +149,6 @@ in {
           dhall_lsp_server.enable = true;
           elixirls.enable = true;
           gopls.enable = true;
-          # installed by haskell-tools
-          # hls.enable = true;
           # When using angular this is bad
           html.enable =
             if config'.lsp.special.useAngular
@@ -212,12 +209,6 @@ in {
               "alejandra"
             ];
           };
-          #nil-ls = {
-          #  enable = true;
-          #  settings.formatting.command = [
-          #    "nixfmt"
-          #  ];
-          #};
           rust_analyzer = {
             enable = true;
             # version mismatches cause issues
@@ -230,7 +221,6 @@ in {
           };
           fsautocomplete = {
             enable = true;
-            #autostart = false;
             cmd = [
               "fsautocomplete"
               "--adaptive-lsp-server-enabled"

@@ -4,8 +4,6 @@
     friendly-snippets.enable = true;
     blink-cmp = {
       enable = true;
-      # broken right now
-      #lazyLoad.settings.event = "VimEnter";
       settings = {
         fuzzy = {
           implementation = "prefer_rust";

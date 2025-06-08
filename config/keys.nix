@@ -95,14 +95,6 @@ lib.mkIf config'.useDefaultKeybinds {
       }
     ];
   };
-  # "g" = "+goto";
-  # "gz" = "+surround";
-  # "<leader>gh" = "+hunks";
-  # "<leader>q" = "+quit/session";
-  # "<leader>s" = "+search";
-  # "<leader>u" = "+ui";
-  # "<leader>w" = "+windows";
-  # "<leader>h" = "+harpoon";
   keymaps = [
     {
       mode = "n";
@@ -940,14 +932,6 @@ lib.mkIf config'.useDefaultKeybinds {
         desc = "Toggle DAP UI";
       };
     }
-    #{
-    #  mode = "n";
-    #  key = "<leader>de";
-    #  action = ''<CMD>lua require("dapui").eval()<CR>'';
-    #  options = {
-    #    desc = "DAP Eval";
-    #  };
-    #}
 
     # neoscroll
     {
@@ -976,18 +960,6 @@ lib.mkIf config'.useDefaultKeybinds {
         silent = true;
       };
     }
-    # {
-    #   mode = [ "n" "i" "v" ];
-    #   key = "<A-;>";
-    #   action = ''<S-$>'';
-    #   options = { desc = "Scroll Rigth"; silent = true; };
-    # }
-    # {
-    #   mode = [ "n" "i" "v" ];
-    #   key = "<A-j>";
-    #   action = ''<S-0>'';
-    #   options = { desc = "Scroll Left"; silent = true; };
-    # }
 
     # Custom Commands
     {
@@ -1050,18 +1022,11 @@ lib.mkIf config'.useDefaultKeybinds {
     end
 
     function debugAction()
-      --if vim.bo.filetype == "rust" then
-      --  vim.cmd.RustLsp("debuggables")
-      --else
         require("dap").continue()
         require("debugmaster").mode.toggle()
-      --end
     end
 
     function codeAction()
-      --if vim.bo.filetype == "rust" then
-      --  vim.cmd.RustLsp('codeAction')
-      --else
         vim.lsp.buf.code_action({
           context = {
             only = {
@@ -1074,7 +1039,6 @@ lib.mkIf config'.useDefaultKeybinds {
             },
           },
         })
-      --end
     end
     function codeRefactor()
       vim.lsp.buf.code_action({
@@ -1088,7 +1052,6 @@ lib.mkIf config'.useDefaultKeybinds {
         },
       })
     end
-
 
     vim.g.neovide_scale_factor = 1.0
     local change_scale_factor = function(delta)

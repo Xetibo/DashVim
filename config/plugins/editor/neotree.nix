@@ -25,18 +25,12 @@
           command = "toggle_preview";
           config = {use_float = true;};
         };
-        # l = "focus_preview";
         S = "open_split";
-        # S = "split_with_window_picker";
         s = "open_vsplit";
-        # s = "vsplit_with_window_picker";
         t = "open_tabnew";
-        # "<cr>" = "open_drop";
-        # t = "open_tab_drop";
         w = "open_with_window_picker";
         C = "close_node";
         z = "close_all_nodes";
-        # Z = "expand_all_nodes";
         R = "refresh";
         a = {
           command = "add";

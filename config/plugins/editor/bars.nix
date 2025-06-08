@@ -77,7 +77,7 @@
     end
 
     function lsp_stat()
-      if vim.lsp.buf_get_clients() > 0 then
+      if vim.lsp.get_clients() > 0 then
         require('lsp-status').status()
       end
     end

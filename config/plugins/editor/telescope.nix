@@ -24,13 +24,13 @@
           flex = {
             height = 0.95;
             width = 0.95;
-            flip_columns = 100;
+            flip_columns = 300;
             vertical = {
               preview_height = 0.5;
               preview_cutoff = 5;
             };
             horizontal = {
-              preview_width = 0.7;
+              preview_width = 0.6;
               preview_cutoff = 99;
             };
           };
@@ -38,7 +38,6 @@
       };
     };
     enabledExtensions = [
-      # "project"
       "zoxide"
     ];
   };
