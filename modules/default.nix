@@ -93,6 +93,26 @@ in {
       '';
     };
 
+    agent = {
+      enable = lib.mkEnableOption "codecompanion";
+      variant = lib.mkOption {
+        default = "copilot";
+        example = "openai";
+        type = lib.types.str;
+        description = ''
+          The agent type, see codecompanion for details.
+        '';
+      };
+      key = lib.mkOption {
+        default = null;
+        example = null;
+        type = with lib.types; nullOr anything;
+        description = ''
+          Key for your agent. Please don't use a plain text key, try sops-nix or agenix instead.
+        '';
+      };
+    };
+
     useDefaultCmpconfig = lib.mkOption {
       default = true;
       example = false;
