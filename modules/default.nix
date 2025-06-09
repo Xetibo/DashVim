@@ -118,6 +118,14 @@ in {
           Key for your agent. Please don't use a plain text key, try sops-nix or agenix instead.
         '';
       };
+      config = lib.mkOption {
+        default = {};
+        example = {};
+        type = with lib.types; attrsOf anything;
+        description = ''
+          Config for codecompanion
+        '';
+      };
     };
 
     useDefaultCmpconfig = lib.mkOption {

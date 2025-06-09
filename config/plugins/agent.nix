@@ -7,22 +7,32 @@
 lib.mkIf config'.agent.enable {
   extraPlugins = with pkgs.vimPlugins; [
     codecompanion-nvim
+    copilot-lua
   ];
-  extraConfigLua = ''
-    require("codecompanion").setup({
-      adapters = {
-        anthropic = function()
-          return require("codecompanion.adapters").extend(${config'.agent.variant}, {
-            env = {
-              api_key = "${
-      if (config'.agent.key != null)
-      then config'.agent.key
-      else ""
-    }",
-            },
-          })
-        end,
-      },
-    })
-  '';
+  extraConfigLua =
+    if (config'.agent.variant == "copilot")
+    then
+      /*
+      lua
+      */
+      ''require("copilot").setup()''
+    else '''';
+  plugins.codecompanion = {
+    enable = true;
+    settings =
+      {
+        strategies = {
+          agent = {
+            adapter = config'.agent.variant;
+          };
+          chat = {
+            adapter = config'.agent.variant;
+          };
+          inline = {
+            adapter = config'.agent.variant;
+          };
+        };
+      }
+      // config'.agent.config;
+  };
 }

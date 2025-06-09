@@ -35,8 +35,13 @@
           deps = import ./lib/dependencies.nix pkgs;
           dashLib = import ./lib/lsp.nix {inherit lib pkgs;};
           customConfig =
+            lib.attrsets.overrideExisting
             orig.config.programs.dashvim
-            // {
+            {
+              agent.enable = true;
+              agent.variant = "copilot"; # TODO why??
+              agent.key = ""; # TODO why??
+              agent.config = {}; # TODO why??
               lsp = {
                 useDefaultSpecialLspServers = false;
                 lspServers = {};
