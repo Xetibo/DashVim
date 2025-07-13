@@ -12,7 +12,7 @@
     flake-parts.lib.mkFlake {inherit inputs;} (
       orig @ {lib, ...}: let
         config' = {
-          lsp.special.useAngular = false;
+          lsp.special.useAngular = true;
         };
       in {
         imports = [
@@ -43,7 +43,7 @@
               agent.key = ""; # TODO why??
               agent.config = {}; # TODO why??
               lsp = {
-                useDefaultSpecialLspServers = false;
+                useDefaultSpecialLspServers = true;
                 lspServers = {};
               };
             };

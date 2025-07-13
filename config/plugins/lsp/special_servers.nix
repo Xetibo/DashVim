@@ -45,9 +45,19 @@ in
           */
           ''
             function(client, bufnr)
-              if vim.lsp.get_clients({ bufnr = bufnr, name = "angularls" }) then
-                client.server_capabilities.renameProvider = false
+              local function is_angular_project(root_dir)
+                local util = require("lspconfig.util")
+                return util.path.exists(util.path.join(root_dir, "angular.json"))
               end
+
+              local root_dir = client.config.root_dir
+              if is_angular_project(root_dir) then
+                client.server_capabilities.renameProvider = false
+                client.server_capabilities.referencesProvider = false
+              end
+                client.server_capabilities.documentFormattingProvider = false
+                client.server_capabilities.documentRangeFormattingProvider = false
+                client.server_capabilities.documentOnTypeFormattingProvider = false
             end
           '';
       };
