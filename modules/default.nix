@@ -176,6 +176,21 @@ in {
             # This should be handled by npm packages as mismatches can lead to breakage
             package = null;
           };
+          eslint = {
+            enable = true;
+            filetypes = ["javascript" "javascriptreact" "typescript" "typescriptreact"];
+            onAttach.function =
+              /*
+              lua
+              */
+              ''
+                function(client, bufnr)
+                    client.server_capabilities.documentFormattingProvider = false
+                    client.server_capabilities.documentRangeFormattingProvider = false
+                    client.server_capabilities.documentOnTypeFormattingProvider = false
+                end
+              '';
+          };
           bashls.enable = true;
           clangd.enable = true;
           cmake.enable = true;
