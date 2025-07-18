@@ -179,17 +179,7 @@ in {
           eslint = {
             enable = true;
             filetypes = ["javascript" "javascriptreact" "typescript" "typescriptreact"];
-            onAttach.function =
-              /*
-              lua
-              */
-              ''
-                function(client, bufnr)
-                    client.server_capabilities.documentFormattingProvider = false
-                    client.server_capabilities.documentRangeFormattingProvider = false
-                    client.server_capabilities.documentOnTypeFormattingProvider = false
-                end
-              '';
+            settings.format = false;
           };
           bashls.enable = true;
           clangd.enable = true;

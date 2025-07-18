@@ -18,52 +18,10 @@ in {
   package = pkgs.neovim-unwrapped;
   extraPlugins = with pkgs.vimPlugins; [
     overseer-nvim
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "patterns.nvim";
-      src = pkgs.fetchFromGitHub {
-        owner = "OXY2DEV";
-        repo = "patterns.nvim";
-        rev = "0315318de9295fbf10b660a1f3cd1cc23e655744";
-        hash = "sha256-jx6HHDhoH+M8QTJFPbS5jo4QZa8nyND5qdT9h6mTT0g=";
-      };
-    })
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "multicursor.nvim";
-      src = pkgs.fetchFromGitHub {
-        owner = "jake-stewart";
-        repo = "multicursor.nvim";
-        rev = "86537c3771f1989592568c9d92da2e201297867a";
-        hash = "sha256-/UV+oHQ2Lr4zNiqgJM44o1RhkftrfSzf3U58loszEz8=";
-      };
-    })
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "endec.nvim";
-      src = pkgs.fetchFromGitHub {
-        owner = "ovk";
-        repo = "endec.nvim";
-        rev = "949ece728ecc0cacf3c6c81bbcda186fe3fef5cf";
-        hash = "sha256-Tai94rM9EnL0TRAdgiuT3Hx1NVMQJf53N7xwwRC+uKk=";
-      };
-    })
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "unified.nvim";
-      src = pkgs.fetchFromGitHub {
-        owner = "axkirillov";
-        repo = "unified.nvim";
-        rev = "0d8eebd3909b86ca30407d79b547a245185082c2";
-        hash = "sha256-26YKaI6OCDlc326Ks4y67SDOXcaK9z99unlSmAdsd+Q=";
-      };
-    })
-    # TODO enable when no longer broken
-    #(pkgs.vimUtils.buildVimPlugin {
-    #  name = "clasp.nvim";
-    #  src = pkgs.fetchFromGitHub {
-    #    owner = "xzbdmw";
-    #    repo = "clasp.nvim";
-    #    rev = "e4361348b76684154ec88c8e0fbf5aa8dbd3e048";
-    #    hash = "sha256-11atWGsDWAQF48rFozf26X3tU+sRNAWTz5b3QXpvsIM=";
-    #  };
-    #})
+    patterns-nvim
+    multicursor-nvim
+    endec-nvim
+    unified-nvim
   ];
   extraConfigLua =
     /*

@@ -1,15 +1,6 @@
 {pkgs, ...}: {
   extraPlugins = with pkgs.vimPlugins; [
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "debugmaster-nvim";
-      src = pkgs.fetchFromGitHub {
-        owner = "miroshQa";
-        repo = "debugmaster.nvim";
-        rev = "ddc0fe1ff2c30b67ff1e49ba3b60c9c54ada14d0";
-        hash = "sha256-I6FJEeuAcypFOiWKP326Cogut/llrXxKSQD8fhT5RqA=";
-      };
-      dependencies = [nvim-dap];
-    })
+    debugmaster-nvim
     nvim-dap-vscode-js
     nvim-dap-virtual-text
     nvim-dap-python

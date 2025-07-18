@@ -10,7 +10,6 @@
         hideGitignored = false;
       };
       bindToCwd = false;
-      followCurrentFile.enabled = true;
     };
     window = {
       position = "right";

@@ -45,6 +45,21 @@
   };
   autoCmd = [
     {
+      desc = "Roslyn init";
+      event = ["FileType"];
+      group = "filetypes";
+      pattern = "cs";
+      callback = {
+        __raw = ''
+          function()
+            require("easy-dotnet").setup()
+            require("roslyn").setup({
+              exe = 'Microsoft.CodeAnalysis.LanguageServer',
+            })
+          end'';
+      };
+    }
+    {
       desc = "Haskell mappings";
       event = ["FileType"];
       group = "filetypes";

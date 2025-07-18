@@ -8,15 +8,7 @@
 in
   lib.mkIf config'.lsp.useDefaultSpecialLspServers {
     extraPlugins = with pkgs.vimPlugins; [
-      (pkgs.vimUtils.buildVimPlugin {
-        name = "ng";
-        src = pkgs.fetchFromGitHub {
-          owner = "joeveiga";
-          repo = "ng.nvim";
-          rev = "38af07e77f066e2d6e3f74d966816662075ff4cd";
-          hash = "sha256-Dh7RUB7JfurQFtl0UGANs8Tc38IaEum+i0ghN9iCsQk=";
-        };
-      })
+      ng-nvim
       roslyn-nvim
       image-nvim
       haskell-tools-nvim
@@ -36,9 +28,32 @@ in
           };
         };
       };
+      # /*
+      # lua
+      # */
+      # ''
+      #   name = "@angular/language-service",
+      # ''
       typescript-tools = {
         lazyLoad.settings.ft = "typescript";
         enable = true;
+        settings.settings = {
+          tsserver_plugins =
+            if config'.lsp.special.useAngular
+            then [
+              /*
+              lua
+              */
+              {
+                __raw = ''
+                  name = "@angular/language-server",
+                  location = "${pkgs.angular-language-server}",
+                  enableForWorkspaceTypeScriptVersions = false,
+                '';
+              }
+            ]
+            else [];
+        };
         settings.on_attach =
           /*
           lua
@@ -47,7 +62,10 @@ in
             function(client, bufnr)
               local function is_angular_project(root_dir)
                 local util = require("lspconfig.util")
-                return util.path.exists(util.path.join(root_dir, "angular.json"))
+                local ang = util.path.exists(util.path.join(root_dir, "angular.json"));
+                local angTemp = util.path.exists(util.path.join(root_dir, "angular-template.json"));
+                local isAngular = ang or angTemp
+                return isAngular
               end
 
               local root_dir = client.config.root_dir
@@ -92,10 +110,6 @@ in
     };
     extraConfigLua = ''
       local inNeovide = vim.g.neovide or false
-      require("easy-dotnet").setup()
-      require("roslyn").setup({
-        exe = 'Microsoft.CodeAnalysis.LanguageServer',
-      })
       require("ng")
       require("litee.lib").setup()
       require("litee.gh").setup()
