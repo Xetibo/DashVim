@@ -58,6 +58,10 @@ lib.mkIf config'.useDefaultKeybinds {
     enable = true;
     settings.spec = [
       {
+        __unkeyed-1 = "<leader><a>";
+        desc = "+CodeCompanion";
+      }
+      {
         __unkeyed-1 = "<leader><b>";
         desc = "+buffers";
       }
@@ -492,6 +496,24 @@ lib.mkIf config'.useDefaultKeybinds {
       action = ''<CMD>lua require("telescope.builtin").current_buffer_fuzzy_find({})<CR>'';
       options = {
         desc = "search buffer";
+      };
+    }
+
+    # CodeCompanion
+    {
+      mode = "";
+      key = "<leader>ac";
+      action = ''<CMD>CodeCompanionChat<CR>'';
+      options = {
+        desc = "CodeCompanion chat";
+      };
+    }
+    {
+      mode = "";
+      key = "<leader>aa";
+      action = ''<CMD>CodeCompanionActions<CR>'';
+      options = {
+        desc = "CodeCompanion actions";
       };
     }
 
