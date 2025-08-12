@@ -202,6 +202,15 @@ in {
           cssls = {
             enable = true;
             filetypes = ["css" "scss"];
+            onAttach.function =
+              /*
+              lua
+              */
+              ''
+                client.server_capabilities.documentFormattingProvider = false
+                client.server_capabilities.documentRangeFormattingProvider = false
+                client.server_capabilities.documentOnTypeFormattingProvider = false
+              '';
           };
           julials = {
             enable = true;
