@@ -57,10 +57,10 @@ lib.mkIf config'.useDefaultKeybinds {
   plugins.which-key = {
     enable = true;
     settings.spec = [
-      {
-        __unkeyed-1 = "<leader><a>";
+      (lib.mkIf config'.agent.enable {
+        __unkeyed-1 = "<leader>a";
         desc = "+CodeCompanion";
-      }
+      })
       {
         __unkeyed-1 = "<leader><b>";
         desc = "+buffers";
@@ -500,22 +500,22 @@ lib.mkIf config'.useDefaultKeybinds {
     }
 
     # CodeCompanion
-    {
+    (lib.mkIf config'.agent.enable {
       mode = "";
       key = "<leader>ac";
       action = ''<CMD>CodeCompanionChat<CR>'';
       options = {
         desc = "CodeCompanion chat";
       };
-    }
-    {
+    })
+    (lib.mkIf config'.agent.enable {
       mode = "";
       key = "<leader>aa";
       action = ''<CMD>CodeCompanionActions<CR>'';
       options = {
         desc = "CodeCompanion actions";
       };
-    }
+    })
 
     # clasp
     # TODO enable when no longer broken
@@ -782,7 +782,7 @@ lib.mkIf config'.useDefaultKeybinds {
     }
 
     # ng.nvim
-    {
+    (lib.mkIf config'.lsp.special.useAngular {
       mode = [
         "n"
         "v"
@@ -794,8 +794,8 @@ lib.mkIf config'.useDefaultKeybinds {
         silent = true;
         desc = "Angular goto template";
       };
-    }
-    {
+    })
+    (lib.mkIf config'.lsp.special.useAngular {
       mode = [
         "n"
         "v"
@@ -807,8 +807,8 @@ lib.mkIf config'.useDefaultKeybinds {
         silent = true;
         desc = "Angular goto component";
       };
-    }
-    {
+    })
+    (lib.mkIf config'.lsp.special.useAngular {
       mode = [
         "n"
         "v"
@@ -820,7 +820,7 @@ lib.mkIf config'.useDefaultKeybinds {
         silent = true;
         desc = "Angular template";
       };
-    }
+    })
 
     # window movement
     {
