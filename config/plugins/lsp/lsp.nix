@@ -36,6 +36,8 @@
         bash.enable = true;
         dart.enable = true;
         deno.enable = true;
+        jest.enable = true;
+        vitest.enable = true;
       };
     };
     lsp-format = {

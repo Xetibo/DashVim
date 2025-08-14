@@ -66,6 +66,10 @@ lib.mkIf config'.useDefaultKeybinds {
         desc = "+buffers";
       }
       {
+        __unkeyed-1 = "<leader>t";
+        desc = "+Neotest";
+      }
+      {
         __unkeyed-1 = "<leader>c";
         desc = "+code";
       }
