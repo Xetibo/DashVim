@@ -9,6 +9,7 @@
         hideDotfiles = false;
         hideGitignored = false;
       };
+      groupEmptyDirs = true;
       bindToCwd = false;
     };
     window = {

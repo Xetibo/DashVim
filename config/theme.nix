@@ -78,6 +78,7 @@ in {
       vim.cmd("highlight  WarningMsgxxx guifg=#${scheme.base0A}")
       vim.cmd("highlight  Foldedxxx guifg=#${scheme.base0D} guibg=#${scheme.base03}")
       vim.cmd("highlight  SignColumnxxx guifg=#${scheme.base03}")
+      vim.cmd("highlight! link SignColumn SignColumnxxx")
       vim.cmd("highlight  SpellBadxxx cterm=undercurl gui=undercurl guisp=#${scheme.base08}")
       vim.cmd("highlight  SpellCapxxx cterm=undercurl gui=undercurl guisp=#${scheme.base0A}")
       vim.cmd("highlight  SpellRarexxx cterm=undercurl gui=undercurl guisp=#${scheme.base0B}")

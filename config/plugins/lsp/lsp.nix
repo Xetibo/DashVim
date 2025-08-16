@@ -7,36 +7,61 @@
   plugins = {
     nix.enable = true;
     neotest = {
-      lazyLoad.settings.event = "BufEnter";
       enable = true;
-      adapters = {
-        dotnet = {
-          # fsharp doesn't work, cool, thanks
-          # aka C# also can't work
-          enable = false;
-          settings = {
-            single_file_support = true;
-            dap = {
-              args = {
-                justMyCode = false;
-              };
-              adapter_name = "coreclr";
-            };
-          };
+      settings = {
+        output = {
+          enabled = true;
+          open_on_run = true;
         };
+        output_panel = {
+          enabled = true;
+          open = "botright split | resize 15";
+        };
+        status = {
+          enabled = true;
+          signs = true;
+        };
+
+        icons = {
+          child_indent = "│";
+          child_prefix = "├";
+          collapsed = "─";
+          expanded = "╮";
+          failed = "";
+          final_child_indent = " ";
+          final_child_prefix = "╰";
+          non_collapsible = "─";
+          passed = "";
+          running = "";
+          running_animated = [
+            "/"
+            "|"
+            "\\"
+            "-"
+            "/"
+            "|"
+            "\\"
+            "-"
+          ];
+          skipped = "";
+          unknown = "";
+          watching = "";
+        };
+      };
+      adapters = {
+        dotnet.enable = true;
         elixir.enable = true;
         go.enable = true;
         gradle.enable = true;
         rust.enable = true;
         python.enable = true;
         zig.enable = true;
-        playwright.enable = true;
+        # playwright.enable = true;
         haskell.enable = true;
         java.enable = true;
         bash.enable = true;
         dart.enable = true;
         deno.enable = true;
-        jest.enable = true;
         vitest.enable = true;
       };
     };
