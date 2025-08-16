@@ -198,7 +198,7 @@ in {
             if config'.lsp.special.useAngular
             then false
             else true;
-          jsonls.enable = false;
+          jsonls.enable = true;
           cssls = {
             enable = true;
             filetypes = ["css" "scss"];
