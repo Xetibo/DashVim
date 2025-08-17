@@ -1,21 +1,13 @@
 {
-  lib,
-  pkgs,
-  ...
-}: let
-  blinkPkg = pkgs.vimPlugins.blink-cmp;
-in {
-  plugins.blink-cmp = {
-    package = blinkPkg;
+  vim.autocomplete.blink-cmp = {
     enable = true;
-    settings = {
-      enabled = lib.mkForce (
-        lib.nixvim.mkRaw ''
-          function(ctx)
-            return vim.bo.buftype == "" and not vim.tbl_contains({ '/', '?' }, vim.fn.getcmdtype())
-          end
-        ''
-      );
+    setupOpts = {
+      fuzzy = {
+        implementation = "prefer_rust";
+        prebuilt_binaries = {
+          download = false;
+        };
+      };
       keymap = {
         "<C-space>" = [
           "show"
@@ -45,14 +37,16 @@ in {
           "scroll_documentation_down"
           "fallback"
         ];
-        cmdline = {
-          "<Tab>" = [
-            "select_next"
-          ];
+      };
+      cmdline = {
+        keymap = {
           "<S-Tab>" = [
             "select_prev"
           ];
           "<Enter>" = [
+            "fallback"
+          ];
+          "<C-Enter>" = [
             "accept"
             "fallback"
           ];
@@ -115,7 +109,7 @@ in {
             module = "blink.cmp.sources.buffer";
             name = "buffer";
             min_keyword_length = 5;
-            fallback_for = {};
+            fallbacks = {};
             enabled = true;
             score_offset = -10;
           };

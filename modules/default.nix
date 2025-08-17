@@ -51,7 +51,7 @@
       '';
     };
 
-    alphaPicture = lib.mkOption {
+    dashboardAscii = lib.mkOption {
       default = [
         " _______       ___           _______. __    __   __   _______ "
         "|       \\     /   \\         /       ||  |  |  | |  | |   ____|"
@@ -85,11 +85,13 @@
         "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠫⡆⣇⠇⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          "
         "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡙⡰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          "
         "        ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣦⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀          "
+        "                                                              "
+        "                                                              "
       ];
       example = ["yourpicture"];
       type = with lib.types; listOf str;
       description = ''
-        The Ascii picture for alpha.nvim.
+        The Ascii picture for dashboard.nvim.
       '';
     };
 
@@ -111,6 +113,41 @@
       '';
     };
 
+    agent = {
+      enable = lib.mkOption {
+        default = false;
+        example = true;
+        type = lib.types.bool;
+        description = ''
+          Enables codecompanion
+        '';
+      };
+      variant = lib.mkOption {
+        default = "copilot";
+        example = "openai";
+        type = lib.types.str;
+        description = ''
+          The agent type, see codecompanion for details.
+        '';
+      };
+      key = lib.mkOption {
+        default = null;
+        example = null;
+        type = with lib.types; nullOr anything;
+        description = ''
+          Key for your agent. Please don't use a plain text key, try sops-nix or agenix instead.
+        '';
+      };
+      config = lib.mkOption {
+        default = {};
+        example = {};
+        type = with lib.types; attrsOf anything;
+        description = ''
+          Config for codecompanion
+        '';
+      };
+    };
+
     lsp = {
       useDefaultSpecialLspServers = lib.mkOption {
         default = true;
@@ -122,129 +159,167 @@
         '';
       };
 
+      special = {
+        useAngular = lib.mkOption {
+          default = false;
+          example = true;
+          type = lib.types.bool;
+          description = ''
+            Whether to enable angular ls. Note this disables Html-ls and removes the typescript renaming function.
+          '';
+        };
+      };
+
       lspServers = lib.mkOption {
         default = {
-          angularls.enable = true;
-          bashls.enable = true;
-          clangd.enable = true;
-          cmake.enable = true;
-          dartls.enable = true;
-          elmls.enable = true;
-          dhall_lsp_server.enable = true;
-          elixirls.enable = true;
-          gopls.enable = true;
-          # installed by haskell-tools
-          # hls.enable = true;
-          html.enable = true;
-          htmx.enable = true;
-          jsonls.enable = false;
-          cssls.enable = false;
-          julials = {
+          # Defaults
+          enableDAP = true;
+          enableExtraDiagnostics = true;
+          enableFormat = true;
+          enableTreesitter = true;
+
+          assembly = {
             enable = true;
-            package = null;
+            lsp.enable = true;
           };
-          kotlin_language_server.enable = true;
-          java_language_server.enable = true;
-          lua_ls.enable = true;
-          gdscript = {
+          bash = {
             enable = true;
-            package = null;
+            lsp.enable = true;
           };
-          terraformls.enable = true;
-          # i hate this server
-          #marksman.enable = true;
-          nushell.enable = true;
-          ocamllsp = {
+          clang = {
             enable = true;
-            package = null;
+            lsp.enable = true;
           };
-          vuels = {
+          csharp = {
             enable = true;
-            package = null;
+            lsp.enable = true;
           };
-          pyright.enable = true;
-          ruby_lsp.enable = true;
-          svelte.enable = true;
-          taplo.enable = true;
-          gleam.enable = true;
-          sqls.enable = true;
-          tinymist.enable = true;
-          ts_ls.enable = true;
-          yamlls.enable = true;
-          zls.enable = true;
-          texlab.enable = true;
-          tailwindcss.enable = true;
-          nixd = {
+          fsharp = {
             enable = true;
-            settings.formatting.command = [
-              "alejandra"
-            ];
+            lsp.enable = true;
           };
-          #nil-ls = {
-          #  enable = true;
-          #  settings.formatting.command = [
-          #    "nixfmt"
-          #  ];
-          #};
-          rust_analyzer = {
+          css = {
             enable = true;
-            # version mismatches cause issues
-            # Include the right version in a flake instead
-            installCargo = false;
-            installRustc = false;
+            lsp.enable = true;
           };
-          phpactor = {
+          tailwind = {
+            enable = true;
+            lsp.enable = true;
+          };
+          terraform = {
+            enable = true;
+            lsp.enable = true;
+          };
+          typst = {
+            enable = true;
+            lsp.enable = true;
+          };
+          ts = {
+            enable = true;
+            lsp.enable = true;
+          };
+          vala = {
+            enable = true;
+            lsp.enable = true;
+          };
+          wgsl = {
+            enable = true;
+            lsp.enable = true;
+          };
+          yaml = {
+            enable = true;
+            lsp.enable = true;
+          };
+          svelte = {
+            enable = true;
+            lsp.enable = true;
+          };
+          php = {
+            enable = true;
+            lsp.enable = true;
+          };
+          python = {
+            enable = true;
+            lsp.enable = true;
+          };
+          go = {
+            enable = true;
+            lsp.enable = true;
+          };
+          lua = {
+            enable = true;
+            lsp.enable = true;
+          };
+          haskell = {
+            enable = true;
+            lsp.enable = true;
+          };
+          html = {
             enable = true;
           };
-          fsautocomplete = {
+          java = {
             enable = true;
-            #autostart = false;
-            cmd = [
-              "fsautocomplete"
-              "--adaptive-lsp-server-enabled"
-              "--project-graph-enabled"
-              "--use-fcs-transparent-compiler"
-            ];
-            extraOptions = {
-              init_options = {
-                AutomaticWorkspaceInit = true;
-              };
-            };
-            settings = {
-              FSharp = {
-                AutomaticWorkspaceInit = true;
-                EnableReferenceCodeLens = true;
-                ExternalAutocomplete = false;
-                InterfaceStubGeneration = true;
-                InterfaceStubGenerationMethodBody = '''';
-                InterfaceStubGenerationObjectIdentifier = "this";
-                Linter = true;
-                RecordStubGeneration = true;
-                RecordStubGenerationBody = '''';
-                ResolveNamespaces = true;
-                SimplifyNameAnalyzer = true;
-                UnionCaseStubGeneration = true;
-                UnionCaseStubGenerationBody = '''';
-                UnusedDeclarationsAnalyzer = true;
-                UnusedOpensAnalyzer = true;
-                UseSdkScripts = true;
-                keywordsAutocomplete = true;
-                excludeProjectDirectories = [
-                  ".git"
-                  "paket-files"
-                  ".fable"
-                  "packages"
-                  "node_modules"
-                  "tools"
-                ];
-              };
-            };
+            lsp.enable = true;
           };
+          kotlin = {
+            enable = true;
+            lsp.enable = true;
+          };
+          julia = {
+            enable = true;
+            lsp.enable = true;
+          };
+          markdown = {
+            enable = true;
+            lsp.enable = true;
+          };
+          nix = {
+            enable = true;
+            lsp.enable = true;
+          };
+          ruby = {
+            enable = true;
+            lsp.enable = true;
+          };
+          zig = {
+            enable = true;
+            lsp.enable = true;
+          };
+          sql = {
+            enable = true;
+            lsp.enable = true;
+          };
+          rust = {
+            enable = true;
+            lsp.enable = true;
+            crates.enable = true;
+          };
+          gleam = {
+            enable = true;
+            lsp.enable = true;
+          };
+          elixir = {
+            enable = true;
+            lsp.enable = true;
+          };
+          dart = {
+            enable = true;
+            lsp.enable = true;
+          };
+          # TODO config
         };
         example = {};
         type = with lib.types; attrsOf anything;
         description = ''
-          LspServers to enable.
+          Nvf LSP config -> vim.languages
+        '';
+      };
+
+      additionalConfig = lib.mkOption {
+        default = {};
+        type = with lib.types; attrsOf anything;
+        description = ''
+          Nvf lsp configuration to be added to DashVim.
         '';
       };
     };
@@ -253,7 +328,15 @@
       default = {};
       type = with lib.types; attrsOf anything;
       description = ''
-        NixVim configuration to be added to DashVim.
+        Nvf configuration to be added to DashVim.
+      '';
+    };
+
+    additionalLuaConfigFiles = lib.mkOption {
+      default = [];
+      type = with lib.types; listOf path;
+      description = ''
+        A list of lua files to be added to DashVim
       '';
     };
   };

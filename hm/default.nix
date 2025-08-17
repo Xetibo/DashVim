@@ -5,44 +5,49 @@ self: {
   options,
   ...
 }: let
-  cfg = config.programs.dashvim;
+  config' = config.programs.dashvim;
   system = pkgs.stdenv.hostPlatform.system;
+  deps = import ../lib/dependencies.nix pkgs;
+  dashLib = import ../lib/lsp.nix {inherit lib;};
   dashvim = (
     import ../lib {
-      inherit system pkgs;
+      inherit system pkgs config' dashLib;
       inputs = self.inputs;
-      config' = cfg;
     }
   );
 in {
-  imports = [../modules];
+  imports = [
+    (import ../modules {inherit lib config' dashLib;})
+  ];
   meta.maintainers = with lib.maintainers; [DashieTM];
   options.programs.dashvim = with lib; {
     enable = mkEnableOption "dashvim";
 
     package = mkOption {
       type = with types; nullOr package;
-      default = dashvim.build_dashvim;
+      default = dashvim.neovim;
       example = null;
       description = mdDoc ''
         Package to run
       '';
     };
   };
-  config = lib.mkIf cfg.enable (
+  config = lib.mkIf config'.enable (
     lib.optionalAttrs (options ? home.packages) {
-      home.packages = [
-        (lib.mkIf (cfg.package != null) cfg.package)
-        pkgs.roslyn-ls
-        pkgs.yazi
-        pkgs.ripgrep
-        pkgs.fd
-        pkgs.zoxide
-        pkgs.neovide
-      ];
+      home.packages =
+        [
+          (lib.mkIf (config'.package != null) config'.package)
+          pkgs.roslyn-ls
+          pkgs.yazi
+          pkgs.ripgrep
+          pkgs.fd
+          pkgs.zoxide
+          pkgs.neovide
+        ]
+        ++ deps;
     }
     // lib.optionalAttrs (options ? environment.systemPackages) {
-      environment.systemPackages = lib.optional (cfg.package != null) cfg.package;
+      environment.systemPackages = lib.optional (config'.package != null) config'.package;
     }
   );
 }

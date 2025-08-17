@@ -2,16 +2,21 @@
   description = "A nixvim configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixvim.url = "github:nix-community/nixvim";
+    nvf.url = "github:notashelf/nvf";
     flake-parts.url = "github:hercules-ci/flake-parts";
     base16.url = "github:SenchoPens/base16.nix";
   };
 
   outputs = {flake-parts, ...} @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} (
-      orig @ {...}: {
+      orig @ {lib, ...}: let
+        config' = {
+          lsp.special.useAngular = true;
+        };
+        dashLib = import ./lib/lsp.nix {inherit lib;};
+      in {
         imports = [
-          ./modules
+          (import ./modules {inherit lib config' dashLib;})
         ];
         systems = [
           "x86_64-linux"
@@ -27,46 +32,53 @@
           lib,
           ...
         }: let
+          deps = import ./lib/dependencies.nix pkgs;
           customConfig =
+            lib.attrsets.overrideExisting
             orig.config.programs.dashvim
-            // {
+            {
+              agent.enable = true;
+              agent.variant = "copilot";
+              agent.key = "";
+              agent.config = {};
               lsp = {
-                useDefaultSpecialLspServers = false;
+                useDefaultSpecialLspServers = true;
                 lspServers = {};
               };
             };
           package = (
             import ./lib {
-              inherit system inputs pkgs;
+              inherit system inputs pkgs dashLib;
               config' = orig.config.programs.dashvim;
             }
           );
           custom = (
             import ./lib {
-              inherit system inputs pkgs;
+              inherit system inputs pkgs dashLib;
               config' = customConfig;
             }
           );
         in {
           _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
+            inherit system dashLib;
             config = {
               allowBroken = true;
             };
           };
           devShells.default = pkgs.mkShell {
-            packages = with pkgs; [
-              nuget
-            ];
-          };
-          checks = {
-            default = package.test_dashvim;
+            packages = with pkgs;
+              [
+                nuget
+              ]
+              ++ deps;
           };
           packages = {
-            default = package.build_dashvim;
-            minimal = custom.build_dashvim;
+            dependencies = deps;
+            dashLib = dashLib;
+            default = package.neovim;
+            minimal = custom.neovim;
             docs = import ./docs {
-              inherit inputs pkgs lib;
+              inherit inputs pkgs lib dashLib;
             };
           };
         };
