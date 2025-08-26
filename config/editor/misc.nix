@@ -18,6 +18,10 @@ in {
   vim = {
     treesitter.grammars = [
       treesitter-patterns
+      pkgs.vimPlugins.nvim-treesitter.builtGrammars.angular
+      pkgs.vimPlugins.nvim-treesitter.builtGrammars.typescript
+      pkgs.vimPlugins.nvim-treesitter.builtGrammars.javascript
+      pkgs.vimPlugins.nvim-treesitter.builtGrammars.html
     ];
     lazy.plugins = with pkgs.vimPlugins; {
       "instant.nvim" = mkDashDefault {

@@ -1,7 +1,7 @@
 {mkDashDefault, ...}: {
-  vim.treesitter = mkDashDefault {
-    enable = true;
-    autotagHtml = true;
-    context.enable = true;
+  vim.treesitter = {
+    enable = mkDashDefault true;
+    autotagHtml = mkDashDefault true;
+    context.enable = mkDashDefault true;
   };
 }
