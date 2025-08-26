@@ -34,8 +34,7 @@ in {
       home.packages =
         [
           (lib.mkIf (config'.package != null) config'.package)
-          # broken
-          # pkgs.roslyn-ls
+          pkgs.roslyn-ls
           pkgs.yazi
           pkgs.ripgrep
           pkgs.fd

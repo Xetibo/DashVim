@@ -1,7 +1,6 @@
 pkgs:
 with pkgs; [
-  # broken
-  # roslyn-ls
+  roslyn-ls
   vscode-js-debug
   yazi
   ripgrep
