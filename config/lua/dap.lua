@@ -1,6 +1,6 @@
 local dap = require("dap")
 
-require("dap").adapters["pwa-node"] = {
+dap.adapters["pwa-node"] = {
 	type = "server",
 	host = "localhost",
 	port = "${port}",
@@ -10,7 +10,7 @@ require("dap").adapters["pwa-node"] = {
 	},
 }
 
-require("dap").adapters["pwa-chrome"] = {
+dap.adapters["pwa-chrome"] = {
 	type = "server",
 	host = "localhost",
 	port = "9222",
@@ -19,6 +19,24 @@ require("dap").adapters["pwa-chrome"] = {
 		args = { "9222" },
 	},
 }
+
+dap.adapters["coreclr"] = {
+	type = "executable",
+	command = "netcoredbg",
+	args = { "--interpreter=vscode" },
+}
+
+dap.configurations.cs = {
+	{
+		type = "coreclr",
+		name = "Debug .Net",
+		request = "launch",
+		program = function()
+			return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/", "file")
+		end,
+	},
+}
+dap.configurations.fsharp = dap.configurations.cs
 
 dap.configurations.typescript = {
 	{

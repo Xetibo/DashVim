@@ -207,10 +207,6 @@
             enable = true;
             lsp.enable = true;
           };
-          csharp = {
-            enable = true;
-            lsp.enable = true;
-          };
           fsharp = {
             enable = true;
             lsp.enable = true;

@@ -178,7 +178,24 @@
         "base16": "base16",
         "flake-parts": "flake-parts",
         "nixpkgs": "nixpkgs",
-        "nvf": "nvf"
+        "nvf": "nvf",
+        "stable": "stable"
+      }
+    },
+    "stable": {
+      "locked": {
+        "lastModified": 1756346337,
+        "narHash": "sha256-al0UcN5mXrO/p5lcH0MuQaj+t97s3brzCii8GfCBMuA=",
+        "owner": "NixOs",
+        "repo": "nixpkgs",
+        "rev": "84c26d62ce9e15489c63b83fc44e6eb62705d2c9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOs",
+        "ref": "nixos-25.05",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "systems": {

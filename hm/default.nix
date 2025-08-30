@@ -2,14 +2,15 @@ self: {
   lib,
   config,
   pkgs,
+  stable,
   options,
   ...
 }: let
   config' = config.programs.dashvim;
   inherit (pkgs.stdenv.hostPlatform) system;
-  deps = import ../lib/dependencies.nix pkgs;
+  deps = import ../lib/dependencies.nix {inherit pkgs stable;};
   dashvim = import ../lib {
-    inherit system pkgs config' lib;
+    inherit system pkgs config' lib stable;
     inherit (self) inputs;
   };
 in {
@@ -34,7 +35,7 @@ in {
       home.packages =
         [
           (lib.mkIf (config'.package != null) config'.package)
-          pkgs.roslyn-ls
+          stable.roslyn-ls
           pkgs.yazi
           pkgs.ripgrep
           pkgs.fd

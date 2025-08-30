@@ -10,6 +10,19 @@
       "ng.nvim" = mkDashDefault {
         package = ng-nvim;
       };
+      "roslyn.nvim" = mkDashDefault {
+        package = roslyn-nvim;
+        setupModule = "roslyn";
+        setupOpts = {
+          exe = "Microsoft.CodeAnalysis.LanguageServer";
+        };
+        ft = ["cs"];
+      };
+      "easy-dotnet.nvim" = mkDashDefault {
+        package = easy-dotnet-nvim;
+        setupModule = "easy-dotnet";
+        ft = ["cs"];
+      };
     };
     lsp = {
       enable = true;
@@ -23,6 +36,11 @@
           cmd = ["${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server" "--stdio"];
           filetypes = ["json" "jsonc"];
         };
+        # csharp = mkDashDefault {
+        #   enable = true;
+        #   cmd = ["${pkgs.roslyn-ls}/bin/" "--stdio"];
+        #   filetypes = ["json" "jsonc"];
+        # };
         angular = mkDashDefault {
           enable = true;
           cmd = ["${pkgs.angular-language-server}/bin/ngserver" "--stdio"];

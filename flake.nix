@@ -2,6 +2,7 @@
   description = "A nixvim configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    stable.url = "github:NixOs/nixpkgs/nixos-25.05";
     nvf.url = "github:notashelf/nvf";
     flake-parts.url = "github:hercules-ci/flake-parts";
     base16.url = "github:SenchoPens/base16.nix";
@@ -31,7 +32,13 @@
           lib,
           ...
         }: let
-          deps = import ./lib/dependencies.nix pkgs;
+          stable = import inputs.stable {
+            inherit system;
+            config = {
+              allowBroken = true;
+            };
+          };
+          deps = import ./lib/dependencies.nix {inherit pkgs stable;};
           customConfig =
             lib.attrsets.overrideExisting
             orig.config.programs.dashvim
@@ -48,19 +55,22 @@
               };
             };
           package = import ./lib {
-            inherit system inputs pkgs lib;
+            inherit system inputs pkgs lib stable;
             config' = orig.config.programs.dashvim;
           };
           custom = import ./lib {
-            inherit system inputs pkgs lib;
+            inherit system inputs pkgs lib stable;
             config' = customConfig;
           };
         in {
-          _module.args.pkgs = import inputs.nixpkgs {
-            inherit system;
-            config = {
-              allowBroken = true;
+          _module.args = {
+            pkgs = import inputs.nixpkgs {
+              inherit system;
+              config = {
+                allowBroken = true;
+              };
             };
+            inherit stable;
           };
           devShells.default = pkgs.mkShell {
             packages = with pkgs;
@@ -74,7 +84,7 @@
             default = package.neovim;
             minimal = custom.neovim;
             docs = import ./docs {
-              inherit inputs pkgs lib;
+              inherit inputs pkgs lib stable;
             };
           };
         };

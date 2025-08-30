@@ -11,24 +11,24 @@
     {name = "filetypes";}
   ];
   vim.autocmds = [
-    {
-      desc = "Roslyn init";
-      event = ["FileType"];
-      group = "filetypes";
-      pattern = ["cs"];
-      callback =
-        lib.generators.mkLuaInline
-        /*
-        lua
-        */
-        ''
-          function()
-            require("easy-dotnet").setup()
-            require("roslyn").setup({
-              exe = 'Microsoft.CodeAnalysis.LanguageServer',
-            })
-          end'';
-    }
+    # {
+    #   desc = "Roslyn init";
+    #   event = ["FileType"];
+    #   group = "filetypes";
+    #   pattern = ["cs"];
+    #   callback =
+    #     lib.generators.mkLuaInline
+    #     /*
+    #     lua
+    #     */
+    #     ''
+    #       function()
+    #         require("easy-dotnet").setup()
+    #         require("roslyn").setup({
+    #           exe = 'Microsoft.CodeAnalysis.LanguageServer',
+    #         })
+    #       end'';
+    # }
     {
       desc = "Haskell mappings";
       event = ["FileType"];

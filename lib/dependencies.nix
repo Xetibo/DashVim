@@ -1,6 +1,11 @@
-pkgs:
+{
+  pkgs,
+  stable,
+  ...
+}:
 with pkgs; [
-  roslyn-ls
+  netcoredbg
+  stable.roslyn-ls
   vscode-js-debug
   yazi
   ripgrep
