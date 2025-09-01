@@ -40,7 +40,6 @@ in {
           pkgs.ripgrep
           pkgs.fd
           pkgs.zoxide
-          pkgs.neovide
           pkgs.gh
         ]
         ++ deps;

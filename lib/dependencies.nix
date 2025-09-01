@@ -11,6 +11,5 @@ with pkgs; [
   ripgrep
   fd
   zoxide
-  neovide
   gh
 ]
