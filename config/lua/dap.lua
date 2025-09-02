@@ -26,6 +26,18 @@ dap.adapters["coreclr"] = {
 	args = { "--interpreter=vscode" },
 }
 
+dap.adapters["rustlldb"] = {
+	type = "executable",
+	command = "rust-lldb",
+	args = { "--interpreter=vscode" },
+}
+
+dap.adapters["lldb"] = {
+	type = "executable",
+	command = "lldb-dap",
+	args = { "--interpreter=vscode" },
+}
+
 dap.configurations.cs = {
 	{
 		type = "coreclr",
@@ -68,3 +80,36 @@ dap.configurations.typescript = {
 	},
 }
 dap.configurations.javascript = dap.configurations.typescript
+
+local rust_dap = vim.fn.getcwd()
+local filename = ""
+for w in rust_dap:gmatch("([^/]+)") do
+	filename = w
+end
+dap.configurations.rust = {
+	{
+		type = "rustlldb",
+		request = "launch",
+		program = function()
+			return rust_dap .. "/target/debug/" .. filename
+		end,
+		cwd = "${workspaceFolder}",
+		stopOnEntry = true,
+		terminal = "integrated",
+	},
+}
+
+dap.configurations.cpp = {
+	{
+		name = "debug cpp",
+		type = "lldb",
+		request = "launch",
+		program = function()
+			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/build/", "file")
+		end,
+		cwd = "${workspaceFolder}",
+		stopOnEntry = true,
+		terminal = "integrated",
+	},
+}
+dap.configurations.c = dap.configurations.cpp

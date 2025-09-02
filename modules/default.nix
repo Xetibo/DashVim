@@ -117,7 +117,7 @@
       example = false;
       type = lib.types.bool;
       description = ''
-        Enables Lsp Config, conform and DAP.
+        Enables default cmp config
       '';
     };
 
@@ -163,6 +163,40 @@
           Config for codecompanion
         '';
       };
+    };
+
+    formatters = lib.mkOption {
+      default = let
+        prettier = [
+          "prettierd"
+          "prettier"
+        ];
+      in {
+        json = prettier;
+        htmlangular = prettier;
+        html = prettier;
+        css = prettier;
+        scss = prettier;
+        javascript = prettier;
+        javascriptreact = prettier;
+        typescript = prettier;
+        typescriptreact = prettier;
+        markdown = prettier;
+        php = prettier;
+        fsharp = ["fantomas"];
+        python = ["black"];
+        lua = ["stylua"];
+        nix = ["alejandra"];
+        yaml = [
+          "yamllint"
+          "yamlfmt"
+        ];
+      };
+      example = {};
+      type = with lib.types; attrsOf anything;
+      description = ''
+        Config for conform
+      '';
     };
 
     lsp = {
@@ -319,7 +353,6 @@
             enable = true;
             lsp.enable = true;
           };
-          # TODO config
         };
         example = {};
         type = with lib.types; attrsOf anything;

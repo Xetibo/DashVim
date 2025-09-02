@@ -23,6 +23,7 @@ in {
       pkgs.vimPlugins.nvim-treesitter.builtGrammars.javascript
       pkgs.vimPlugins.nvim-treesitter.builtGrammars.html
     ];
+    ui.colorizer.enable = mkDashDefault true;
     lazy.plugins = with pkgs.vimPlugins; {
       "instant.nvim" = mkDashDefault {
         package = instant-nvim;

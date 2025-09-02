@@ -36,15 +36,11 @@
           cmd = ["${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server" "--stdio"];
           filetypes = ["json" "jsonc"];
         };
-        # csharp = mkDashDefault {
-        #   enable = true;
-        #   cmd = ["${pkgs.roslyn-ls}/bin/" "--stdio"];
-        #   filetypes = ["json" "jsonc"];
-        # };
         angular = mkDashDefault {
           enable = true;
           cmd = ["${pkgs.angular-language-server}/bin/ngserver" "--stdio"];
           filetypes = ["htmlangular" "typescript" "html"];
+          root_markers = [".git" "package.json"];
         };
         ts-ls = mkDashDefault {
           enable = true;
@@ -82,35 +78,11 @@
         };
       };
     };
-    formatter.conform-nvim = mkDashDefault {
+    formatter.conform-nvim = {
+      enable = mkDashDefault true;
       setupOpts = {
-        notify_on_error = true;
-        formatters_by_ft = let
-          prettier = [
-            "prettierd"
-            "prettier"
-          ];
-        in {
-          json = prettier;
-          htmlangular = prettier;
-          html = prettier;
-          css = prettier;
-          scss = prettier;
-          javascript = prettier;
-          javascriptreact = prettier;
-          typescript = prettier;
-          typescriptreact = prettier;
-          markdown = prettier;
-          php = prettier;
-          fsharp = ["fantomas"];
-          python = ["black"];
-          lua = ["stylua"];
-          nix = ["alejandra"];
-          yaml = [
-            "yamllint"
-            "yamlfmt"
-          ];
-        };
+        notify_on_error = mkDashDefault true;
+        formatters_by_ft = config'.formatters;
       };
     };
     languages = config'.lsp.lspServers // config'.lsp.additionalConfig;

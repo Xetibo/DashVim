@@ -4,6 +4,7 @@
   ...
 }:
 with pkgs; [
+  lldb
   netcoredbg
   stable.roslyn-ls
   vscode-js-debug

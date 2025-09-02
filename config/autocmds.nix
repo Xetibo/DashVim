@@ -1,8 +1,4 @@
-{
-  lib,
-  config',
-  ...
-}: {
+{lib, ...}: {
   vim.augroups = [
     {name = "custom_theme ";}
     {name = "highlight_yank";}
@@ -11,44 +7,6 @@
     {name = "filetypes";}
   ];
   vim.autocmds = [
-    # {
-    #   desc = "Roslyn init";
-    #   event = ["FileType"];
-    #   group = "filetypes";
-    #   pattern = ["cs"];
-    #   callback =
-    #     lib.generators.mkLuaInline
-    #     /*
-    #     lua
-    #     */
-    #     ''
-    #       function()
-    #         require("easy-dotnet").setup()
-    #         require("roslyn").setup({
-    #           exe = 'Microsoft.CodeAnalysis.LanguageServer',
-    #         })
-    #       end'';
-    # }
-    {
-      desc = "Haskell mappings";
-      event = ["FileType"];
-      group = "filetypes";
-      pattern = ["haskell"];
-      callback = lib.mkIf config'.useDefaultKeybinds (
-        lib.generators.mkLuaInline
-        /*
-        lua
-        */
-        ''
-          function()
-                    local ht = require('haskell-tools')
-                    local bufnr = vim.api.nvim_get_current_buf()
-                    vim.keymap.set('n', '<leader>cE', ht.hoogle.hoogle_signature, {desc = "hoogle signature", buffer = bufnr})
-                    -- Evaluate all code snippets
-                    vim.keymap.set('n', '<leader>cS', ht.lsp.buf_eval_all, {desc = "evaluate", buffer = bufnr})
-                  end''
-      );
-    }
     {
       desc = "Neotree directory";
       event = ["BufEnter"];
@@ -98,10 +56,10 @@
         */
         ''
           function()
-                    local current_tab = vim.fn.tabpagenr()
-                    vim.cmd("tabdo wincmd =")
-                    vim.cmd("tabnext " .. current_tab)
-                  end'';
+            local current_tab = vim.fn.tabpagenr()
+            vim.cmd("tabdo wincmd =")
+            vim.cmd("tabnext " .. current_tab)
+          end'';
     }
     {
       desc = "Disable lsp-lines by default";
@@ -115,8 +73,8 @@
         */
         ''
           function()
-                    vim.diagnostic.config({ virtual_lines = false })
-                  end'';
+            vim.diagnostic.config({ virtual_lines = false })
+          end'';
     }
     {
       desc = "Add typst as filetype";
@@ -130,13 +88,13 @@
         */
         ''
           function()
-                    vim.filetype.add({
-                    	extension = {
-                    		typst = "typst",
-                    		typ = "typst",
-                    	},
-                    })
-                  end'';
+            vim.filetype.add({
+            	extension = {
+            		typst = "typst",
+            		typ = "typst",
+            	},
+            })
+          end'';
     }
     {
       desc = "Init lua";
@@ -156,22 +114,5 @@
             vim.opt_local.formatoptions:append({ c = true, r = true, o = true, q = true }) 
           end'';
     }
-    # TODO
-    # {
-    #   desc = "Init Nvim-colorizer";
-    #   event = ["BufEnter"];
-    #   group = "filetypes";
-    #   pattern = ["*"];
-    #   callback =
-    #     lib.generators.mkLuaInline
-    #     /*
-    #     lua
-    #     */
-    #     ''
-    #       function()
-    #         vim.cmd("ColorizerToggle")
-    #       end
-    #     '';
-    # }
   ];
 }
