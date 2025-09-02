@@ -2,12 +2,17 @@
   lib,
   config',
   mkDashDefault,
+  system,
   ...
 }: {
   vim = {
     clipboard = mkDashDefault {
       enable = true;
-      providers.wl-copy.enable = true;
+      providers.wl-copy.enable =
+        if (system == "x86_64-linux" || system == "aarch64-linux")
+        then true
+        else false;
+
       registers = "unnamedplus";
     };
 
