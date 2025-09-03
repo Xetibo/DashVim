@@ -8,9 +8,6 @@
     "neotest-rust" = mkDashDefault {
       package = neotest-rust;
     };
-    "neotest-vitest" = mkDashDefault {
-      package = neotest-vitest;
-    };
     "neotest-jest" = mkDashDefault {
       package = neotest-jest;
     };
@@ -50,10 +47,13 @@
   neotestAdapters = lib.attrsets.mapAttrsToList (name: _: defaultRequireFn name) neotestPlugins;
 in {
   vim = {
-    extraPlugins =
+    extraPlugins = with pkgs.vimPlugins;
       neotestPlugins
       // {
         # This is for plugins that can't be configured via the auto route above
+        "neotest-vitest" = mkDashDefault {
+          package = neotest-vitest;
+        };
       };
     lazy.plugins = with pkgs.vimPlugins; {
       "neotest" = mkDashDefault {
@@ -64,6 +64,19 @@ in {
             neotestAdapters
             ++ [
               # This is for plugins that can't be configured via the auto route above
+              (lib.generators.mkLuaInline
+                /*
+                lua
+                */
+                ''
+                  require('neotest-vitest') {
+                    vitestCommand = "pnpm vitest",
+                    vitestConfigFile = "./vite.config.ts",
+                    cwd = function()
+                      return vim.fn.getcwd()
+                    end,
+                  }
+                '')
             ];
         };
       };
