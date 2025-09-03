@@ -16,12 +16,21 @@
   };
 in {
   vim = {
-    treesitter.grammars = [
+    treesitter.grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
       treesitter-patterns
-      pkgs.vimPlugins.nvim-treesitter.builtGrammars.angular
-      pkgs.vimPlugins.nvim-treesitter.builtGrammars.typescript
-      pkgs.vimPlugins.nvim-treesitter.builtGrammars.javascript
-      pkgs.vimPlugins.nvim-treesitter.builtGrammars.html
+      angular
+      typescript
+      javascript
+      html
+      css
+      fsharp
+      c_sharp
+      rust
+      cpp
+      c
+      json
+      toml
+      yaml
     ];
     ui.colorizer.enable = mkDashDefault true;
     lazy.plugins = with pkgs.vimPlugins; {
