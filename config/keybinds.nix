@@ -6,7 +6,7 @@
 }: {
   vim = lib.mkIf config'.useDefaultKeybinds {
     binds.whichKey.register =
-      lib.attrsets.mapAttrs (_: value: mkDashDefault value) {
+      lib.attrsets.mapAttrs (_: mkDashDefault) {
         "<leader><b>" = "+Buffers";
         "<leader>t" = "+Neotest";
         "<leader>c" = "+Code";

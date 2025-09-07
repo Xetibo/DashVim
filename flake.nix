@@ -83,12 +83,13 @@
             packages = with pkgs;
               [
                 nuget
-                inputs.statix.packages.${system}.default
               ]
               ++ deps;
           };
           packages = {
             dependencies = deps;
+            lint = inputs.statix.packages.${system}.default;
+            format = pkgs.alejandra;
             default = package.neovim;
             minimal = custom.neovim;
             docs = import ./docs {

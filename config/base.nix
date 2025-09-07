@@ -18,7 +18,7 @@
 
     lineNumberMode = mkDashDefault "number";
 
-    globals = lib.attrsets.mapAttrs (name: value: mkDashDefault value) {
+    globals = lib.attrsets.mapAttrs (_: mkDashDefault) {
       fileencoding = "utf-8";
       spelllang = "en_us";
       shell = "fish";
@@ -35,7 +35,7 @@
       instant_username = config'.instantUsername;
     };
 
-    options = lib.attrsets.mapAttrs (name: value: mkDashDefault value) {
+    options = lib.attrsets.mapAttrs (_: mkDashDefault) {
       swapfile = true;
       wrap = false;
       showmode = true;

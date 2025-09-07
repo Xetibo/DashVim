@@ -1,0 +1,37 @@
+# inspired by https://github.com/danth/stylix/blob/master/.github/workflows/docs.yml
+name: PR check
+on:
+  pull_request:
+    branches: ["main"]
+jobs:
+  build:
+    name: check
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          extra-conf: |
+            extra-experimental-features = nix-command flakes pipe-operators
+      - name: Set up cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: action
+        uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: cache
+        uses: cachix/cachix-action@v16
+        with:
+          name: dashnix
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Linter check
+        run: nix run --no-write-lock-file github:${{ github.repository }}/${{ github.sha }}#lint -- check
+      - name: Format check
+        run: nix run --no-write-lock-file github:${{ github.repository }}/${{ github.sha }}#format -- --check .
+      - name: Build DashVim
+        run: |
+          nix -L build .#minimal
+          nix -L build
