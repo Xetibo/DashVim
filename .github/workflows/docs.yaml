@@ -1,5 +1,5 @@
 # by https://github.com/danth/stylix/blob/master/.github/workflows/docs.yml
-name: Docs
+name: Docs and Build
 
 on:
   push:
@@ -22,6 +22,15 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           extra-conf: |
             extra-experimental-features = nix-command flakes
+      - name: action
+        uses: cachix/install-nix-action@v25
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - name: cache
+        uses: cachix/cachix-action@v16
+        with:
+          name: oxirun
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
       - name: Set up cache
         uses: DeterminateSystems/magic-nix-cache-action@main
@@ -36,6 +45,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: public/
+
+      - name: Build DashVim
+        run: nix -L build github:${{ github.repository }}/${{ github.sha }}
 
   deploy:
     name: Deploy
