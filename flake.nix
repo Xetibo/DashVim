@@ -6,6 +6,7 @@
     nvf.url = "github:notashelf/nvf";
     flake-parts.url = "github:hercules-ci/flake-parts";
     base16.url = "github:SenchoPens/base16.nix";
+    statix.url = "github:oppiliappan/statix";
   };
 
   outputs = {flake-parts, ...} @ inputs:
@@ -51,7 +52,13 @@
               };
               lsp = {
                 useDefaultSpecialLspServers = true;
-                lspServers = {};
+                lspServers = {
+                  nix = {
+                    enable = true;
+                    lsp.enable = true;
+                  };
+                };
+                additionalConfig = {};
               };
             };
           package = import ./lib {
@@ -76,6 +83,7 @@
             packages = with pkgs;
               [
                 nuget
+                inputs.statix.packages.${system}.default
               ]
               ++ deps;
           };
