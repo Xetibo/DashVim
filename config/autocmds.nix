@@ -8,6 +8,25 @@
   ];
   vim.autocmds = [
     {
+      desc = "Replace html filetype for angular";
+      event = ["BufEnter"];
+      group = "filetypes";
+      pattern = ["*.html"];
+      callback =
+        lib.generators.mkLuaInline
+        /*
+        lua
+        */
+        ''
+          function()
+            ${(import ./luaFunctions.nix).isAngular}
+            local root_dir = Get_git_root().cwd
+            if is_angular_project(root_dir) then
+              vim.cmd("set filetype=htmlangular")
+            end
+          end'';
+    }
+    {
       desc = "Neotree directory";
       event = ["BufEnter"];
       group = "neotree";

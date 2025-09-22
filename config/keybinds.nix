@@ -513,7 +513,7 @@
           "v"
         ];
         key = "<A-f>";
-        action = ":Neotree toggle focus right reveal_force_cwd=true<CR>";
+        action = ":Neotree toggle focus right<CR>";
         desc = "File Tree";
         noremap = true;
         silent = true;

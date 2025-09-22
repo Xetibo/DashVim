@@ -35,7 +35,6 @@ in {
       home.packages =
         [
           (lib.mkIf (config'.package != null) config'.package)
-          stable.roslyn-ls
           pkgs.yazi
           pkgs.ripgrep
           pkgs.fd

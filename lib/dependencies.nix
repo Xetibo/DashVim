@@ -14,7 +14,6 @@ in
     easyDotnet
     lldb
     netcoredbg
-    stable.roslyn-ls
     vscode-js-debug
     yazi
     ripgrep
