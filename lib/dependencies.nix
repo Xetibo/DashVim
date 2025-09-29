@@ -5,8 +5,8 @@
 }: let
   easyDotnet = pkgs.buildDotnetGlobalTool {
     pname = "EasyDotnet";
-    version = "1.0.28";
-    nugetSha256 = "sha256-pVtueIzBjthNm3tmxl1ld/yxdCW0Swj5r/pOVoj6tuc=";
+    version = "2.2.28";
+    nugetSha256 = "sha256-udPf2Ws6B2YflySz+hd+vFrIgUVwsXPt2PxZQMovKxI=";
     executables = ["dotnet-easydotnet"];
   };
 in

@@ -10,10 +10,10 @@
       "ng.nvim" = mkDashDefault {
         package = ng-nvim;
       };
+    };
+    extraPlugins = with pkgs.vimPlugins; {
       "easy-dotnet.nvim" = mkDashDefault {
         package = easy-dotnet-nvim;
-        setupModule = "easy-dotnet";
-        ft = ["cs"];
       };
     };
     lsp = {
