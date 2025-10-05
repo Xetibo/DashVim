@@ -68,6 +68,8 @@
         formatters_by_ft = config'.formatters;
       };
     };
-    languages = config'.lsp.lspServers // config'.lsp.additionalConfig;
+    languages =
+      config'.lsp.lspServers
+      // config'.lsp.additionalConfig;
   };
 }

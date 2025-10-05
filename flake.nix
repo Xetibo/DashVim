@@ -28,7 +28,6 @@
         ];
 
         perSystem = {
-          pkgs,
           system,
           lib,
           ...
@@ -38,6 +37,22 @@
             config = {
               allowBroken = true;
             };
+            overlays = [
+              (_: _: {
+                statix = inputs.statix.packages.${system}.default;
+              })
+            ];
+          };
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            config = {
+              allowBroken = true;
+            };
+            overlays = [
+              (_: _: {
+                statix = inputs.statix.packages.${system}.default;
+              })
+            ];
           };
           deps = import ./lib/dependencies.nix {inherit pkgs stable;};
           customConfig =
@@ -71,13 +86,7 @@
           };
         in {
           _module.args = {
-            pkgs = import inputs.nixpkgs {
-              inherit system;
-              config = {
-                allowBroken = true;
-              };
-            };
-            inherit stable;
+            inherit stable pkgs;
           };
           devShells.default = pkgs.mkShell {
             packages = with pkgs;
