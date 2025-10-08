@@ -69,12 +69,15 @@
       };
       illuminate.enable = mkDashDefault true;
     };
-    utility.snacks-nvim = mkDashDefault {
-      enable = true;
-      setupOpts = {
-        bigfile.enabled = true;
-        input.enabled = true;
-        picker.enabled = true;
+    utility = {
+      direnv.enable = mkDashDefault true;
+      snacks-nvim = mkDashDefault {
+        enable = true;
+        setupOpts = {
+          bigfile.enabled = true;
+          input.enabled = true;
+          picker.enabled = true;
+        };
       };
     };
 

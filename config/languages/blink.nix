@@ -1,7 +1,6 @@
 {
   lib,
   config',
-  mkDashDefault,
   ...
 }: {
   vim.autocomplete.blink-cmp = {
