@@ -8,7 +8,7 @@
     friendly-snippets.enable = true;
     setupOpts = {
       fuzzy = {
-        implementation = "prefer_rust";
+        implementation = "rust";
         prebuilt_binaries = {
           download = false;
         };
@@ -25,7 +25,7 @@
         "<Enter>" = [
           "accept"
           "fallback"
-        ];
+        ]; 
         "<S-Tab>" = [
           "select_prev"
           "fallback"
@@ -96,6 +96,8 @@
           "lsp"
           "path"
           "buffer"
+          "snippets"
+          (lib.mkIf config'.agent.enable "codecompanion")
         ];
         providers = {
           lsp = {

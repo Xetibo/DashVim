@@ -14,6 +14,9 @@
       orig @ {lib, ...}: let
         config' = {
           lsp.special.useAngular = true;
+          agent = {
+            enable = true;
+          };
         };
       in {
         imports = [
