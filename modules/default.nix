@@ -275,10 +275,6 @@
             enable = true;
             lsp.enable = true;
           };
-          julia = {
-            enable = true;
-            lsp.enable = true;
-          };
           markdown = {
             enable = true;
             lsp.enable = true;
