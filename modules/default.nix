@@ -142,6 +142,7 @@
         typescriptreact = prettier;
         markdown = prettier;
         php = prettier;
+        csharp = ["csharpier"];
         fsharp = ["fantomas"];
         python = ["black"];
         lua = ["stylua"];
@@ -201,10 +202,6 @@
             lsp.enable = true;
           };
           fsharp = {
-            enable = true;
-            lsp.enable = true;
-          };
-          csharp = {
             enable = true;
             lsp.enable = true;
           };

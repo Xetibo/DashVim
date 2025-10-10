@@ -34,6 +34,12 @@
           filetypes = ["htmlangular" "typescript" "html"];
           root_markers = [".git" "package.json"];
         };
+        csharp = mkDashDefault {
+          enable = true;
+          cmd = ["${pkgs.roslyn-ls}/bin/Microsoft.CodeAnalysis.LanguageServer" "--logLevel" "Information" "--extensionLogDirectory" "~/.local/cache" "--stdio"];
+          filetypes = ["cs"];
+          root_markers = [".git" "*.sln"];
+        };
         ts-ls = mkDashDefault {
           enable = true;
           cmd = ["${pkgs.typescript-language-server}/bin/typescript-language-server" "--stdio"];

@@ -97,7 +97,6 @@
           "path"
           "buffer"
           "snippets"
-          (lib.mkIf config'.agent.enable "codecompanion")
         ];
         providers = {
           lsp = {
