@@ -260,10 +260,10 @@
             enable = true;
             lsp.enable = true;
           };
-          haskell = {
-            enable = true;
-            lsp.enable = true;
-          };
+          # haskell = {
+          #   enable = true;
+          #   lsp.enable = true;
+          # };
           html = {
             enable = true;
           };
