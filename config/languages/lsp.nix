@@ -36,7 +36,7 @@
         };
         csharp = mkDashDefault {
           enable = true;
-          cmd = ["${pkgs.roslyn-ls}/bin/Microsoft.CodeAnalysis.LanguageServer" "--logLevel" "Information" "--extensionLogDirectory" "~/.local/cache" "--stdio"];
+          cmd = ["${pkgs.roslyn-ls}/bin/Microsoft.CodeAnalysis.LanguageServer" "--logLevel" "Information" "--extensionLogDirectory" ".roslyn-cache" "--stdio"];
           filetypes = ["cs"];
           root_markers = [".git" "*.sln"];
         };
