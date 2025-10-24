@@ -34,12 +34,12 @@
           filetypes = ["htmlangular" "typescript" "html"];
           root_markers = [".git" "package.json"];
         };
-        csharp = mkDashDefault {
-          enable = true;
-          cmd = ["${pkgs.roslyn-ls}/bin/Microsoft.CodeAnalysis.LanguageServer" "--logLevel" "Information" "--extensionLogDirectory" ".roslyn-cache" "--stdio"];
-          filetypes = ["cs"];
-          root_markers = [".git" "*.sln"];
-        };
+        # csharp = mkDashDefault {
+        #   enable = true;
+        #   cmd = ["${pkgs.roslyn-ls}/bin/Microsoft.CodeAnalysis.LanguageServer" "--logLevel" "Information" "--extensionLogDirectory" ".roslyn-cache" "--stdio"];
+        #   filetypes = ["cs"];
+        #   root_markers = ["*.csproj" ".git" "NuGet.Config"];
+        # };
         ts-ls = mkDashDefault {
           enable = true;
           cmd = ["${pkgs.typescript-language-server}/bin/typescript-language-server" "--stdio"];

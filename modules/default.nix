@@ -205,6 +205,13 @@
             enable = true;
             lsp.enable = true;
           };
+          csharp = {
+            enable = true;
+            lsp = {
+              enable = true;
+              servers = "omnisharp";
+            };
+          };
           css = {
             enable = true;
             lsp.enable = true;
@@ -295,7 +302,7 @@
           rust = {
             enable = true;
             lsp.enable = true;
-            crates.enable = true;
+            extensions.crates-nvim.enable = true;
           };
           gleam = {
             enable = true;
