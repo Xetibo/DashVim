@@ -37,6 +37,28 @@ in {
         package = adopure-nvim;
       };
     };
+    utility.diffview-nvim = {
+      enable = true;
+      setupOpts = {
+        keymaps = let
+          movement =
+            lib.generators.mkLuaInline
+            /*
+            lua
+            */
+            ''
+              {
+                { "n", "l",  require("diffview.actions").prev_entry, { desc = "Bring the cursor to the previous file entry" } },
+                { "n", "k",  require("diffview.actions").next_entry, { desc = "Bring the cursor to the next file entry" } },
+              }
+            '';
+        in
+          lib.mkIf config'.useDefaultKeybinds {
+            file_panel = movement;
+            file_history_panel = movement;
+          };
+      };
+    };
     git = mkDashDefault {
       gitsigns = {
         enable = true;
@@ -51,6 +73,10 @@ in {
         enable = true;
         setupOpts = {
           use_default_keymaps = false;
+          integrations = {
+            telescope = true;
+            diffview = true;
+          };
           mappings = lib.mkIf config'.useDefaultKeybinds {
             commit_editor = {
               "q" = "Close";
@@ -107,7 +133,6 @@ in {
               "B" = "BisectPopup";
               "c" = "CommitPopup";
               "f" = "FetchPopup";
-              "l" = "LogPopup";
               "m" = "MergePopup";
               "p" = "PullPopup";
               "r" = "RebasePopup";
@@ -115,8 +140,8 @@ in {
               "w" = "WorktreePopup";
             };
             status = {
-              l = "MoveUp";
-              k = "MoveDown";
+              "l" = "MoveUp";
+              "k" = "MoveDown";
               "q" = "Close";
               "o" = "OpenTree";
               "I" = "InitRepo";

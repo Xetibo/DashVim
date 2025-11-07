@@ -255,12 +255,6 @@
       }
       {
         mode = "n";
-        key = "<leader>gn";
-        action = "<CMD>Neogit <CR>";
-        desc = "Neogit";
-      }
-      {
-        mode = "n";
         key = "<leader>gg";
         action = ''<CMD>lua require("telescope.builtin").git_status()<CR>'';
         desc = "Gitui";
@@ -376,6 +370,42 @@
         action = "<CMD>wincmd k<CR>";
         noremap = true;
         silent = true;
+      }
+
+      # git+diff
+      {
+        mode = [
+          "n"
+          "v"
+        ];
+        key = "<leader>gf";
+        action = "<CMD>DiffviewFileHistory %s<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Diffview File history (current file)";
+      }
+      {
+        mode = [
+          "n"
+          "v"
+        ];
+        key = "<leader>gF";
+        action = "<CMD>DiffviewFileHistory<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Diffview File history (all files)";
+      }
+      {
+        mode = "n";
+        key = "<leader>gn";
+        action = "<CMD>Neogit <CR>";
+        desc = "Neogit dashboard";
+      }
+      {
+        mode = "n";
+        key = "<leader>gd";
+        action = "<CMD>Neogit diff <CR>";
+        desc = "Neogit diff";
       }
 
       # code action
@@ -590,6 +620,21 @@
         key = "<leader>di";
         action = ''<CMD>lua require("dap").step_into()<CR>'';
         desc = "Step Into";
+      }
+      {
+        mode = "n";
+        key = "<leader>de";
+        action = ''
+          <cmd>lua
+            local dap = require('dap')
+            dap.listeners.after.event_initialized["set_exception_breakpoints"] = function()
+            	dap.set_exception_breakpoints({ "raised", "uncaught" })
+            end
+          <cr>
+        '';
+        noremap = true;
+        silent = true;
+        desc = "Stop on exceptions";
       }
       {
         mode = "n";

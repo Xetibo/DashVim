@@ -208,8 +208,8 @@
           csharp = {
             enable = true;
             lsp = {
-              enable = true;
-              servers = "omnisharp";
+              enable = false;
+              servers = "roslyn_ls";
             };
           };
           css = {

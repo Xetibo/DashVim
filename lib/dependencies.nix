@@ -1,8 +1,4 @@
-{
-  pkgs,
-  stable,
-  ...
-}: let
+{pkgs, ...}: let
   easyDotnet = pkgs.buildDotnetGlobalTool {
     pname = "EasyDotnet";
     version = "2.2.28";
@@ -20,4 +16,5 @@ in
     fd
     zoxide
     gh
+    roslyn-ls
   ]

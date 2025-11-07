@@ -10,6 +10,16 @@
       "ng.nvim" = mkDashDefault {
         package = ng-nvim;
       };
+      "roslyn.nvim" = mkDashDefault {
+        package = roslyn-nvim;
+        setupModule = "roslyn";
+        event = [
+          {
+            event = "FileType";
+            pattern = "cs";
+          }
+        ];
+      };
     };
     extraPlugins = with pkgs.vimPlugins; {
       "easy-dotnet.nvim" = mkDashDefault {
@@ -54,6 +64,8 @@
               function(client, bufnr)
                 ${(import ../luaFunctions.nix).isAngular}
 
+                -- This shit is the most annoying thing ever
+                client.server_capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
                 local root_dir = client.config.root_dir
                 if is_angular_project(root_dir) then
                   client.server_capabilities.renameProvider = false
