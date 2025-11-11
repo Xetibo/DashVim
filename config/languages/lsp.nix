@@ -65,7 +65,7 @@
                 ${(import ../luaFunctions.nix).isAngular}
 
                 -- This shit is the most annoying thing ever
-                client.server_capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
+                client.server_capabilities.insertReplaceSupport = false
                 local root_dir = client.config.root_dir
                 if is_angular_project(root_dir) then
                   client.server_capabilities.renameProvider = false
