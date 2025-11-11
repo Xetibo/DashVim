@@ -95,7 +95,7 @@
       {
         mode = "n";
         key = "<leader>ms";
-        action = "<cmd>lua require('spectre').toggle()<cr>";
+        action = "<cmd>lua require('grug-far').open({ transient = true })<cr>";
         noremap = true;
         silent = true;
       }

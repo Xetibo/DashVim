@@ -54,9 +54,9 @@ in {
         package = multicursor-nvim;
         setupModule = "multicursor-nvim";
       };
-      "nvim-spectre" = mkDashDefault {
-        package = nvim-spectre;
-        setupModule = "spectre";
+      "grug-far.nvim" = mkDashDefault {
+        package = grug-far-nvim;
+          setupModule = "grug-far";
       };
     };
   };
