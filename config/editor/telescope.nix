@@ -56,6 +56,18 @@
             results = ["─" "│" "─" "│" "╭" "╮" "╯" "╰"];
           };
           defaults = {
+            path_display =
+              lib.generators.mkLuaInline
+              /*
+              lua
+              */
+              ''
+                function(opts, path)
+                    local tail = require("telescope.utils").path_tail(path)
+                    local dir = path:sub(1, -(#tail + 2))
+                    return string.format("%s (%s)", tail, dir)
+                end
+              '';
             layout_strategy = "flex";
             layout_config = {
               flex = {
