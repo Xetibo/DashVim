@@ -143,6 +143,7 @@
         markdown = prettier;
         php = prettier;
         csharp = ["csharpier"];
+        cs = ["csharpier"];
         fsharp = ["fantomas"];
         python = ["black"];
         lua = ["stylua"];
