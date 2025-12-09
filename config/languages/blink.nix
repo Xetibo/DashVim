@@ -25,7 +25,7 @@
         "<Enter>" = [
           "accept"
           "fallback"
-        ]; 
+        ];
         "<S-Tab>" = [
           "select_prev"
           "fallback"

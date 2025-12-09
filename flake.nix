@@ -98,12 +98,14 @@
               ]
               ++ deps;
           };
-          packages = {
+          packages = let
+            mkPkg = neovim: import ./lib/env.nix {inherit pkgs neovim;};
+          in {
             dependencies = deps;
             lint = inputs.statix.packages.${system}.default;
             format = pkgs.alejandra;
-            default = package.neovim;
-            minimal = custom.neovim;
+            default = mkPkg package.neovim;
+            minimal = mkPkg custom.neovim;
             docs = import ./docs {
               inherit inputs pkgs lib stable;
             };

@@ -23,7 +23,10 @@ in {
 
     package = mkOption {
       type = with types; nullOr package;
-      default = dashvim.neovim;
+      default = import ../lib/env.nix {
+        inherit pkgs;
+        inherit (dashvim) neovim;
+      };
       example = null;
       description = mdDoc ''
         Package to run

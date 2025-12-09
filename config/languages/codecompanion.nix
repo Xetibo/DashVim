@@ -13,6 +13,7 @@
         setupOpts =
           {
             display.chat.window.position = "left";
+            ignore_warnings = true;
             strategies = {
               agent = {
                 adapter = config'.agent.variant;

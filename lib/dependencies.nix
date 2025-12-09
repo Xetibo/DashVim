@@ -17,4 +17,9 @@ in
     zoxide
     gh
     roslyn-ls
+    git
+    direnv
+    nerd-fonts.jetbrains-mono
+    kitty
+    fish
   ]

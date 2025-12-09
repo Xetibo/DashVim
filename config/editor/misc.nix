@@ -56,7 +56,7 @@ in {
       };
       "grug-far.nvim" = mkDashDefault {
         package = grug-far-nvim;
-          setupModule = "grug-far";
+        setupModule = "grug-far";
       };
     };
   };
