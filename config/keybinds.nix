@@ -98,6 +98,7 @@
         action = "<cmd>lua require('grug-far').open({ transient = true })<cr>";
         noremap = true;
         silent = true;
+        desc = "Global Search&Replace";
       }
 
       # movement

@@ -57,7 +57,6 @@
               })
             ];
           };
-          deps = import ./lib/dependencies.nix {inherit pkgs stable;};
           customConfig =
             lib.attrsets.overrideExisting
             orig.config.programs.dashvim
@@ -79,6 +78,9 @@
                 additionalConfig = {};
               };
             };
+          deps = import ./lib/dependencies.nix {
+            inherit pkgs stable system inputs;
+          };
           package = import ./lib {
             inherit system inputs pkgs lib stable;
             config' = orig.config.programs.dashvim;
@@ -99,7 +101,10 @@
               ++ deps;
           };
           packages = let
-            mkPkg = neovim: import ./lib/env.nix {inherit pkgs neovim;};
+            mkPkg = neovim:
+              import ./lib/env.nix {
+                inherit pkgs neovim system inputs;
+              };
           in {
             dependencies = deps;
             lint = inputs.statix.packages.${system}.default;
@@ -124,4 +129,15 @@
         };
       }
     );
+
+  nixConfig = {
+    extra-substituters = [
+      "https://cache.nixos.org"
+      "https://nix-community.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+  };
 }

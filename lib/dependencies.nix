@@ -22,4 +22,6 @@ in
     nerd-fonts.jetbrains-mono
     kitty
     fish
+    neovide
+    opencode
   ]

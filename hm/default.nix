@@ -8,7 +8,10 @@ self: {
 }: let
   config' = config.programs.dashvim;
   inherit (pkgs.stdenv.hostPlatform) system;
-  deps = import ../lib/dependencies.nix {inherit pkgs stable;};
+  deps = import ../lib/dependencies.nix {
+    inherit pkgs stable system;
+    inputs = self;
+  };
   dashvim = import ../lib {
     inherit system pkgs config' lib stable;
     inherit (self) inputs;
@@ -24,7 +27,8 @@ in {
     package = mkOption {
       type = with types; nullOr package;
       default = import ../lib/env.nix {
-        inherit pkgs;
+        inherit pkgs system;
+        inputs = self;
         inherit (dashvim) neovim;
       };
       example = null;

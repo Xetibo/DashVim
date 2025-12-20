@@ -2,6 +2,7 @@
   config',
   pkgs,
   mkDashDefault,
+  lib,
   ...
 }: {
   vim = {
@@ -13,20 +14,32 @@
         setupOpts =
           {
             display.chat.window.position = "left";
-            ignore_warnings = true;
-            strategies = {
-              agent = {
-                adapter = config'.agent.variant;
-              };
-              chat = {
-                opts.completion_provider = "blink";
-                adapter = config'.agent.variant;
-              };
-              inline = {
-                adapter = config'.agent.variant;
-              };
-              cmd = {
-                adapter = config'.agent.variant;
+            adapters = {
+              acp = {
+                opencode =
+                  lib.mkLuaInline
+                  /*
+                  lua
+                  */
+                  ''
+                    function()
+                      return require("codecompanion.adapters").extend("opencode", {
+                        commands = {
+                          -- The default uses the opencode/config.json value
+                          default = {
+                            "opencode",
+                            "acp",
+                          },
+                          copilot_sonnet_4_5 = {
+                            "opencode",
+                            "acp",
+                            "-m",
+                            "github-copilot/claude-sonnet-4.5",
+                          },
+                        }
+                      })
+                    end
+                  '';
               };
             };
           }
