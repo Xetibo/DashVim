@@ -61,6 +61,8 @@ in {
                 overlay0 = change_color("${scheme.base02}", 59.0118)
                 overlay1 = change_color("${scheme.base03}", 58.0118)
                 overlay2 = change_color("${scheme.base04}", 59.0118)
+
+
                 vim.cmd("highlight  EndOfBufferxxx guifg=#${scheme.base00}")
                 vim.cmd("highlight  Directoryxxx guifg=#${scheme.base0D}")
                 vim.cmd("highlight  ErrorMsgxxx cterm=bold,italic gui=bold,italic guifg=#${scheme.base08}")
