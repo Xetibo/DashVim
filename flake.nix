@@ -101,10 +101,11 @@
               ++ deps;
           };
           packages = let
-            mkPkg = neovim:
+            mkPkgBase = neovim:
               import ./lib/env.nix {
                 inherit pkgs neovim system inputs;
               };
+            mkPkg = import ./lib/mkPkg.nix {inherit pkgs mkPkgBase;};
           in {
             dependencies = deps;
             lint = inputs.statix.packages.${system}.default;

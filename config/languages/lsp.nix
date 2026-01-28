@@ -18,6 +18,14 @@
             event = "FileType";
             pattern = "typescript";
           }
+          {
+            event = "FileType";
+            pattern = "html";
+          }
+          {
+            event = "FileType";
+            pattern = "htmlangular";
+          }
         ];
         setupOpts = {
           settings = {
@@ -35,6 +43,7 @@
               "@styled/typescript-styled-plugin"
               "@effect/language-service"
               "@angular/language-service"
+              "typescript-eslint-language-service"
             ];
           };
         };
@@ -72,6 +81,22 @@
           cmd = ["${pkgs.angular-language-server}/bin/ngserver" "--stdio"];
           filetypes = ["htmlangular" "typescript" "html"];
           root_markers = [".git" "package.json"];
+          on_attach =
+            lib.generators.mkLuaInline
+            /*
+            lua
+            */
+            ''
+              function(client, bufnr)
+                -- This shit is the most annoying thing ever
+                client.server_capabilities.insertReplaceSupport = false
+                client.server_capabilities.renameProvider = false
+                client.server_capabilities.referencesProvider = false
+                client.server_capabilities.documentFormattingProvider = false
+                client.server_capabilities.documentRangeFormattingProvider = false
+                client.server_capabilities.documentOnTypeFormattingProvider = false
+              end
+            '';
         };
         # csharp = mkDashDefault {
         #   enable = true;

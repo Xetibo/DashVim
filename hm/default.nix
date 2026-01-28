@@ -16,6 +16,12 @@ self: {
     inherit system pkgs config' lib stable;
     inherit (self) inputs;
   };
+  mkPkgBase = neovim:
+    import ../lib/env.nix {
+      inherit pkgs system neovim;
+      inputs = self;
+    };
+  mkPkg = import ../lib/mkPkg.nix {inherit pkgs mkPkgBase;};
 in {
   imports = [
     (import ../modules {inherit lib config';})
@@ -26,11 +32,7 @@ in {
 
     package = mkOption {
       type = with types; nullOr package;
-      default = import ../lib/env.nix {
-        inherit pkgs system;
-        inputs = self;
-        inherit (dashvim) neovim;
-      };
+      default = mkPkg dashvim.neovim;
       example = null;
       description = mdDoc ''
         Package to run
