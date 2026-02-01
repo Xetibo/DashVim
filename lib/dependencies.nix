@@ -1,4 +1,8 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  inputs,
+  ...
+}: let
   easyDotnet = pkgs.buildDotnetGlobalTool {
     pname = "EasyDotnet";
     version = "2.2.28";
@@ -24,4 +28,5 @@ in
     fish
     neovide
     opencode
+    inputs.sqlit.packages.${system}.sqlit
   ]

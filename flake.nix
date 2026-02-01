@@ -7,6 +7,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     base16.url = "github:SenchoPens/base16.nix";
     statix.url = "github:oppiliappan/statix";
+    sqlit.url = "github:Maxteabag/sqlit";
   };
 
   outputs = {flake-parts, ...} @ inputs:

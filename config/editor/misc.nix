@@ -14,6 +14,18 @@
     };
     meta.homepage = "https://github.com/OXY2DEV/tree-sitter-lua_patterns";
   };
+
+  sqlit = pkgs.vimUtils.buildVimPlugin {
+    pname = "sqlit.nvim";
+    version = "13.03.2025";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "Maxteabag";
+      repo = "sqlit.nvim";
+      rev = "ecac5bea884379f50ef40c1bde93025ccfb21d58";
+      hash = "sha256-CqMvJmgjsvs3oTQX4WWJssF0zNJ7cDe9b0CcRP/ALpY=";
+    };
+  };
 in {
   vim = {
     treesitter.grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
@@ -34,6 +46,10 @@ in {
     ];
     ui.colorizer.enable = mkDashDefault true;
     lazy.plugins = with pkgs.vimPlugins; {
+      "sqlit.nvim" = mkDashDefault {
+        package = sqlit;
+        setupModule = "sqlit";
+      };
       "instant.nvim" = mkDashDefault {
         package = instant-nvim;
       };

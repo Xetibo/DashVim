@@ -100,6 +100,14 @@
         silent = true;
         desc = "Global Search&Replace";
       }
+      {
+        mode = "n";
+        key = "<leader>mo";
+        action = "<cmd>lua require('sqlit').open()<cr>";
+        noremap = true;
+        silent = true;
+        desc = "Database Edit";
+      }
 
       # movement
       {
