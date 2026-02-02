@@ -122,10 +122,10 @@
         flake = _: rec {
           nixosModules = {
             home-manager = homeManagerModules.default;
-            dashvim = import ./hm inputs.self;
+            dashvim = import ./hm inputs;
           };
           homeManagerModules = rec {
-            dashvim = import ./hm inputs.self;
+            dashvim = import ./hm inputs;
             default = dashvim;
           };
         };

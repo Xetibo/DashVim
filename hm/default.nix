@@ -1,4 +1,4 @@
-self: {
+inputs: {
   lib,
   config,
   pkgs,
@@ -9,17 +9,15 @@ self: {
   config' = config.programs.dashvim;
   inherit (pkgs.stdenv.hostPlatform) system;
   deps = import ../lib/dependencies.nix {
-    inherit pkgs stable system;
-    inputs = self;
+    inherit pkgs stable system inputs;
   };
   dashvim = import ../lib {
     inherit system pkgs config' lib stable;
-    inherit (self) inputs;
+    inherit inputs;
   };
   mkPkgBase = neovim:
     import ../lib/env.nix {
-      inherit pkgs system neovim;
-      inputs = self;
+      inherit pkgs system neovim inputs;
     };
   mkPkg = import ../lib/mkPkg.nix {inherit pkgs mkPkgBase;};
 in {

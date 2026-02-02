@@ -6,10 +6,15 @@
   ...
 }: let
   conf_scheme = config'.colorscheme;
-  parsed =
+  parsedBase =
     if builtins.isAttrs conf_scheme
     then conf_scheme
     else "${pkgs.base16-schemes}/share/themes/${conf_scheme}.yaml";
+  accentColor =
+    if config'.accentColor != null
+    then config'.accentColor
+    else parsedBase.base0D;
+  parsed = parsedBase // {base0D = accentColor;};
   base16Lib = pkgs.callPackage base16.lib {};
   scheme = base16Lib.mkSchemeAttrs parsed;
 in {

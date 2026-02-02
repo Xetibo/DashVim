@@ -52,6 +52,14 @@
         or a path to a custom yaml file.
       '';
     };
+    accentColor = lib.mkOption {
+      default = null;
+      example = "F7768E";
+      type = with lib.types; nullOr str;
+      description = ''
+        Overrides base0D as it is most widely used as primary color.
+      '';
+    };
 
     enableNvfDefaultKeybinds = lib.mkOption {
       default = false;
