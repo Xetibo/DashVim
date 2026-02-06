@@ -5,6 +5,7 @@
     {name = "resize";}
     {name = "neotree";}
     {name = "filetypes";}
+    {name = "keybinds";}
   ];
   vim.autocmds = [
     {

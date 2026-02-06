@@ -488,6 +488,12 @@
         action = ''<CMD>AdoPure<CR>'';
         desc = "Azure interaction";
       }
+      {
+        mode = "n";
+        key = "<leader>gl";
+        action = ''<CMD>SetupLineage<CR>'';
+        desc = "Git line history";
+      }
 
       # ng.nvim
       {

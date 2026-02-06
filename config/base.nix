@@ -85,6 +85,7 @@
     extraLuaFiles =
       [
         ./lua/yankAndPaste.lua
+        ./lua/gitlineage.lua
         ./lua/dap.lua
       ]
       ++ config'.additionalLuaConfigFiles;

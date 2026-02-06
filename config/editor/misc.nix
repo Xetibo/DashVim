@@ -26,6 +26,17 @@
       hash = "sha256-CqMvJmgjsvs3oTQX4WWJssF0zNJ7cDe9b0CcRP/ALpY=";
     };
   };
+  gitlineage = pkgs.vimUtils.buildVimPlugin {
+    pname = "gitlineage.nvim";
+    version = "06.02.2026";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "LionyxML";
+      repo = "gitlineage.nvim";
+      rev = "02896814949798551238235cc66693f1c143626d";
+      hash = "sha256-BGCE/SosircJu9JDz92JKlMgNw7CEl6BeIDDFEvGWFs=";
+    };
+  };
 in {
   vim = {
     treesitter.grammars = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
@@ -49,6 +60,10 @@ in {
       "sqlit.nvim" = mkDashDefault {
         package = sqlit;
         setupModule = "sqlit";
+      };
+      "gitlineage.nvim" = mkDashDefault {
+        package = gitlineage;
+        setupModule = "gitlineage";
       };
       "instant.nvim" = mkDashDefault {
         package = instant-nvim;
