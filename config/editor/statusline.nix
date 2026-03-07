@@ -3,6 +3,11 @@
   mkDashDefault,
   ...
 }: {
+  vim.extraPlugins = with pkgs.vimPlugins; {
+    "nvim-web-devicons" = mkDashDefault {
+      package = nvim-web-devicons;
+    };
+  };
   vim.lazy.plugins = with pkgs.vimPlugins; {
     "lualine.nvim" = mkDashDefault {
       package = lualine-nvim;
