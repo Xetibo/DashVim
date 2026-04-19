@@ -57,6 +57,19 @@
             pattern = "cs";
           }
         ];
+        setupOpts = {
+          # Search parent directories for solution files, not just cwd.
+          # Fixes "LSP not attaching" when the .sln is above the opened file.
+          broad_search = true;
+
+          # Once a solution is selected, lock it so re-opening files doesn't
+          # trigger re-selection or re-initialization (avoids needing restarts).
+          lock_target = true;
+
+          # Let roslyn own file watching instead of neovim competing with it.
+          # Switch to "off" if you notice performance issues.
+          filewatching = "roslyn";
+        };
       };
     };
     extraPlugins = with pkgs.vimPlugins; {
