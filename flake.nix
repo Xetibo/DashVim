@@ -40,6 +40,8 @@
             inherit system;
             config = {
               allowBroken = true;
+              # Ok look, I get it, these neovim plugins have *no* license, but common.
+              allowUnfree = true;
             };
             overlays = [
               (_: _: {
@@ -51,6 +53,8 @@
             inherit system;
             config = {
               allowBroken = true;
+              # Ok look, I get it, these neovim plugins have *no* license, but common.
+              allowUnfree = true;
             };
             overlays = [
               (_: _: {

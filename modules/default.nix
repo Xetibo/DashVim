@@ -236,7 +236,7 @@
             enable = true;
             lsp = {
               enable = false;
-              servers = "roslyn_ls";
+              servers = ["roslyn-ls"];
             };
           };
           css = {
