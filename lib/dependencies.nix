@@ -30,4 +30,5 @@ in
     neovide
     opencode
     inputs.sqlit.packages.${system}.sqlit
+    prettierd
   ]

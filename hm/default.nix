@@ -47,6 +47,7 @@ in {
           pkgs.fd
           pkgs.zoxide
           pkgs.gh
+          pkgs.prettierd
         ]
         ++ deps;
     }
