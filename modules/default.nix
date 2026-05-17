@@ -243,10 +243,6 @@
             enable = true;
             lsp.enable = true;
           };
-          tailwind = {
-            enable = true;
-            lsp.enable = true;
-          };
           terraform = {
             enable = true;
             lsp.enable = true;
@@ -348,6 +344,14 @@
         type = with lib.types; attrsOf anything;
         description = ''
           Nvf LSP config -> vim.languages
+        '';
+      };
+
+      tailwind.enable = lib.mkOption {
+        default = true;
+        example = false;
+        description = ''
+          Whether to use tailwind lsp
         '';
       };
 

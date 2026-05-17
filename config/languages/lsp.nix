@@ -78,6 +78,7 @@
       };
     };
     lsp = {
+      presets.tailwindcss-language-server.enable = config'.lsp.tailwind.enable;
       enable = true;
       trouble = {
         enable = true;
