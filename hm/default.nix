@@ -50,6 +50,11 @@ in {
           pkgs.prettierd
         ]
         ++ deps;
+      home.file = {
+        ".opencode/skills/caveman/SKILL.md".source = ../.opencode/skills/caveman/SKILL.md;
+        ".opencode/skills/compact-context/SKILL.md".source = ../.opencode/skills/compact-context/SKILL.md;
+        "opencode.json".source = ../opencode.json;
+      };
     }
     // lib.optionalAttrs (options ? environment.systemPackages) {
       environment.systemPackages = lib.optional (config'.package != null) config'.package;

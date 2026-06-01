@@ -16,7 +16,7 @@
         "<leader>l" = "+Tools";
         "<leader>m" = "+Misc";
         "<leader>s" = "+Swap";
-        "<leader>o" = "+Run Actions";
+        "<leader>o" = "+OpenCode/Run";
       }
       // {
         "<leader>a" = lib.mkIf config'.agent.enable "+CodeCompanion";
@@ -370,6 +370,35 @@
         mode = "i";
         key = "<A-k>";
         action = "<CMD>wincmd j<CR>";
+        noremap = true;
+        silent = true;
+      }
+      # terminal mode window movement
+      {
+        mode = "t";
+        key = "<A-j>";
+        action = "<C-\\><C-n><CMD>wincmd h<CR>";
+        noremap = true;
+        silent = true;
+      }
+      {
+        mode = "t";
+        key = "<A-;>";
+        action = "<C-\\><C-n><CMD>wincmd l<CR>";
+        noremap = true;
+        silent = true;
+      }
+      {
+        mode = "t";
+        key = "<A-k>";
+        action = "<C-\\><C-n><CMD>wincmd j<CR>";
+        noremap = true;
+        silent = true;
+      }
+      {
+        mode = "t";
+        key = "<A-l>";
+        action = "<C-\\><C-n><CMD>wincmd k<CR>";
         noremap = true;
         silent = true;
       }
@@ -765,6 +794,48 @@
         action = ''<CMD>CodeCompanionActions<CR>'';
         desc = "CodeCompanion actions";
       })
+
+      # OpenCode
+      {
+        mode = "n";
+        key = "<leader>oc";
+        action = "<CMD>OpenCode<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Toggle OpenCode";
+      }
+      {
+        mode = "n";
+        key = "<leader>of";
+        action = "<CMD>OpenCodeFocus<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Focus OpenCode";
+      }
+      {
+        mode = "n";
+        key = "<leader>od";
+        action = "<CMD>OpenCodeDiff<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Review OpenCode diffs";
+      }
+      {
+        mode = "n";
+        key = "<leader>oa";
+        action = "<CMD>OpenCodeAccept<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Accept OpenCode diffs";
+      }
+      {
+        mode = "n";
+        key = "<leader>ox";
+        action = "<CMD>OpenCodeReject<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Reject OpenCode diffs";
+      }
     ];
   };
 }

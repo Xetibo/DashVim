@@ -7,5 +7,6 @@
     ./mini.nix
     ./git.nix
     ./misc.nix
+    ./opencode.nix
   ];
 }
