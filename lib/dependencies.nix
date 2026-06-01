@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   system,
+  enableOpencode ? true,
   ...
 }: let
   easyDotnet = pkgs.buildDotnetGlobalTool {
@@ -28,7 +29,7 @@ in
     kitty
     fish
     neovide
-    opencode
     inputs.sqlit.packages.${system}.sqlit
     prettierd
   ]
+  ++ pkgs.lib.optional enableOpencode pkgs.opencode

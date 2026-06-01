@@ -11,14 +11,15 @@
     src = ./opencode;
     doCheck = false;
   };
-in {
-  vim = {
-    lazy.plugins = {
-      "opencode-nvim" = mkDashDefault {
-        package = opencode-nvim;
-        setupModule = "opencode";
-        setupOpts = {};
+in
+  lib.mkIf (!(config' ? opencode) || config'.opencode.enable) {
+    vim = {
+      lazy.plugins = {
+        "opencode-nvim" = mkDashDefault {
+          package = opencode-nvim;
+          setupModule = "opencode";
+          setupOpts = {};
+        };
       };
     };
-  };
-}
+  }
