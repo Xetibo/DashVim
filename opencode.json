@@ -7,5 +7,9 @@
     "reserved": 10000
   },
   "autoupdate": true,
-  "snapshot": true
+  "snapshot": true,
+  "instructions": [
+    ".opencode/skills/caveman/SKILL.md",
+    ".opencode/skills/compact-context/SKILL.md"
+  ]
 }

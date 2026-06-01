@@ -14,6 +14,9 @@
         setupOpts =
           {
             display.chat.window.position = "left";
+            interactions.chat.adapter = {
+              name = "opencode";
+            };
             adapters = {
               acp = {
                 opencode =
