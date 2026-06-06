@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": "allow",
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 10000
+  },
+  "autoupdate": true,
+  "snapshot": true,
+  "instructions": [
+    "AGENTS.md",
+    ".opencode/skills/caveman/SKILL.md",
+    ".opencode/skills/compact-context/SKILL.md"
+  ]
+}

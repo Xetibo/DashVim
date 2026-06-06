@@ -2,6 +2,7 @@
   imports = [
     ./blink.nix
     ./lsp.nix
+    ./toolchain.nix
     ./dap.nix
     ./codecompanion.nix
     ./treesitter.nix

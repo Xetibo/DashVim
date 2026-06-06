@@ -115,6 +115,46 @@
       '';
     };
 
+    opencode = {
+      enable = lib.mkOption {
+        default = true;
+        example = false;
+        type = lib.types.bool;
+        description = ''
+          Enables opencode integration including the opencode-nvim plugin,
+          the opencode binary, theme syncing, and config deployment.
+        '';
+      };
+      theme = lib.mkOption {
+        default = "dashvim";
+        example = "catppuccin";
+        type = lib.types.str;
+        description = ''
+          The opencode theme name. By default uses "dashvim" which is
+          auto-generated from your base16/base24 colorscheme.
+        '';
+      };
+      config = lib.mkOption {
+        default = {};
+        example = {
+          permission = "ask";
+          autoupdate = false;
+        };
+        type = with lib.types; attrsOf anything;
+        description = ''
+          Additional opencode.json configuration to merge.
+        '';
+      };
+      plugin = lib.mkOption {
+        default = [];
+        example = ["opencode-helicone-session"];
+        type = with lib.types; listOf str;
+        description = ''
+          List of opencode plugins to enable (npm package names).
+        '';
+      };
+    };
+
     agent = {
       enable = lib.mkOption {
         default = false;
@@ -184,6 +224,18 @@
       description = ''
         Config for conform
       '';
+    };
+
+    toolchain = {
+      preferProjectTools = lib.mkOption {
+        default = true;
+        example = false;
+        type = lib.types.bool;
+        description = ''
+          Prefer project-local LSP, formatter, and linter executables found in Neovim's runtime PATH.
+          DashVim's pinned Nix tools remain the fallback when no different project tool is available.
+        '';
+      };
     };
 
     lsp = {

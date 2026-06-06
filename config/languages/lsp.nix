@@ -4,7 +4,36 @@
   lib,
   mkDashDefault,
   ...
-}: {
+}: let
+  pinnedTsserverPath = "${pkgs.typescript}/lib/node_modules/typescript/lib/tsserver.js";
+  projectTsserverPath =
+    lib.generators.mkLuaInline
+    /*
+    lua
+    */
+    ''
+      (function()
+        local starts = {}
+        local bufname = vim.api.nvim_buf_get_name(0)
+        if bufname ~= nil and bufname ~= "" then
+          table.insert(starts, vim.fs.dirname(bufname))
+        end
+        table.insert(starts, vim.fn.getcwd())
+
+        for _, start in ipairs(starts) do
+          local local_tsserver = vim.fs.find("node_modules/typescript/lib/tsserver.js", {
+            path = start,
+            upward = true,
+          })[1]
+          if local_tsserver then
+            return local_tsserver
+          end
+        end
+
+        return "${pinnedTsserverPath}"
+      end)()
+    '';
+in {
   vim = {
     lazy.plugins = with pkgs.vimPlugins; {
       "ng.nvim" = mkDashDefault {
@@ -37,7 +66,10 @@
               "remove_unused_imports"
               "organize_imports"
             ];
-            tsserver_path = "${pkgs.typescript}/lib/node_modules/typescript/lib/tsserver.js";
+            tsserver_path =
+              if config'.toolchain.preferProjectTools or false
+              then lib.mkOverride 90 projectTsserverPath
+              else pinnedTsserverPath;
             tsserver_locale = "en";
             tsserver_plugins = [
               "@styled/typescript-styled-plugin"
