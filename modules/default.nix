@@ -258,6 +258,39 @@
             Whether to enable angular ls. Note this disables Html-ls and removes the typescript renaming function.
           '';
         };
+
+        roslyn = {
+          filewatching = lib.mkOption {
+            default = "off";
+            example = "auto";
+            type = lib.types.enum ["auto" "roslyn" "off"];
+            description = ''
+              File watching mode for roslyn.nvim. "off" disables recursive watched-file
+              registrations to avoid Roslyn or Neovim watching too much of the filesystem,
+              while DashVim still sends targeted save notifications for C# project files.
+              "auto" lets roslyn.nvim choose client or server watching, and "roslyn" forces
+              Roslyn's built-in file watcher.
+            '';
+          };
+
+          broadSearch = lib.mkOption {
+            default = true;
+            example = false;
+            type = lib.types.bool;
+            description = ''
+              Whether roslyn.nvim should search parent and child directories for solution files.
+            '';
+          };
+
+          lockTarget = lib.mkOption {
+            default = true;
+            example = false;
+            type = lib.types.bool;
+            description = ''
+              Whether roslyn.nvim should keep using the selected solution target for later C# buffers.
+            '';
+          };
+        };
       };
 
       lspServers = lib.mkOption {

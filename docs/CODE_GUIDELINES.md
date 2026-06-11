@@ -16,6 +16,7 @@
 - Keep Docker/container support Nix-generated unless a Dockerfile already exists or explicit instructions say not to use Nix.
 - Use `alejandra` for Nix formatting, available as the flake `format` package.
 - Keep project tool resolver runtime logic in tracked Rust source under `lib/toolchain/`; Nix should wire package metadata and generated launchers, not embed large resolver programs in strings.
+- Keep plugin-backed LSP behavior with large runtime tradeoffs configurable under `programs.dashvim.lsp.special.*` instead of hard-coding environment-specific defaults.
 
 ## Testing And Verification
 

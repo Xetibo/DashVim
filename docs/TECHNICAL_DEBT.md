@@ -10,6 +10,8 @@ This file tracks known issues, limitations, deferred work, and cleanup items tha
 - The `programs.dashvim` option surface is broad. Default changes can affect many editor, language, formatter, and opencode behaviors at once.
 - Automated testing is currently Nix-focused. No separate unit/integration test suite is documented for Lua plugin behavior or interactive Neovim workflows.
 - `programs.dashvim.toolchain.preferProjectTools` covers known DashVim/nvf LSP, formatter, and linter names. Custom direct `vim.lsp.servers`, conform formatter, or nvim-lint linter names still need explicit command configuration until a public extension map exists.
+- `programs.dashvim.lsp.special.roslyn.filewatching` defaults to `"off"` to prevent Roslyn or Neovim from recursively watching too much of the filesystem. DashVim sends targeted `workspace/didChangeWatchedFiles` notifications for saved C# project files, but files created outside Neovim may still require opening/saving the file or restarting the LSP before Roslyn refreshes project state.
+- `typescript-tools.nvim` does not expose a first-class plugin probe path option, so DashVim patches its generated process arguments to make Nix-provided `@angular/language-service` discoverable by tsserver. Revisit this if upstream adds `tsserver_plugin_probe_locations` or equivalent.
 
 ## Maintenance Rules
 
