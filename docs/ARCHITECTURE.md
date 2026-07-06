@@ -24,16 +24,20 @@ DashVim is a Nix flake that builds and distributes a Neovim configuration based 
 - The nvf output creates the Neovim package used by `lib/env.nix` and `lib/mkPkg.nix`.
 - Toolchain preferences flow from `programs.dashvim.toolchain.preferProjectTools` into `config/languages/toolchain.nix`, which overrides active LSP commands and known formatter/linter commands with resolver scripts at Nix module priority 90. TypeScript's `tsserver_path` is resolved in `config/languages/lsp.nix` so the lazy plugin package metadata remains intact. Angular TypeScript support is loaded as the `@angular/language-service` tsserver plugin through `typescript-tools.nvim`; standalone Angular LS is reserved for Angular template buffers.
 - Roslyn preferences flow from `programs.dashvim.lsp.special.roslyn` into `roslyn.nvim` setup options. The default keeps recursive file watching `"off"` so Roslyn and Neovim do not create broad watchers, and DashVim sends targeted `workspace/didChangeWatchedFiles` notifications when C# project files are saved. Users can opt into `"auto"` or `"roslyn"` only when full external file watching is more important than watcher safety.
-- Shared dependencies are collected in `lib/dependencies.nix` and reused by flake packages and Home Manager integration.
+- Shared dependencies are collected in `lib/dependencies.nix` and reused by flake packages and Home Manager integration; DAP debug adapters (`vscode-js-debug` for Chrome/Node, `firefox-debugadapter` for Firefox) are built from source there.
 - Opencode theme generation uses the configured Base16 colorscheme and optional accent color, then writes generated JSON files through `lib/opencode-config.nix`.
+- Wrapped opencode sets `OPENCODE_CONFIG`, `OPENCODE_CONFIG_DIR`, and `OPENCODE_TUI_CONFIG`, and force-copies the generated `dashvim` theme into `$XDG_CONFIG_HOME/opencode/themes` at runtime so theme updates are applied consistently.
 
 ## Architecture Decisions
 
 - Flake-first development: builds, package outputs, dependencies, and generated docs are expected to work through `flake.nix`.
 - Functional Nix modules: configuration is composed from small Nix modules and functions instead of object-oriented abstractions.
 - Shared opencode generation: wrapped opencode and Home Manager use `lib/opencode-config.nix` to avoid divergent config generation.
+- Default opencode plugin stack now includes `oh-my-openagent` (via `programs.dashvim.opencode.plugin`) instead of `micode`, keeping plugin selection configurable through module options.
 - Base16 color contract: UI themes and opencode colors derive from a Base16-compatible palette, with `accentColor` overriding `base0D` when set.
+- Opencode background contract: `dashvim` theme background-related fields use `base00` (not `none`) so opencode TUI background matches Neovim's base background.
 - Global agent instructions: `AGENTS.md` is included in root opencode config, the wrapped opencode instruction paths, and Home Manager deployed opencode instructions. It requires architecture, UI, code guidelines, technical debt, and testing docs to stay current.
+- Runtime mode switching (copilot vs free) uses per-session temp config dirs: the Lua plugin creates `/tmp/opencode-nvim-{uuid}/opencode/` with symlinks to global configs and a mode-specific `oh-my-openagent.jsonc`, then launches opencode with `XDG_CONFIG_HOME` overridden. No shared file writes — zero clash between concurrent Neovim sessions.
 - Project tool preference is enabled by default: known LSPs, formatters, and linters first look for a project/shell executable that differs from DashVim's pinned fallback, preserving reproducibility when a project does not provide a tool.
 - Angular language ownership is split to avoid duplicate TypeScript LSP results: `typescript-tools.nvim` owns JavaScript/TypeScript buffers and loads Angular's tsserver plugin, while standalone `ngserver` owns `htmlangular` buffers and TypeScript references in Angular projects so references include external templates.
 

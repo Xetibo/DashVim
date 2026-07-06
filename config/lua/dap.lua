@@ -20,6 +20,11 @@ dap.adapters["pwa-chrome"] = {
 	},
 }
 
+dap.adapters["firefox"] = {
+	type = "executable",
+	command = "firefox-debug-adapter",
+}
+
 dap.adapters["coreclr"] = {
 	type = "executable",
 	command = "netcoredbg",

@@ -36,7 +36,7 @@
         --set OPENCODE_CONFIG "${opencodeFiles.globalConfigDir}/opencode.json" \
         --set OPENCODE_CONFIG_DIR "${opencodeFiles.configDir}" \
         --set OPENCODE_TUI_CONFIG "${opencodeFiles.globalConfigDir}/tui.json" \
-        --run 'mkdir -p ''${XDG_CONFIG_HOME:-$HOME/.config}/opencode/themes && cp -n ${opencodeFiles.globalConfigDir}/themes/dashvim.json ''${XDG_CONFIG_HOME:-$HOME/.config}/opencode/themes/dashvim.json 2>/dev/null || true'
+        --run 'mkdir -p ''${XDG_CONFIG_HOME:-$HOME/.config}/opencode/themes && cp -f ${opencodeFiles.globalConfigDir}/themes/dashvim.json ''${XDG_CONFIG_HOME:-$HOME/.config}/opencode/themes/dashvim.json 2>/dev/null || true'
     '';
   };
 

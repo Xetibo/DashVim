@@ -11,12 +11,14 @@
     nugetSha256 = "sha256-udPf2Ws6B2YflySz+hd+vFrIgUVwsXPt2PxZQMovKxI=";
     executables = ["dotnet-easydotnet"];
   };
+  firefoxDebugAdapter = pkgs.callPackage ./firefox-debug-adapter.nix { };
 in
   with pkgs; [
     easyDotnet
     lldb
     netcoredbg
     vscode-js-debug
+    firefoxDebugAdapter
     yazi
     ripgrep
     fd

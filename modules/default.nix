@@ -146,11 +146,38 @@
         '';
       };
       plugin = lib.mkOption {
-        default = [];
+        default = [
+          "@slkiser/opencode-quota"
+          "oh-my-openagent"
+          "@tarquinen/opencode-dcp@latest"
+        ];
         example = ["opencode-helicone-session"];
         type = with lib.types; listOf str;
         description = ''
           List of opencode plugins to enable (npm package names).
+        '';
+      };
+
+      tuiPlugin = lib.mkOption {
+        default = ["oh-my-openagent"];
+        example = [];
+        type = with lib.types; listOf str;
+        description = ''
+          List of opencode TUI plugins to include in tui.json.
+          These are terminal UI plugins, separate from opencode.json plugins.
+          Defaults to ["oh-my-openagent"] for oh-my-openagent TUI integration.
+        '';
+      };
+
+      modelMode = lib.mkOption {
+        default = "copilot";
+        example = "free";
+        type = lib.types.enum ["copilot" "free"];
+        description = ''
+          Default oh-my-openagent model mode.
+          "copilot" — all agents/categories use github-copilot/* models.
+          "free"    — all agents/categories use opencode/* free models.
+          Both configs are deployed; switch at runtime with :OpenCodeAgentMode.
         '';
       };
     };

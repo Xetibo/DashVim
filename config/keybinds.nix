@@ -836,6 +836,30 @@
         silent = true;
         desc = "Reject OpenCode diffs";
       }
+      {
+        mode = "n";
+        key = "<leader>os";
+        action = "<CMD>lua require('opencode').toggle_mode()<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Toggle OpenCode agent mode (copilot/free)";
+      }
+      {
+        mode = "n";
+        key = "<leader>or";
+        action = "<CMD>OpenCodeReview<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Open Code review session";
+      }
+      {
+        mode = "n";
+        key = "<leader>oe";
+        action = "<CMD>OpenCodeReviewComplete<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Complete review and send comments to agent";
+      }
     ];
   };
 }

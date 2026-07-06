@@ -15,6 +15,7 @@
     opencodeThemeName = config'.opencode.theme;
     opencodeExtraConfig = config'.opencode.config;
     opencodePlugins = config'.opencode.plugin;
+    tuiPlugins = config'.opencode.tuiPlugin;
     skillsPath = ../.opencode/skills;
     instructionPaths = [
       "~/.opencode/AGENTS.md"
@@ -22,6 +23,7 @@
       "~/.opencode/skills/compact-context/SKILL.md"
     ];
   };
+
 in {
   homeFiles = {
     ".opencode/AGENTS.md".source = ../AGENTS.md;
@@ -35,5 +37,8 @@ in {
     "opencode/themes/dashvim.json".source = lib.mkDefault opencodeFiles.themeFile;
     "opencode/tui.json".source = lib.mkDefault opencodeFiles.tuiConfigFile;
     "opencode/opencode.json".source = lib.mkDefault opencodeFiles.configFile;
+    # Deploy both agent configs — runtime switching handled by opencode-nvim plugin
+    "opencode/oh-my-openagent-copilot.jsonc".source = ../opencode/oh-my-openagent-copilot.jsonc;
+    "opencode/oh-my-openagent-free.jsonc".source = ../opencode/oh-my-openagent-free.jsonc;
   };
 }

@@ -13,6 +13,8 @@
   # Paths to skill instruction files as they will appear in opencode.json
   # For HM: ~/.opencode/skills/..., for nix run: nix store paths
   instructionPaths ? [],
+  # TUI plugins to include in tui.json (e.g. ["oh-my-openagent"])
+  tuiPlugins ? [],
 }: let
   # --- Base16 theme generation ---
   parsedBase =
@@ -89,9 +91,9 @@
       info = "base0D";
       text = "base05";
       textMuted = "base03";
-      background = "none";
-      backgroundPanel = "none";
-      backgroundElement = "none";
+      background = "base00";
+      backgroundPanel = "base00";
+      backgroundElement = "base00";
       border = "base02";
       borderActive = "base03";
       borderSubtle = "base02";
@@ -101,12 +103,12 @@
       diffHunkHeader = "base03";
       diffHighlightAdded = "base0B";
       diffHighlightRemoved = "base08";
-      diffAddedBg = "none";
-      diffRemovedBg = "none";
-      diffContextBg = "none";
+      diffAddedBg = "base00";
+      diffRemovedBg = "base00";
+      diffContextBg = "base00";
       diffLineNumber = "base03";
-      diffAddedLineNumberBg = "none";
-      diffRemovedLineNumberBg = "none";
+      diffAddedLineNumberBg = "base00";
+      diffRemovedLineNumberBg = "base00";
       markdownText = "base05";
       markdownHeading = "base0D";
       markdownLink = "base0D";
@@ -134,10 +136,12 @@
   };
 
   # --- TUI config ---
-  opencodeTuiConfig = builtins.toJSON {
+  opencodeTuiConfig = builtins.toJSON ({
     "$schema" = "https://opencode.ai/tui.json";
     theme = opencodeThemeName;
-  };
+  } // lib.optionalAttrs (tuiPlugins != []) {
+    plugin = tuiPlugins;
+  });
 
   # --- Main opencode.json config ---
   opencodeBaseConfig =
@@ -151,6 +155,14 @@
       };
       autoupdate = true;
       snapshot = true;
+
+      model = "github-copilot/gpt-5.3-codex";
+      mcp = {
+        mcp_everything = {
+          type = "local";
+          command = ["npx" "-y" "@angular/cli" "mcp"];
+        };
+      };
     }
     // lib.optionalAttrs (instructionPaths != []) {
       instructions = instructionPaths;

@@ -22,6 +22,7 @@ DashVim's UI is a terminal Neovim interface configured through `nvf`, plus an op
 - Default palette is Catppuccin-like, with `base00` as background, `base05` as primary text, `base0D` as primary/accent blue, `base0E` as secondary purple, `base0C` as cyan accent, `base0B` as success green, `base09` as warning peach, and `base08` as error red.
 - Use `programs.dashvim.accentColor` when the primary accent should differ from `base0D`.
 - Keep opencode theme colors aligned with the Neovim palette unless a feature has a clear reason to diverge.
+- Opencode TUI backgrounds (`background`, `backgroundPanel`, `backgroundElement`, and diff background fields) should use `base00` so the TUI surface matches Neovim's background instead of using transparent/`none` values.
 
 ## Do's
 

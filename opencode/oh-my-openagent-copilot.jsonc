@@ -1,0 +1,64 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "description": "Copilot-only mode — every agent and category uses github-copilot/gpt-5.3-codex exclusively",
+
+  "agents": {
+    "sisyphus": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "hephaestus": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "prometheus": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "oracle": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "librarian": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "explore": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "multimodal-looker": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "metis": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "momus": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "atlas": {
+      "model": "github-copilot/gpt-5.3-codex"
+    }
+  },
+
+  "categories": {
+    "visual-engineering": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "ultrabrain": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "deep": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "artistry": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "quick": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "unspecified-low": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "unspecified-high": {
+      "model": "github-copilot/gpt-5.3-codex"
+    },
+    "writing": {
+      "model": "github-copilot/gpt-5.3-codex"
+    }
+  }
+}

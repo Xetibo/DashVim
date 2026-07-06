@@ -1,0 +1,148 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+  "description": "Free-only mode — every agent and category uses opencode/* free models only",
+
+  "agents": {
+    // Primary orchestrator — deepseek-v4-flash is the strongest free model
+    "sisyphus": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/north-mini-code-free"
+      ]
+    },
+    // Hephaestus requires GPT-5.5 — no free equivalent available
+    "hephaestus": {
+      "disable": true
+    },
+    // Planner — needs deep reasoning
+    "prometheus": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/big-pickle"
+      ]
+    },
+    // Architecture consultant — highest reasoning demand
+    "oracle": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/big-pickle"
+      ]
+    },
+    // Codebase research — coding-optimized, 256K context
+    "librarian": {
+      "model": "opencode/north-mini-code-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/hy3-free"
+      ]
+    },
+    // Contextual grep — fast, minimal overhead
+    "explore": {
+      "model": "opencode/north-mini-code-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/hy3-free"
+      ]
+    },
+    // Image/media analysis — only free model with image input
+    "multimodal-looker": {
+      "model": "opencode/mimo-v2.5-free",
+      "fallback_models": [
+        "opencode/deepseek-v4-flash-free"
+      ]
+    },
+    // Pre-planning analysis — strong structured reasoning
+    "metis": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/big-pickle"
+      ]
+    },
+    // Plan critic — thorough, detail-oriented
+    "momus": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/big-pickle"
+      ]
+    },
+    // Todo orchestrator — lightweight, fast
+    "atlas": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": [
+        "opencode/north-mini-code-free",
+        "opencode/nemotron-3-ultra-free"
+      ]
+    }
+  },
+
+  "categories": {
+    // UI/frontend — mimo-v2.5 is the only free model with image support
+    "visual-engineering": {
+      "model": "opencode/mimo-v2.5-free",
+      "fallback_models": [
+        "opencode/deepseek-v4-flash-free"
+      ]
+    },
+    // Hard logic, algorithms — top free reasoning
+    "ultrabrain": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/big-pickle"
+      ]
+    },
+    // Autonomous deep-dive — reasoning + large context needed
+    "deep": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/big-pickle"
+      ]
+    },
+    // Creative problem-solving — mimo is versatile with multimodal
+    "artistry": {
+      "model": "opencode/mimo-v2.5-free",
+      "fallback_models": [
+        "opencode/deepseek-v4-flash-free",
+        "opencode/nemotron-3-ultra-free"
+      ]
+    },
+    // Trivial single-file changes — north-mini is coding-optimized, fast
+    "quick": {
+      "model": "opencode/north-mini-code-free",
+      "fallback_models": [
+        "opencode/hy3-free",
+        "opencode/nemotron-3-ultra-free"
+      ]
+    },
+    // Low-effort misc — fast, cheap
+    "unspecified-low": {
+      "model": "opencode/north-mini-code-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/hy3-free"
+      ]
+    },
+    // High-effort misc — best free reasoning
+    "unspecified-high": {
+      "model": "opencode/deepseek-v4-flash-free",
+      "fallback_models": [
+        "opencode/nemotron-3-ultra-free",
+        "opencode/big-pickle"
+      ]
+    },
+    // Docs, prose — nemotron has 1M context for long documents
+    "writing": {
+      "model": "opencode/nemotron-3-ultra-free",
+      "fallback_models": [
+        "opencode/hy3-free",
+        "opencode/deepseek-v4-flash-free"
+      ]
+    }
+  }
+}

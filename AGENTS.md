@@ -4,11 +4,14 @@
 
 - Before code changes, read `docs/ARCHITECTURE.md`, `docs/UI.md`, `docs/CODE_GUIDELINES.md`, `docs/TECHNICAL_DEBT.md`, and `docs/TESTING.md` when they exist.
 - If one of those files is missing, create it in `docs/` with current known facts before making related code changes.
+- Update `docs/DECISIONS.md` for LLM specific continuity
 - Update `docs/ARCHITECTURE.md` after adding or changing core functionality, module structure, public interfaces, or architecture decisions.
 - Update `docs/UI.md` after adding or changing UI components, layouts, themes, colors, interaction patterns, or visual rules.
 - Update `docs/CODE_GUIDELINES.md` when adding or changing conventions that future code should follow.
 - Update `docs/TECHNICAL_DEBT.md` when discovering, adding, fixing, or intentionally deferring known issues, limitations, or cleanup work.
 - Update `docs/TESTING.md` when adding, removing, or changing test strategy, verification commands, checks, or CI expectations.
+- Important: Do not write component specific information into these files, only add important information into them. 
+  For decicions and low impact information use DECISIONS.md
 
 `docs/ARCHITECTURE.md` should document architecture decisions, current structure, module boundaries, important data flow, and known tradeoffs.
 

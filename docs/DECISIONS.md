@@ -1,0 +1,77 @@
+# Decisions
+
+## 2026-07-06 — Default opencode plugin switched to oh-my-openagent
+
+- Changed `programs.dashvim.opencode.plugin` default list in `modules/default.nix`.
+- Replaced `"micode"` with `"oh-my-openagent"`.
+- Kept other defaults unchanged: `"@slkiser/opencode-quota"` and `"@tarquinen/opencode-dcp@latest"`.
+- Rationale: align DashVim's default opencode integration with the oh-my-openagent plugin flow for agent/category model routing.
+
+## 2026-07-07 — oh-my-openagent model mode (copilot vs free)
+
+- Added `programs.dashvim.opencode.modelMode` option in `modules/default.nix` (enum: `"copilot"` | `"free"`).
+- Created `opencode/oh-my-openagent-copilot.jsonc` — all 10 agents + 8 categories use `github-copilot/*` models only.
+- Created `opencode/oh-my-openagent-free.jsonc` — all agents/categories use `opencode/*` free models only; `hephaestus` is disabled (requires GPT-5.5, no free equivalent).
+- `hm/opencode.nix` deploys the selected config to `~/.config/opencode/oh-my-openagent.jsonc` via `xdg.configFile`.
+- Enforcement: zero cross-contamination between providers — every agent/category model field is explicitly overridden.
+- Free model assignments: `deekseek-v4-flash-free` for primary reasoning, `north-mini-code-free` for coding/quick, `mimo-v2.5-free` for visual/multimodal (only free model with image input), `nemotron-3-ultra-free` for large context.
+
+## 2026-07-07 — Runtime mode switching via opencode-nvim plugin
+
+- Refactored `hm/opencode.nix` to deploy **both** `oh-my-openagent-copilot.jsonc` and `oh-my-openagent-free.jsonc` (instead of only the selected one).
+- The active `oh-my-openagent.jsonc` is now managed at runtime by the `opencode-nvim` Lua plugin, not by Nix.
+- Added `:OpenCodeAgentMode {copilot|free}` command to `opencode-nvim` plugin (`init.lua`).
+- `M.set_mode(mode)` copies the selected source config to `oh-my-openagent.jsonc`, kills the running opencode terminal, and notifies the user.
+- `M.setup()` initializes the active config from the Nix `default_model_mode` on first run (if absent).
+- `config/editor/opencode.nix` passes `config'.opencode.modelMode` as `default_model_mode` setupOpt.
+- `modelMode` Nix option still controls the default; runtime switching no longer requires a rebuild.
+
+## 2026-07-08 — Per-session mode isolation (no shared file writes)
+
+- `M.set_mode()` is now purely in-memory — no writes to `~/.config/opencode/oh-my-openagent.jsonc` or `.opencode_mode` marker.
+- `start_terminal()` creates `/tmp/opencode-nvim-{uuid}/opencode/` with symlinks to shared global configs and a copy of the mode-specific `oh-my-openagent-{mode}.jsonc`.
+- opencode launched with `XDG_CONFIG_HOME` pointing at the temp dir → fully isolated per Neovim session.
+- `prepare_session_config()` fallback chain: current_mode → default_mode → copilot.
+- No marker file: mode resets to Nix default on Neovim restart. This is intentional — the default is configured in Nix, not persisted per-session.
+- Removed `detect_mode()`, `mode_marker()`, and all shared file I/O from `init.lua`. Plugin went from ~222 to ~185 lines.
+- Rationale: two concurrent Neovim/opencode instances writing to the same `~/.config/opencode/oh-my-openagent.jsonc` would clash; per-session temp dirs eliminate the clash entirely.
+
+## 2026-07-07 — Added firefox-debugadapter Nix derivation
+
+- Created `lib/firefox-debug-adapter.nix` using `buildNpmPackage` from `firefox-devtools/vscode-firefox-debug` `v2.15.0`.
+- Follows the `vscode-js-debug` packaging pattern in nixpkgs.
+- Uses placeholder hashes (`lib.fakeHash`) that are replaced on first build.
+- `postPatch` uses `jq` to ensure a webpack build script exists.
+- `postInstall` creates `$out/bin/firefox-debug-adapter` wrapper running `node dist/adapter.bundle.js`.
+
+## 2026-07-07 — Added Firefox DAP adapter
+
+- Updated `config/lua/dap.lua` to register `dap.adapters["firefox"]`.
+- Adapter is executable-based with `command = "firefox-debug-adapter"`.
+- Placement is between `pwa-chrome` and `coreclr` adapter definitions.
+- Existing adapter and configuration blocks were intentionally left unchanged.
+
+## 2026-07-07 — Added workspace Firefox launch template
+
+- Added `.vscode/launch.json` with a Firefox launch configuration targeting `http://localhost:4200`.
+- Configuration uses Firefox debug adapter shape (`type = "firefox"`, `request = "launch"`, `reAttach = true`).
+- Source mapping uses `pathMappings` (`url`/`path`) and intentionally does not use Chrome-only `sourceMapPathOverrides`.
+
+## 2026-07-07 — Added firefox-debugadapter to shared dependencies
+
+- Updated `lib/dependencies.nix` to define `firefoxDebugAdapter = pkgs.callPackage ./firefox-debug-adapter.nix { };` in the `let` block.
+- Added `firefoxDebugAdapter` to the dependency list directly after `vscode-js-debug` in the DAP adapter section.
+- Existing dependency ordering and entries were left unchanged.
+
+## 2026-07-08 — Review mode for agent-generated code changes
+
+- Added `config/editor/opencode/lua/opencode/review.lua` — new review module (323 lines) with scratch-buffer-based code review for agent changes.
+- Comment model: mode-based — any text the user inserts into a review buffer IS a review comment. No special syntax or markers needed.
+- File source: git changes — `git diff --cached --name-only`, `git diff --name-only`, `git ls-files --others --excluded-standard` (staged, unstaged, untracked).
+- Buffer layout: one scratch buffer per changed file, `buftype=nofile`, content loaded from disk, original lines stored in `vim.b[bufnr].review_original` for diff comparison.
+- Highlighting: `OpenCodeReviewComment` highlight group (warm yellow-tinted `guibg=#3d3522`) applied via extmarks on lines that differ from original. Refreshed on `TextChanged`/`InsertLeave` autocmds.
+- Handoff: review JSON written to `.omo/review-<session-id>.json`. Sent to opencode terminal via `nvim_chan_send` if the terminal is running; otherwise user is notified of the file path.
+- Diff reuse: existing `:OpenCodeDiff` command (DiffviewOpen) is independent — review mode does not replace it, users can use both.
+- Commands added: `:OpenCodeReview` (start session), `:OpenCodeReviewComplete` (finalize and handoff).
+- No new Nix dependencies: review.lua is auto-included by the existing `src = ./opencode` package path.
+- Session cleanup: `M.current_session` cleared on complete; buffers remain open for user review.

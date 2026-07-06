@@ -18,7 +18,9 @@ in
         "opencode-nvim" = mkDashDefault {
           package = opencode-nvim;
           setupModule = "opencode";
-          setupOpts = {};
+          setupOpts = {
+            default_model_mode = config'.opencode.modelMode;
+          };
         };
       };
     };

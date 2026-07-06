@@ -184,6 +184,19 @@ only available on dashboard
 |  c  | open config               |
 |  q  | quit                      |
 
+## OpenCode
+| key            | Description                    |
+| -------------- | ------------------------------ |
+| \<leader\>oc   | Toggle OpenCode buffer         |
+| \<leader\>of   | Focus OpenCode buffer          |
+| \<leader\>os   | Toggle agent mode (copilot/free) |
+| \<leader\>od   | Review OpenCode diffs          |
+| \<leader\>oa   | Accept OpenCode diffs          |
+| \<leader\>ox   | Reject OpenCode diffs          |
+| \<leader\>or   | Open code review session      |
+| \<leader\>oe   | Complete review and send to agent |
+| `:OpenCodeAgentMode copilot\|free` | Switch oh-my-openagent model mode |
+
 ## Treesitter specials
 used to interact with treesitter defined objects.
 | key | Description                          |
