@@ -194,6 +194,7 @@ only available on dashboard
 | \<leader\>oa   | Accept OpenCode diffs          |
 | \<leader\>ox   | Reject OpenCode diffs          |
 | \<leader\>or   | Open code review session      |
+| \<leader\>on   | Add review comment on current line |
 | \<leader\>oe   | Complete review and send to agent |
 | `:OpenCodeAgentMode copilot\|free` | Switch oh-my-openagent model mode |
 

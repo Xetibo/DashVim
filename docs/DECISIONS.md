@@ -65,13 +65,33 @@
 
 ## 2026-07-08 — Review mode for agent-generated code changes
 
-- Added `config/editor/opencode/lua/opencode/review.lua` — new review module (323 lines) with scratch-buffer-based code review for agent changes.
+- Added `config/editor/opencode/lua/opencode/review.lua` — review module with scratch-buffer-based code review for agent changes.
 - Comment model: mode-based — any text the user inserts into a review buffer IS a review comment. No special syntax or markers needed.
 - File source: git changes — `git diff --cached --name-only`, `git diff --name-only`, `git ls-files --others --excluded-standard` (staged, unstaged, untracked).
 - Buffer layout: one scratch buffer per changed file, `buftype=nofile`, content loaded from disk, original lines stored in `vim.b[bufnr].review_original` for diff comparison.
 - Highlighting: `OpenCodeReviewComment` highlight group (warm yellow-tinted `guibg=#3d3522`) applied via extmarks on lines that differ from original. Refreshed on `TextChanged`/`InsertLeave` autocmds.
 - Handoff: review JSON written to `.omo/review-<session-id>.json`. Sent to opencode terminal via `nvim_chan_send` if the terminal is running; otherwise user is notified of the file path.
-- Diff reuse: existing `:OpenCodeDiff` command (DiffviewOpen) is independent — review mode does not replace it, users can use both.
-- Commands added: `:OpenCodeReview` (start session), `:OpenCodeReviewComplete` (finalize and handoff).
-- No new Nix dependencies: review.lua is auto-included by the existing `src = ./opencode` package path.
-- Session cleanup: `M.current_session` cleared on complete; buffers remain open for user review.
+- Commands: `:OpenCodeReview` (start session), `:OpenCodeReviewComplete` (finalize and handoff).
+- SCRAPPED 2026-07-08: scratch buffer approach had bugs — "buffer already in memory" collisions, broken line-comparison highlighting on insertions, no diff overview.
+
+## 2026-07-08 — Review mode redesign: DiffviewOpen + direct file edits (SCRAPPED)
+
+- Replaced scratch-buffer approach with DiffviewOpen-based review flow.
+- `:OpenCodeReview` opened `DiffviewOpen` and stored baseline file contents.
+- **Comment model**: user edits files directly in the working tree. `vim.diff()` detected changes.
+- SCRAPPED same day: editing working tree files conflates review annotations with actual code changes. Files become dirty with both agent changes and review comments mixed together.
+
+## 2026-07-08 — Review mode redesign v2: explicit comment entry
+
+- Replaced file-diff model with explicit comment entry via `:OpenCodeReviewComment`.
+- Flow: `:OpenCodeReview` → DiffviewOpen (visual diff browsing). User navigates to a line, runs `:OpenCodeReviewComment`, types comment text at prompt. Comments stored in memory (`M.comments[abs_path][line]`).
+- `:OpenCodeReviewComplete` collects in-memory comments, writes `.omo/review-*.json`, sends to agent. No working tree files read or modified during comment collection.
+- No baseline storage, no `vim.diff()`, no git file-list dependency for the comment flow.
+- `:OpenCodeReviewComment` uses `vim.fn.expand("%:p")` to resolve the file path from the current buffer and `vim.fn.line(".")` for line number. Works from any buffer (Diffview or plain file buffer).
+- **REVIEW mode indicator** in `lualine_a` (mode section), keyed on `vim.g.in_review_session`. Mode component's `fmt` is mutated to return "REVIEW" during sessions, preserving default mode display otherwise.
+
+## 2026-07-08 — Applied review comment cleanup in docs/src/README.md
+
+- Processed review file `.omo/review-20260708-140242.json`.
+- Removed placeholder line `test` from `docs/src/README.md` (line 5 in review context).
+- Scope intentionally minimal: no behavior/code-path changes, documentation text cleanup only.

@@ -165,6 +165,43 @@ function M.toggle()
   vim.cmd("startinsert")
 end
 
+--- Start (or restart) opencode with a pre-filled prompt.
+--- Kills any existing session so the prompt applies to a fresh TUI.
+function M.run_prompt(prompt)
+  if M.job_id then
+    vim.fn.jobstop(M.job_id)
+    M.job_id = nil
+  end
+  if M.winnr and vim.api.nvim_win_is_valid(M.winnr) then
+    vim.api.nvim_win_close(M.winnr, true)
+  end
+  M.winnr = nil
+  M.bufnr = nil
+
+  local buf = create_opencode_buffer()
+  open_opencode_window(buf)
+
+  vim.api.nvim_set_current_buf(buf)
+
+  local config_base = prepare_session_config()
+
+  M.job_id = vim.fn.termopen({ "opencode", "--prompt", prompt, vim.fn.getcwd() }, {
+    env = {
+      OPENTUI_GRAPHICS = "0",
+      XDG_CONFIG_HOME = config_base,
+    },
+    on_exit = function()
+      M.job_id = nil
+      M.bufnr = nil
+      if vim.fn.isdirectory(config_base) == 1 then
+        vim.fn.system({ "rm", "-rf", config_base })
+      end
+    end,
+  })
+
+  vim.cmd("startinsert")
+end
+
 function M.focus()
   if M.bufnr and vim.api.nvim_buf_is_valid(M.bufnr) then
     if not (M.winnr and vim.api.nvim_win_is_valid(M.winnr)) then
@@ -217,6 +254,40 @@ function M.setup(opts)
       color = { fg = "#89b4fa" },
       padding = { left = 1, right = 0 },
     })
+    -- Modify mode component to show "REVIEW" during review sessions.
+    -- lualine stores the mode component either as string 'mode' or table { 'mode', ... }.
+    -- Handle both: convert string to table with our fmt, or add fmt to an existing table.
+    local mode_comps = cfg.sections.lualine_a
+    if mode_comps then
+      for i, comp in ipairs(mode_comps) do
+        local t = type(comp)
+        if (t == "string" and comp == "mode") or (t == "table" and (comp[1] == "mode" or comp.mode)) then
+          local orig_fmt = t == "table" and comp.fmt or nil
+          local new_comp = {
+            'mode',
+            fmt = function(mode_str)
+              if vim.g.in_review_session then
+                return "REVIEW"
+              end
+              return orig_fmt and orig_fmt(mode_str) or mode_str
+            end,
+          }
+          mode_comps[i] = new_comp
+          break
+        end
+      end
+    else
+      -- lualine_a not configured — set it up with mode + our indicator
+      cfg.sections.lualine_a = {
+        function()
+          if vim.g.in_review_session then
+            return "REVIEW"
+          end
+          return nil
+        end,
+        'mode',
+      }
+    end
     lualine.setup(cfg)
   end
 
@@ -237,15 +308,24 @@ function M.setup(opts)
     }
   )
 
+  local function review_cmd()
+    return require("opencode.review")
+  end
+
   vim.api.nvim_create_user_command("OpenCodeReview", function()
-    local review = require("opencode.review")
-    review.open()
-  end, { desc = "Open code review session for agent changes" })
+    review_cmd().open()
+  end, { desc = "Start review session (DiffviewOpen), then use :OpenCodeReviewComment to annotate lines" })
+
+  vim.api.nvim_create_user_command("OpenCodeReviewComment", function()
+    review_cmd().add_comment()
+  end, { desc = "Add review comment on current line (opens floating popover)" })
+
+  vim.keymap.set('n', '<Leader>on', '<Cmd>OpenCodeReviewComment<CR>',
+    { desc = 'Add review comment on current line' })
 
   vim.api.nvim_create_user_command("OpenCodeReviewComplete", function()
-    local review = require("opencode.review")
-    review.complete()
-  end, { desc = "Complete review session and send comments to agent" })
+    review_cmd().complete()
+  end, { desc = "Finalize review: collect comments, write JSON, send to agent" })
 end
 
 return M
