@@ -188,15 +188,20 @@
         example = true;
         type = lib.types.bool;
         description = ''
-          Enables codecompanion
+          Enables agentic.nvim
         '';
       };
       variant = lib.mkOption {
         default = "copilot";
-        example = "openai";
+        example = "opencode";
         type = lib.types.str;
         description = ''
-          The agent type, see codecompanion for details.
+          agentic.nvim ACP provider variant.
+
+          "copilot"  → copilot-acp provider (direct GitHub ACP adapter: copilot --acp --stdio)
+          "opencode" → opencode-acp provider (via opencode binary: opencode acp)
+
+          Any other value defaults to opencode-acp.
         '';
       };
       key = lib.mkOption {
@@ -204,7 +209,8 @@
         example = null;
         type = with lib.types; nullOr anything;
         description = ''
-          Key for your agent. Please don't use a plain text key, try sops-nix or agenix instead.
+          No longer used by agentic.nvim (ACP providers handle auth).
+          Kept for backward compatibility — will be removed in a future release.
         '';
       };
       config = lib.mkOption {
@@ -212,7 +218,8 @@
         example = {};
         type = with lib.types; attrsOf anything;
         description = ''
-          Config for codecompanion
+          Additional setupOpts passed to agentic.nvim's setup function.
+          Merged with (and overrides) the default options.
         '';
       };
     };

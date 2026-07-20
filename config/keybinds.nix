@@ -19,7 +19,7 @@
         "<leader>o" = "+OpenCode/Run";
       }
       // {
-        "<leader>a" = lib.mkIf config'.agent.enable "+CodeCompanion";
+        "<leader>a" = lib.mkIf config'.agent.enable "+Agentic";
       };
     lsp.mappings = mkDashDefault {
       goToDefinition = "<leader>ca";
@@ -781,18 +781,24 @@
         silent = true;
       }
 
-      # Codecompanion
+      # Agentic
       (lib.mkIf config'.agent.enable {
         mode = "";
         key = "<leader>ac";
-        action = ''<CMD>CodeCompanionChat<CR>'';
-        desc = "CodeCompanion chat";
+        action = ''<CMD>lua require("agentic").toggle()<CR>'';
+        desc = "Toggle Agentic chat";
       })
       (lib.mkIf config'.agent.enable {
         mode = "";
         key = "<leader>aa";
-        action = ''<CMD>CodeCompanionActions<CR>'';
-        desc = "CodeCompanion actions";
+        action = ''<CMD>lua require("agentic").new_session()<CR>'';
+        desc = "Agentic new session";
+      })
+      (lib.mkIf config'.agent.enable {
+        mode = "n";
+        key = "<leader>as";
+        action = ''<CMD>lua require("agentic").switch_provider()<CR>'';
+        desc = "Switch ACP provider";
       })
 
       # OpenCode
