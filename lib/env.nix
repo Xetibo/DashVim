@@ -4,9 +4,10 @@
   system,
   inputs,
   wrapOpencode ? true,
+  enableAgent ? false,
 }: let
   deps = import ./dependencies.nix {
-    inherit pkgs system inputs;
+    inherit pkgs system inputs enableAgent;
     enableOpencode = !wrapOpencode;
   };
   base16Lib = pkgs.callPackage inputs.base16.lib {};

@@ -11,6 +11,7 @@ inputs: {
   deps = import ../lib/dependencies.nix {
     inherit pkgs stable system inputs;
     enableOpencode = config'.opencode.enable;
+    enableAgent = config'.agent.enable;
   };
   dashvim = import ../lib {
     inherit system pkgs config' lib stable;
@@ -20,6 +21,7 @@ inputs: {
     import ../lib/env.nix {
       inherit pkgs system neovim inputs;
       wrapOpencode = false;
+      enableAgent = config'.agent.enable;
     };
   mkPkg = import ../lib/mkPkg.nix {inherit pkgs mkPkgBase;};
 

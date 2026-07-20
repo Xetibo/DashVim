@@ -148,7 +148,9 @@
       plugin = lib.mkOption {
         default = [
           "@slkiser/opencode-quota"
-          "oh-my-openagent"
+          # TODO beforepr
+          # configure before continuing to use this
+          # "oh-my-openagent"
           "@tarquinen/opencode-dcp@latest"
         ];
         example = ["opencode-helicone-session"];
@@ -159,7 +161,10 @@
       };
 
       tuiPlugin = lib.mkOption {
-        default = ["oh-my-openagent"];
+        default = [];
+        # TODO beforepr
+        # configure before continuing to use this
+        # default = ["oh-my-openagent"];
         example = [];
         type = with lib.types; listOf str;
         description = ''
@@ -170,8 +175,8 @@
       };
 
       modelMode = lib.mkOption {
-        default = "copilot";
-        example = "free";
+        default = "free";
+        example = "copilot";
         type = lib.types.enum ["copilot" "free"];
         description = ''
           Default oh-my-openagent model mode.

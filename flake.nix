@@ -106,9 +106,10 @@
               ++ deps;
           };
           packages = let
+            enableAgent = orig.config.programs.dashvim.agent.enable or false;
             mkPkgBase = neovim:
               import ./lib/env.nix {
-                inherit pkgs neovim system inputs;
+                inherit pkgs neovim system inputs enableAgent;
               };
             mkPkg = import ./lib/mkPkg.nix {inherit pkgs mkPkgBase;};
           in {
