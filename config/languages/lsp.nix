@@ -87,28 +87,6 @@ in {
           }
         ];
         setupOpts = {
-          on_attach =
-            lib.generators.mkLuaInline
-            /*
-            lua
-            */
-            ''
-              function(client, bufnr)
-                local bufname = vim.api.nvim_buf_get_name(bufnr)
-                if bufname == nil or bufname == "" then
-                  return
-                end
-
-                local angular_root = vim.fs.find({ "angular.json", "nx.json" }, {
-                  path = vim.fs.dirname(bufname),
-                  upward = true,
-                })[1]
-
-                if angular_root ~= nil then
-                  client.server_capabilities.referencesProvider = false
-                end
-              end
-            '';
           settings = {
             separate_diagnostic_server = true;
             expose_as_code_action = [
@@ -239,7 +217,7 @@ in {
                 }, dispatchers)
               end
             '');
-          filetypes = mkDashDefault ["htmlangular" "typescript" "typescriptreact"];
+          filetypes = mkDashDefault ["html" "htmlangular"];
           root_markers = mkDashDefault ["angular.json" "nx.json"];
           on_attach = mkDashDefault (lib.generators.mkLuaInline
             /*
@@ -252,25 +230,21 @@ in {
                 client.server_capabilities.documentOnTypeFormattingProvider = false
 
                 local ft = vim.bo[bufnr].filetype
-                if ft == "typescript" or ft == "typescriptreact" then
-                  client.server_capabilities.callHierarchyProvider = false
-                  client.server_capabilities.codeActionProvider = false
-                  client.server_capabilities.completionProvider = false
-                  client.server_capabilities.declarationProvider = false
-                  client.server_capabilities.definitionProvider = false
-                  client.server_capabilities.diagnosticProvider = false
-                  client.server_capabilities.documentHighlightProvider = false
-                  client.server_capabilities.documentLinkProvider = false
-                  client.server_capabilities.documentSymbolProvider = false
-                  client.server_capabilities.hoverProvider = false
-                  client.server_capabilities.implementationProvider = false
-                  client.server_capabilities.inlayHintProvider = false
-                  client.server_capabilities.renameProvider = false
-                  client.server_capabilities.selectionRangeProvider = false
-                  client.server_capabilities.semanticTokensProvider = false
-                  client.server_capabilities.signatureHelpProvider = false
-                  client.server_capabilities.typeDefinitionProvider = false
-                  client.handlers["textDocument/publishDiagnostics"] = function() end
+                if ft == "html" or ft == "htmlangular" then
+                  -- Only angular serves .html templates: neuter any vanilla html
+                  -- LSP that may also have attached so it cannot steal providers.
+                  for _, other in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+                    if other.id ~= client.id and other.name ~= "angular" then
+                      other.server_capabilities.completionProvider = false
+                      other.server_capabilities.hoverProvider = false
+                      other.server_capabilities.signatureHelpProvider = false
+                      other.server_capabilities.definitionProvider = false
+                      other.server_capabilities.referencesProvider = false
+                      other.server_capabilities.documentSymbolProvider = false
+                      other.server_capabilities.codeActionProvider = false
+                      other.server_capabilities.diagnosticProvider = false
+                    end
+                  end
                 end
               end
             '');
@@ -362,6 +336,116 @@ in {
         end
       end
 
+      -- Scoped, client-side watcher (Issue2/op2 + Issue3/op4&1). The BufWrite
+      -- autocmds below never fire for files created outside Neovim, and Roslyn's
+      -- native watcher recurses over the whole workspace (bin/obj/.git/node_modules)
+      -- exhausting inotify. Watch only the solution dir with churn dirs excluded
+      -- (constraining scope + excludes), via vim._watch (same internal subsystem
+      -- nvim's own LSP watcher uses). Guarded so we degrade if it changes.
+      local dashvim_roslyn_watchers = {} -- client_id -> cancel()
+      local dashvim_roslyn_watch_ok, dashvim_roslyn_watchmod = pcall(function()
+        return require("vim._watch")
+      end)
+
+      local dashvim_roslyn_excluded_dirs = {
+        ["bin"] = true, ["obj"] = true, [".git"] = true, ["node_modules"] = true,
+        [".vs"] = true, [".roslyn-cache"] = true, [".generated"] = true,
+      }
+
+      local dashvim_roslyn_include_pat
+      for ext in pairs(dashvim_roslyn_extensions) do
+        local p = vim.glob.to_lpeg("**/*." .. ext)
+        dashvim_roslyn_include_pat = dashvim_roslyn_include_pat and (dashvim_roslyn_include_pat + p) or p
+      end
+      local dashvim_roslyn_exclude_pat =
+        vim.glob.to_lpeg("**/bin/**") + vim.glob.to_lpeg("**/obj/**")
+        + vim.glob.to_lpeg("**/.git/**") + vim.glob.to_lpeg("**/node_modules/**")
+        + vim.glob.to_lpeg("**/.vs/**") + vim.glob.to_lpeg("**/.roslyn-cache/**")
+        + vim.glob.to_lpeg("**/.generated/**")
+
+      local function dashvim_roslyn_collect_known(root)
+        local known = {}
+        local stack = { vim.fs.normalize(root) }
+        while #stack > 0 do
+          local dir = table.remove(stack)
+          if (vim.uv.fs_stat(dir) or {}).type == "directory" then
+            for name, ty in vim.fs.dir(dir) do
+              local full = vim.fs.joinpath(dir, name)
+              if ty == "directory" then
+                if not dashvim_roslyn_excluded_dirs[vim.fs.basename(full)] then
+                  table.insert(stack, full)
+                end
+              elseif ty == "file" and dashvim_roslyn_is_project_file(full) then
+                known[vim.fs.normalize(full)] = true
+              end
+            end
+          end
+        end
+        return known
+      end
+
+      local function dashvim_roslyn_start_watcher(client_id)
+        if dashvim_roslyn_watchers[client_id] ~= nil then
+          return
+        end
+        if not dashvim_roslyn_watch_ok then
+          return
+        end
+
+        local client = vim.lsp.get_client_by_id(client_id)
+        if client == nil or client.name ~= "roslyn" then
+          return
+        end
+
+        local root = client.config.root_dir
+        if root == nil or root == "" or root == "/" then
+          return
+        end
+        root = vim.fs.normalize(root)
+
+        local known = dashvim_roslyn_collect_known(root)
+
+        local ok, cancel = pcall(dashvim_roslyn_watchmod.watchdirs, root, {
+          include_pattern = dashvim_roslyn_include_pat,
+          exclude_pattern = dashvim_roslyn_exclude_pat,
+          debounce = 500,
+        }, function(fullpath, watcher_type)
+          fullpath = vim.fs.normalize(fullpath)
+          if not dashvim_roslyn_is_project_file(fullpath) then
+            return
+          end
+
+          -- watchdirs mislabels creates as "Changed"; reconcile with our known set.
+          local lsp_type
+          if watcher_type == dashvim_roslyn_watchmod.FileChangeType.Deleted then
+            known[fullpath] = nil
+            lsp_type = 3
+          elseif watcher_type == dashvim_roslyn_watchmod.FileChangeType.Created then
+            known[fullpath] = true
+            lsp_type = 1
+          elseif known[fullpath] then
+            lsp_type = 2
+          else
+            known[fullpath] = true -- changed but previously unknown -> a new file
+            lsp_type = 1
+          end
+
+          dashvim_roslyn_notify_file_change(fullpath, lsp_type)
+        end)
+
+        if ok then
+          dashvim_roslyn_watchers[client_id] = cancel
+        end
+      end
+
+      local function dashvim_roslyn_stop_watcher(client_id)
+        local cancel = dashvim_roslyn_watchers[client_id]
+        if cancel then
+          cancel()
+          dashvim_roslyn_watchers[client_id] = nil
+        end
+      end
+
       vim.api.nvim_create_autocmd("BufWritePre", {
         group = dashvim_roslyn_group,
         pattern = dashvim_roslyn_patterns,
@@ -394,12 +478,25 @@ in {
             return
           end
 
+          dashvim_roslyn_start_watcher(client.id)
+
           local path = vim.api.nvim_buf_get_name(args.buf)
           if path == "" or not dashvim_roslyn_is_project_file(path) then
             return
           end
 
           dashvim_roslyn_notify_file_change(path, 2)
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("LspDetach", {
+        group = dashvim_roslyn_group,
+        callback = function(args)
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          if client == nil or client.name ~= "roslyn" then
+            return
+          end
+          dashvim_roslyn_stop_watcher(client.id)
         end,
       })
     '';

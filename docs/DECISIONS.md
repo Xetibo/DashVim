@@ -1,5 +1,11 @@
 # Decisions
 
+## 2026-08-10 — Angular/TS LSP ownership + scoped Roslyn watcher
+
+- Angular (`ngserver`) now owns only template buffers — `filetypes = ["html" "htmlangular"]` in `config/languages/lsp.nix` — and never `typescript`/`typescriptreact`. This guarantees the LS fires even when the `html`→`htmlangular` flip (autocmds) fails (git root nil / monorepo app not at repo root), and removes the ts/tsx startup race with typescript-tools (option 4+5). Its `on_attach` neuters any vanilla HTML LSP on `html`/`htmlangular` so Angular is sole template provider.
+- `typescript-tools.nvim` fully owns ts/js/tsx/jsx, including references. Removed its `on_attach` guard that set `referencesProvider = false` under `angular.json`/`nx.json` (lsp.nix). That guard was only correct when ngserver also served ts references; with ngserver off ts/tsx it left `.ts` files with no references provider ("LSP does not support textDocument/reference").
+- Roslyn watchers: keep `filewatching = "off"` (disables Roslyn/Neovim broad watchers) and add a scoped client-side watcher in `luaConfigRC.dashvim-roslyn-file-change-notifications` using `vim._watch.watchdirs` rooted at the solution dir, `exclude_pattern` for `bin`/`obj`/`.git`/`node_modules`/`.vs`/`.roslyn-cache`/`.generated`, `include_pattern` for `**/*.{cs,csproj,sln,slnx,slnf,props,targets}`. It reconciles watchdirs' mislabeled "Changed" creates against a known-file set → delivers `Created`(1) for externally-created files (issue2/op2) and constrains scope + excludes churn dirs (issue3/op1&4). Started on roslyn `LspAttach`, cancelled on `LspDetach`; root `/` is refused; whole watcher wrapped in `pcall` so it degrades to save-time-only sends if the internal API changes.
+
 ## 2026-07-06 — Default opencode plugin switched to oh-my-openagent
 
 - Changed `programs.dashvim.opencode.plugin` default list in `modules/default.nix`.
