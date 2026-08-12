@@ -87,6 +87,31 @@ in {
           }
         ];
         setupOpts = {
+          on_attach =
+            lib.generators.mkLuaInline
+            /*
+            lua
+            */
+            ''
+              function(client, bufnr)
+                local bufname = vim.api.nvim_buf_get_name(bufnr)
+                if bufname == nil or bufname == "" then
+                  return
+                end
+
+                -- In Angular projects references come from ngserver so external
+                -- .html template usages are included. Give up references here to
+                -- avoid double-served references.
+                local angular_root = vim.fs.find({ "angular.json", "nx.json" }, {
+                  path = vim.fs.dirname(bufname),
+                  upward = true,
+                })[1]
+
+                if angular_root ~= nil then
+                  client.server_capabilities.referencesProvider = false
+                end
+              end
+            '';
           settings = {
             separate_diagnostic_server = true;
             expose_as_code_action = [
@@ -217,7 +242,7 @@ in {
                 }, dispatchers)
               end
             '');
-          filetypes = mkDashDefault ["html" "htmlangular"];
+          filetypes = mkDashDefault ["html" "htmlangular" "typescript" "typescriptreact"];
           root_markers = mkDashDefault ["angular.json" "nx.json"];
           on_attach = mkDashDefault (lib.generators.mkLuaInline
             /*
@@ -245,6 +270,20 @@ in {
                       other.server_capabilities.diagnosticProvider = false
                     end
                   end
+                end
+
+                if ft == "typescript" or ft == "typescriptreact" then
+                  -- On TS/TSX buffers angular is a references-only companion so
+                  -- usages in external .html templates are included. Everything
+                  -- else is owned by typescript-tools.
+                  client.server_capabilities.completionProvider = false
+                  client.server_capabilities.hoverProvider = false
+                  client.server_capabilities.signatureHelpProvider = false
+                  client.server_capabilities.definitionProvider = false
+                  client.server_capabilities.codeActionProvider = false
+                  client.server_capabilities.documentSymbolProvider = false
+                  client.server_capabilities.diagnosticProvider = false
+                  client.server_capabilities.inlayHintProvider = false
                 end
               end
             '');
