@@ -375,7 +375,11 @@
             enable = true;
             lsp.enable = true;
           };
-          ts = {
+          typescript = {
+            enable = true;
+            lsp.enable = false;
+          };
+          tsx = {
             enable = true;
             lsp.enable = false;
           };

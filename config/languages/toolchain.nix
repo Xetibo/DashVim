@@ -15,22 +15,28 @@
 
   rustCfg = languageConfig "rust";
   rustLspEnabled = (rustCfg.enable or false) && ((rustCfg.lsp or {}).enable or true);
+
+  # nvf no longer exposes `vim.languages.rust.lsp.package`; rust-analyzer is
+  # configured through the generic `vim.lsp.servers.rust-analyzer` option.
+  # Override its command with the project-aware resolver at the same priority
+  # used for the other toolchain LSPs.
+  rustAnalyzerServer = lib.optionalAttrs rustLspEnabled {
+    rust-analyzer = {
+      cmd = lib.mkOverride toolchain.overridePriority [(toolchain.bin "rust-analyzer")];
+    };
+  };
 in
   lib.mkIf (config'.toolchain.preferProjectTools or false) {
-    vim =
-      {
-        lsp.servers = lspServers;
+    vim = {
+      lsp.servers = lspServers // rustAnalyzerServer;
 
-        formatter.conform-nvim.setupOpts.formatters = toolchain.formatters;
+      formatter.conform-nvim.setupOpts.formatters = toolchain.formatters;
 
-        diagnostics.nvim-lint.linters = toolchain.linters;
-        luaConfigRC.dashvim-project-roslyn = lib.nvim.dag.entryBefore ["lsp-servers"] ''
-          vim.lsp.config["roslyn"] = {
-          cmd = ${lib.nvim.lua.toLuaObject [(toolchain.bin "roslyn-ls") "--stdio"]},
-          }
-        '';
-      }
-      // lib.optionalAttrs rustLspEnabled {
-        languages.rust.lsp.package = lib.mkOverride toolchain.overridePriority [(toolchain.bin "rust-analyzer")];
-      };
+      diagnostics.nvim-lint.linters = toolchain.linters;
+      luaConfigRC.dashvim-project-roslyn = lib.nvim.dag.entryBefore ["lsp-servers"] ''
+        vim.lsp.config["roslyn"] = {
+        cmd = ${lib.nvim.lua.toLuaObject [(toolchain.bin "roslyn-ls") "--stdio"]},
+        }
+      '';
+    };
   }

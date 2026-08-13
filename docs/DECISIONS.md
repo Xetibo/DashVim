@@ -101,3 +101,9 @@
 - Processed review file `.omo/review-20260708-140242.json`.
 - Removed placeholder line `test` from `docs/src/README.md` (line 5 in review context).
 - Scope intentionally minimal: no behavior/code-path changes, documentation text cleanup only.
+
+## 2026-08-13 — nvf bump: rust lsp.package removed, ts renamed to typescript/tsx
+
+- nvf commit a213644c removed `vim.languages.rust.lsp.package`. The toolchain rust-analyzer override now sets `vim.lsp.servers.rust-analyzer.cmd` instead.
+- `vim.languages.ts` no longer exists in nvf; split into `typescript` (ts/js) and `tsx` (react/tsx). DashVim `lspServers` defaults updated accordingly, both with `lsp.enable = false` (typescript-tools.nvim owns the TS LSP).
+- Full `nix eval` of `.#packages.x86_64-linux.default` succeeds after both changes.
