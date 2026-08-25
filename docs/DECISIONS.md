@@ -107,3 +107,16 @@
 - nvf commit a213644c removed `vim.languages.rust.lsp.package`. The toolchain rust-analyzer override now sets `vim.lsp.servers.rust-analyzer.cmd` instead.
 - `vim.languages.ts` no longer exists in nvf; split into `typescript` (ts/js) and `tsx` (react/tsx). DashVim `lspServers` defaults updated accordingly, both with `lsp.enable = false` (typescript-tools.nvim owns the TS LSP).
 - Full `nix eval` of `.#packages.x86_64-linux.default` succeeds after both changes.
+## 2026-08-25 — avante.nvim as review handoff target
+
+- Added `config/editor/avante.nix`: avante.nvim from nixpkgs (`vimPlugins.avante-nvim`, includes prebuilt Rust binary) with `plenary-nvim` + `nui-nvim` in startPlugins.
+- Avante is lazy-loaded on its commands only (`cmd = [...]`): zero startup cost and no startup API-key prompt when unused.
+- New review handoff: `:OpenCodeReviewAvante` / `<leader>ov` (`review.lua:complete_avante`) reuses comment collection + `.omo/review-*.json` writing, then calls `avante.api.ask({ question = ... })`. Session stays alive on handoff failure so `<leader>oe` (opencode) remains a fallback.
+- nvf's `lzn-auto-require` auto-loads opt plugins on require; the explicit `lazy.load` call in `complete_avante` is belt-and-suspenders.
+- Verified: `nix build .#default` passes; headless smoke test confirms `require("avante.api")`, `:AvanteAsk` registration, and `:OpenCodeReviewAvante` all work in the built package.
+## 2026-08-25 — avante.nvim provider/model + opencode-parity instructions
+
+- Default model: GitHub Copilot `gpt-5.6-terra` (`provider = "copilot"`, `use_response_api = true`, context_window 1048576, max_tokens 128000).
+- Copilot auth needs no extra plugin: avante reads the OAuth token already present in `~/.config/github-copilot/{hosts,apps}.json` (written by copilot.lua/copilot.vim). If the stored refresh token is expired, a one-time re-auth is required.
+- opencode parity for instructions: opencode always loads `~/.opencode/AGENTS.md` + all `~/.opencode/skills/*/SKILL.md` (opencode.json `instructions`). Avante equivalent: Nix builds `agentic.avanterules` from the SAME repo sources (`AGENTS.md`, `.opencode/skills/*/SKILL.md` — dynamic readDir, auto-picks up new skills) into a store dir wired via `rules.global_dir`. Avante injects it into every agentic-mode system prompt (path.lua find_rules). Project-root AGENTS.md is additionally read natively by avante.
+- Divergence vs opencode: avante's rules take the FIRST found per mode (project `.avante/rules/agentic.avanterules` overrides global); opencode merges project + global. Injection covers agentic mode only (avante default).

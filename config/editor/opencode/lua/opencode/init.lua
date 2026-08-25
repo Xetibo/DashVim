@@ -326,6 +326,10 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("OpenCodeReviewComplete", function()
     review_cmd().complete()
   end, { desc = "Finalize review: collect comments, write JSON, send to agent" })
+
+  vim.api.nvim_create_user_command("OpenCodeReviewAvante", function()
+    review_cmd().complete_avante()
+  end, { desc = "Finalize review: collect comments, write JSON, open Avante with prompt" })
 end
 
 return M

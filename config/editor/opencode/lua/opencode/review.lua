@@ -264,4 +264,58 @@ function M.complete()
   vim.g.in_review_session = false
 end
 
+--- Complete review and hand off to avante.nvim instead of the opencode
+--- terminal. Writes the same .omo/review-*.json, then opens the Avante
+--- sidebar with a prompt referencing the file. Keeps the session alive on
+--- failure so the user can retry with :OpenCodeReviewComplete.
+function M.complete_avante()
+  if not M.current_session then
+    vim.notify("No active review session", vim.log.levels.WARN)
+    return
+  end
+
+  local comments = M.collect_comments()
+
+  if #comments == 0 then
+    vim.notify("No review comments. Use :OpenCodeReviewComment to add comments before completing.", vim.log.levels.INFO)
+    -- Clean up stale session
+    M.current_session = nil
+    M.comments = {}
+    vim.g.in_review_session = false
+    return
+  end
+
+  local filepath = M.write_review_file(comments)
+  if not filepath then
+    vim.notify("Failed to write review file", vim.log.levels.ERROR)
+    return
+  end
+
+  -- Force-load avante (lazy-loaded on its commands only)
+  local lazy_ok, lazy = pcall(require, "lazy")
+  if lazy_ok then
+    pcall(lazy.load, { plugins = { "avante.nvim" } })
+  end
+
+  local api_ok, api = pcall(require, "avante.api")
+  if not api_ok then
+    vim.notify("avante.nvim not available. Review file written to " .. filepath, vim.log.levels.ERROR)
+    return
+  end
+
+  vim.notify("Wrote " .. #comments .. " review comments to " .. filepath, vim.log.levels.INFO)
+
+  local msg = string.format(
+    "Review file %s has %d comments. Read the file, process each comment, and update the code accordingly.",
+    filepath,
+    #comments
+  )
+
+  api.ask({ question = msg })
+
+  M.current_session = nil
+  M.comments = {}
+  vim.g.in_review_session = false
+end
+
 return M

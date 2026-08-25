@@ -866,6 +866,14 @@
         silent = true;
         desc = "Complete review and send comments to agent";
       }
+      {
+        mode = "n";
+        key = "<leader>ov";
+        action = "<CMD>OpenCodeReviewAvante<CR>";
+        noremap = true;
+        silent = true;
+        desc = "Complete review and send to Avante";
+      }
     ];
   };
 }

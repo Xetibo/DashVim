@@ -196,6 +196,7 @@ only available on dashboard
 | \<leader\>or   | Open code review session      |
 | \<leader\>on   | Add review comment on current line |
 | \<leader\>oe   | Complete review and send to agent |
+| \<leader\>ov   | Complete review and send to Avante |
 | `:OpenCodeAgentMode copilot\|free` | Switch oh-my-openagent model mode |
 
 ## Treesitter specials
