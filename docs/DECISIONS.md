@@ -120,3 +120,10 @@
 - Copilot auth needs no extra plugin: avante reads the OAuth token already present in `~/.config/github-copilot/{hosts,apps}.json` (written by copilot.lua/copilot.vim). If the stored refresh token is expired, a one-time re-auth is required.
 - opencode parity for instructions: opencode always loads `~/.opencode/AGENTS.md` + all `~/.opencode/skills/*/SKILL.md` (opencode.json `instructions`). Avante equivalent: Nix builds `agentic.avanterules` from the SAME repo sources (`AGENTS.md`, `.opencode/skills/*/SKILL.md` — dynamic readDir, auto-picks up new skills) into a store dir wired via `rules.global_dir`. Avante injects it into every agentic-mode system prompt (path.lua find_rules). Project-root AGENTS.md is additionally read natively by avante.
 - Divergence vs opencode: avante's rules take the FIRST found per mode (project `.avante/rules/agentic.avanterules` overrides global); opencode merges project + global. Injection covers agentic mode only (avante default).
+## 2026-08-26 — csharpier formatter: explicit args override for CSharpier 1.x CLI
+
+- Symptom: `Formatter 'csharpier' error: Unrecognized command or argument 'csharpier'.`
+- Root cause: conform.nvim's built-in csharpier def targets the legacy `dotnet <csharpier.dll>` wrapper (`command = "dotnet"; args = {"csharpier", "--write-stdout"}`). DashVim's toolchain overrides only `command` (nix resolver passthrough → nixpkgs `csharpier` 1.3.0); conform merges user config over built-in per-key, so the stale built-in `args` survived and produced `<csharpier 1.x> csharpier --write-stdout`, which the System.CommandLine-based 1.x CLI rejects.
+- Fix: `lib/toolchain.nix` formatters map now redefines the full `csharpier` entry with explicit `args = ["format" "--write-stdout" "--stdin-path" "${FILENAME}"]` (conform expands `${FILENAME}`; verified against real CLI). Other formatters unchanged (command-only override still fine for them).
+- Rejected: conform `pipe-files` subcommand — long-running multi-file protocol, unusable for conform's stdin mode.
+- Verified via nix eval of `lib/toolchain.nix` formatters + direct CLI stdin test; resolver passthrough unchanged.

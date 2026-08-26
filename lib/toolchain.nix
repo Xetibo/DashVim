@@ -356,49 +356,59 @@ in rec {
     zuban = mkLsp "zuban" ["server"];
   };
 
-  formatters = mapAttrs (_: tool: {command = lib.mkOverride overridePriority (bin tool);}) {
-    alejandra = "alejandra";
-    asmfmt = "asmfmt";
-    astyle = "astyle";
-    biome = "biome";
-    biome-check = "biome";
-    biome-organize-imports = "biome";
-    black = "black";
-    clang-format = "clang-format";
-    csharpier = "csharpier";
-    denofmt = "deno";
-    deno_fmt = "deno";
-    fantomas = "fantomas";
-    gofmt = "gofmt";
-    gofumpt = "gofumpt";
-    golines = "golines";
-    indent = "indent";
-    isort = "isort";
-    jqfmt = "jqfmt";
-    jsonfmt = "jsonfmt";
-    mdformat = "mdformat";
-    mix = "mix";
-    nasmfmt = "nasmfmt";
-    nixfmt = "nixfmt";
-    php_cs_fixer = "php-cs-fixer";
-    prettier = "prettier";
-    prettierd = "prettierd";
-    rubocop = "rubocop";
-    ruff = "ruff";
-    ruff-check = "ruff-check";
-    rumdl = "rumdl";
-    rustfmt = "rustfmt";
-    shfmt = "shfmt";
-    sqlfluff = "sqlfluff";
-    sqruff = "sqruff";
-    stylua = "stylua";
-    superhtml = "superhtml";
-    terraform-fmt = "terraform";
-    tofu-fmt = "tofu";
-    typstyle = "typstyle";
-    yamlfmt = "yamlfmt";
-    yamllint = "yamllint";
-  };
+  # conform's built-in csharpier entry targets the legacy `dotnet csharpier`
+  # wrapper; nixpkgs ships the native CSharpier 1.x CLI, which needs
+  # `format --write-stdout --stdin-path` instead of the stale default args.
+  formatters =
+    mapAttrs (_: tool: {command = lib.mkOverride overridePriority (bin tool);}) {
+      alejandra = "alejandra";
+      asmfmt = "asmfmt";
+      astyle = "astyle";
+      biome = "biome";
+      biome-check = "biome";
+      biome-organize-imports = "biome";
+      black = "black";
+      clang-format = "clang-format";
+      csharpier = "csharpier";
+      denofmt = "deno";
+      deno_fmt = "deno";
+      fantomas = "fantomas";
+      gofmt = "gofmt";
+      gofumpt = "gofumpt";
+      golines = "golines";
+      indent = "indent";
+      isort = "isort";
+      jqfmt = "jqfmt";
+      jsonfmt = "jsonfmt";
+      mdformat = "mdformat";
+      mix = "mix";
+      nasmfmt = "nasmfmt";
+      nixfmt = "nixfmt";
+      php_cs_fixer = "php-cs-fixer";
+      prettier = "prettier";
+      prettierd = "prettierd";
+      rubocop = "rubocop";
+      ruff = "ruff";
+      ruff-check = "ruff-check";
+      rumdl = "rumdl";
+      rustfmt = "rustfmt";
+      shfmt = "shfmt";
+      sqlfluff = "sqlfluff";
+      sqruff = "sqruff";
+      stylua = "stylua";
+      superhtml = "superhtml";
+      terraform-fmt = "terraform";
+      tofu-fmt = "tofu";
+      typstyle = "typstyle";
+      yamlfmt = "yamlfmt";
+      yamllint = "yamllint";
+    }
+    // {
+      csharpier = {
+        command = lib.mkOverride overridePriority (bin "csharpier");
+        args = ["format" "--write-stdout" "--stdin-path" "\${FILENAME}"];
+      };
+    };
 
   linters = mapAttrs (_: tool: {cmd = lib.mkOverride overridePriority (bin tool);}) {
     biomejs = "biome";
