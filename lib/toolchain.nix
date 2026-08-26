@@ -406,7 +406,7 @@ in rec {
     // {
       csharpier = {
         command = lib.mkOverride overridePriority (bin "csharpier");
-        args = ["format" "--write-stdout" "--stdin-path" "\${FILENAME}"];
+        args = ["format" "--write-stdout" "--stdin-path" "$FILENAME"];
       };
     };
 

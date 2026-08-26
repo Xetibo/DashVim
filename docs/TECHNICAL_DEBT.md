@@ -14,6 +14,8 @@ This file tracks known issues, limitations, deferred work, and cleanup items tha
 - `programs.dashvim.lsp.special.roslyn.filewatching` defaults to `"off"` to prevent Roslyn or Neovim from recursively watching too much of the filesystem. DashVim adds a scoped client-side watcher (`vim._watch`) over the solution dir with churn directories excluded (`bin`/`obj`/`.git`/`node_modules`/`.vs`/`.roslyn-cache`/`.generated`), reconciling creates against a known-file set so externally-created project files are delivered as `Created`. This uses the internal underscore-prefixed `vim._watch` API (the same subsystem Neovim's own LSP watcher uses); it is wrapped in `pcall` and silently degrades to save-time-only notifications if that internal API changes. Watch depth/scope is bounded by the resolved solution root (`/` is refused), so a `broadSearch` miss or a top-level solution still never watches a home folder.
 - `typescript-tools.nvim` does not expose a first-class plugin probe path option, so DashVim patches its generated process arguments to make Nix-provided `@angular/language-service` discoverable by tsserver. Revisit this if upstream adds `tsserver_plugin_probe_locations` or equivalent.
 
+- `csharpier` formatter (CSharpier 1.x CLI) throws `ArgumentNullException (directoryPath)` when invoked with an empty `--stdin-path`, which happens for unnamed/scratch C# buffers: conform substitutes `$FILENAME` unconditionally (`runner.lua`). Named buffers are unaffected. Upstream would need an empty-path guard; alternatively drop `--stdin-path` at the cost of config-discovery precision.
+
 ## Maintenance Rules
 
 - Add newly discovered issues here when they are not fixed in the same change.

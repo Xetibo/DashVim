@@ -124,6 +124,6 @@
 
 - Symptom: `Formatter 'csharpier' error: Unrecognized command or argument 'csharpier'.`
 - Root cause: conform.nvim's built-in csharpier def targets the legacy `dotnet <csharpier.dll>` wrapper (`command = "dotnet"; args = {"csharpier", "--write-stdout"}`). DashVim's toolchain overrides only `command` (nix resolver passthrough → nixpkgs `csharpier` 1.3.0); conform merges user config over built-in per-key, so the stale built-in `args` survived and produced `<csharpier 1.x> csharpier --write-stdout`, which the System.CommandLine-based 1.x CLI rejects.
-- Fix: `lib/toolchain.nix` formatters map now redefines the full `csharpier` entry with explicit `args = ["format" "--write-stdout" "--stdin-path" "${FILENAME}"]` (conform expands `${FILENAME}`; verified against real CLI). Other formatters unchanged (command-only override still fine for them).
+- Fix: `lib/toolchain.nix` formatters map now redefines the full `csharpier` entry with explicit `args = ["format" "--write-stdout" "--stdin-path" "$FILENAME"]`. conform placeholder syntax is shell-style `$FILENAME` (no braces) — `${FILENAME}` is passed through literally and made CSharpier throw `ArgumentNullException (directoryPath)` before the correction. Other formatters unchanged (command-only override still fine for them).
 - Rejected: conform `pipe-files` subcommand — long-running multi-file protocol, unusable for conform's stdin mode.
 - Verified via nix eval of `lib/toolchain.nix` formatters + direct CLI stdin test; resolver passthrough unchanged.
