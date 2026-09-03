@@ -221,17 +221,28 @@ in {
             agentic.new_session = function(opts)
               local session = original_new_session(opts)
 
-              -- Handle pending review prompt (set by review.lua's complete_agentic)
               local pending_prompt = vim.g.agentic_pending_prompt
               if pending_prompt then
                 vim.g.agentic_pending_prompt = nil
+              end
 
-                vim.schedule(function()
-                  local SessionRegistry = require("agentic.session_registry")
-                  local current_session = SessionRegistry.get_session_for_tab_page(nil, function(s)
-                    if s then
-                      s:on_session_ready(function(ready_session)
-                        if ready_session.session_id then
+              vim.schedule(function()
+                local SessionRegistry = require("agentic.session_registry")
+                local agent_instance = require("agentic.acp.agent_instance")
+                local current_session = SessionRegistry.get_session_for_tab_page(nil, function(s)
+                  if s then
+                    s:on_session_ready(function(ready_session)
+                      if ready_session.session_id then
+                        -- Set default model
+                        local client = agent_instance.get_instance(config.provider)
+                        if client then
+                          client:when_ready(function(c)
+                            c:set_model(ready_session.session_id, "gpt-5.6-terra", function() end)
+                          end)
+                        end
+
+                        -- Handle pending review prompt
+                        if pending_prompt then
                           local prompt = {
                             { type = "text", text = pending_prompt }
                           }
@@ -241,11 +252,11 @@ in {
                             end
                           end)
                         end
-                      end)
-                    end
-                  end)
+                      end
+                    end)
+                  end
                 end)
-              end
+              end)
 
               return session
             end
