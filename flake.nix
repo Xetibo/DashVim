@@ -102,6 +102,7 @@
             packages = with pkgs;
               [
                 nuget
+                lua
               ]
               ++ deps;
           };
