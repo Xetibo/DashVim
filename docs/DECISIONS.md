@@ -1,5 +1,11 @@
 # Decisions
 
+## 2026-09-03 — Copilot ACP project-document deployment
+
+- `hm/default.nix` deploys the OpenCode continuity documents (`DECISIONS.md`, `ARCHITECTURE.md`, `UI.md`, `CODE_GUIDELINES.md`, `TECHNICAL_DEBT.md`, and `TESTING.md`) beside `.github/copilot-instructions.md`, directly under `.github/`.
+- `hm/copilot-instructions.md` provides a single shell command that reads each deployed document into Copilot's context before code changes.
+- Rationale: keep Copilot ACP's repository guidance aligned with the instruction set used for OpenCode without requiring access to the original DashVim checkout.
+
 ## 2026-08-10 — Angular/TS LSP ownership + scoped Roslyn watcher
 
 - Angular (`ngserver`) owns every Angular template buffer — `filetypes = ["html" "htmlangular" "typescript" "typescriptreact"]` in `config/languages/lsp.nix`. On `html`/`htmlangular` it is the sole template provider and neuters any vanilla HTML LSP (fixes the LS not firing when the `html`→`htmlangular` flip fails). Inside Angular projects (root marker `angular.json`/`nx.json`) it also attaches to `typescript`/`typescriptreact` as a references-only companion so `.ts` references include usages in external `.html` templates; its `on_attach` disables its own non-reference providers on TS/TSX.

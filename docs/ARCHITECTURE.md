@@ -13,7 +13,7 @@ DashVim is a Nix flake that builds and distributes a Neovim configuration based 
 - `lib/env.nix` creates the runnable environment by combining the generated Neovim package, optional wrapped opencode package, and shared CLI/runtime dependencies.
 - `lib/opencode-config.nix` generates opencode theme, TUI config, opencode config JSON, and bundled skills/commands for both wrapped opencode and Home Manager deployments.
 - `lib/toolchain.nix` builds a Rust resolver and per-tool launch symlinks that prefer a different executable from the active Neovim `PATH` and fall back to DashVim's pinned Nix executable.
-- `hm/default.nix` adapts DashVim for Home Manager and NixOS-style module consumers.
+- `hm/default.nix` adapts DashVim for Home Manager and NixOS-style module consumers, deploying Copilot ACP instructions plus their supporting project documents directly under `.github/`.
 - `hm/opencode.nix` deploys opencode config files, skills, commands, and shared instructions into the user's home when opencode integration is enabled.
 - `docs/default.nix` builds mdbook documentation from module options.
 

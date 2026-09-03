@@ -60,7 +60,18 @@ in {
         ]
         ++ deps;
       home.file =
-        lib.optionalAttrs config'.opencode.enable
+        {
+          # Copilot-acp reads .github/copilot-instructions.md natively.
+          # Managed here via Nix instead of runtime Lua.
+          ".github/copilot-instructions.md".text = builtins.readFile ./copilot-instructions.md;
+          ".github/DECISIONS.md".source = ../docs/DECISIONS.md;
+          ".github/ARCHITECTURE.md".source = ../docs/ARCHITECTURE.md;
+          ".github/UI.md".source = ../docs/UI.md;
+          ".github/CODE_GUIDELINES.md".source = ../docs/CODE_GUIDELINES.md;
+          ".github/TECHNICAL_DEBT.md".source = ../docs/TECHNICAL_DEBT.md;
+          ".github/TESTING.md".source = ../docs/TESTING.md;
+        }
+        // lib.optionalAttrs config'.opencode.enable
         opencodeIntegration.homeFiles;
     }
     // lib.optionalAttrs (options ? xdg.configFile) {
