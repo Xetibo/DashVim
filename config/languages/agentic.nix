@@ -124,6 +124,12 @@ in {
           {
             provider = providerName;
 
+            acp_providers = {
+              "${providerName}" = {
+                initial_model = "gpt-5.6-terra";
+              };
+            };
+
             windows = {
               position = "left";
               width = "40%";
@@ -216,47 +222,31 @@ in {
               return original_send_prompt(self, session_id, prompt, callback)
             end
 
-            -- Set default model and handle pending prompts after session creation
-            local original_new_session = agentic.new_session
-            agentic.new_session = function(opts)
-              local session = original_new_session(opts)
+            -- Patch SessionRegistry.new_session to handle pending prompts
+            local SessionRegistry = require("agentic.session_registry")
+            local original_new_session = SessionRegistry.new_session
+            SessionRegistry.new_session = function(tab_page_id)
+              local session = original_new_session(tab_page_id)
 
               local pending_prompt = vim.g.agentic_pending_prompt
               if pending_prompt then
                 vim.g.agentic_pending_prompt = nil
               end
 
-              vim.schedule(function()
-                local SessionRegistry = require("agentic.session_registry")
-                local agent_instance = require("agentic.acp.agent_instance")
-                local current_session = SessionRegistry.get_session_for_tab_page(nil, function(s)
-                  if s then
-                    s:on_session_ready(function(ready_session)
-                      if ready_session.session_id then
-                        -- Set default model
-                        local client = agent_instance.get_instance(config.provider)
-                        if client then
-                          client:when_ready(function(c)
-                            c:set_model(ready_session.session_id, "gpt-5.6-terra", function() end)
-                          end)
-                        end
-
-                        -- Handle pending review prompt
-                        if pending_prompt then
-                          local prompt = {
-                            { type = "text", text = pending_prompt }
-                          }
-                          ready_session.agent:send_prompt(ready_session.session_id, prompt, function(response, err)
-                            if err then
-                              vim.notify("[Agentic] Review prompt failed: " .. tostring(err), vim.log.levels.ERROR)
-                            end
-                          end)
-                        end
+              if session and pending_prompt then
+                session:on_session_ready(function(ready_session)
+                  if ready_session.session_id then
+                    local prompt = {
+                      { type = "text", text = pending_prompt }
+                    }
+                    ready_session.agent:send_prompt(ready_session.session_id, prompt, function(response, err)
+                      if err then
+                        vim.notify("[Agentic] Review prompt failed: " .. tostring(err), vim.log.levels.ERROR)
                       end
                     end)
                   end
                 end)
-              end)
+              end
 
               return session
             end
