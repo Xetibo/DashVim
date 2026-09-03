@@ -1,8 +1,5 @@
 # Agent Instructions
 
-test
-
-this is a review test
 ## Project Docs
 
 - Before code changes, read `docs/ARCHITECTURE.md`, `docs/UI.md`, `docs/CODE_GUIDELINES.md`, `docs/TECHNICAL_DEBT.md`, and `docs/TESTING.md` when they exist.
