@@ -6,13 +6,16 @@
   ...
 }: let
   toolchain = import ../../lib/toolchain.nix {inherit lib pkgs;};
-  pinnedTsserverPath = "${pkgs.typescript}/lib/node_modules/typescript/lib/tsserver.js";
+  # Pinned to typescript_5 (classic JS build with tsserver.js): typescript-tools.nvim
+  # and ngserver both spawn tsserver under node, which TS 7 (Go-native, tsc
+  # only) no longer ships. Revisit when @angular/language-service supports TS 7.
+  pinnedTsserverPath = "${pkgs.typescript_5}/lib/node_modules/typescript/lib/tsserver.js";
   angularLanguageServiceRoot = "${pkgs.angular-language-server}/lib";
   angularLanguageServerCommand =
     if config'.toolchain.preferProjectTools or false
     then toolchain.bin "ngserver"
     else "${pkgs.angular-language-server}/bin/ngserver";
-  typescriptRoot = "${pkgs.typescript}/lib";
+  typescriptRoot = "${pkgs.typescript_5}/lib";
   typescriptToolsWithAngular = pkgs.vimPlugins.typescript-tools-nvim.overrideAttrs (old: {
     postPatch =
       (old.postPatch or "")

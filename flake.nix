@@ -71,9 +71,12 @@
                 variant = "copilot";
                 key = "";
                 config = {};
+                ninetyNine = orig.config.programs.dashvim.agent.ninetyNine;
               };
               lsp = {
                 useDefaultSpecialLspServers = true;
+                tailwind = orig.config.programs.dashvim.lsp.tailwind;
+                special = orig.config.programs.dashvim.lsp.special;
                 lspServers = {
                   nix = {
                     enable = true;

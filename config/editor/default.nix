@@ -8,6 +8,7 @@
     ./git.nix
     ./misc.nix
     ./opencode.nix
+    ./ninetynine.nix
     ./avante.nix
   ];
 }

@@ -227,6 +227,237 @@
           Merged with (and overrides) the default options.
         '';
       };
+
+      ninetyNine = {
+        enable = lib.mkOption {
+          default = true;
+          example = false;
+          type = lib.types.bool;
+          description = ''
+            Enables ThePrimeagen/99 (agentic search/vibe workflow).
+            Only effective when programs.dashvim.agent.enable is true.
+          '';
+        };
+        provider = lib.mkOption {
+          default = "OpenCodeProvider";
+          example = "ClaudeCodeProvider";
+          type = lib.types.enum [
+            "OpenCodeProvider"
+            "ClaudeCodeProvider"
+            "CursorAgentProvider"
+            "KiroProvider"
+            "GeminiCLIProvider"
+          ];
+          description = ''
+            99 AI CLI backend. Selects the provider table passed to 99's setup.
+          '';
+        };
+        model = lib.mkOption {
+          default = "opencode/big-pickle";
+          example = "anthropic/claude-sonnet-4-5";
+          type = with lib.types; nullOr str;
+          description = ''
+            Model override for 99 requests. Defaults to opencode/big-pickle
+            (opencode's flagship default) because the provider default
+            (OpenCode: opencode/claude-sonnet-4-5) is not a valid model id in
+            current opencode and makes every query fail with
+            "OpenCodeProvider make_query failed". Null falls back to the
+            provider default (currently broken for OpenCode, see above).
+            Override this if your opencode auth provides other models; the
+            runtime model picker (<leader>nm) lists what is actually available.
+          '';
+        };
+        providerExtraArgs = lib.mkOption {
+          default = [];
+          example = ["--extra" "args"];
+          type = with lib.types; listOf str;
+          description = ''
+            Extra CLI args appended by the 99 provider (provider_extra_args).
+          '';
+        };
+        tmpDir = lib.mkOption {
+          default = "/tmp/99";
+          example = "/tmp/99";
+          type = lib.types.str;
+          description = ''
+            Directory 99 uses for transient state (tmp_dir). Absolute path
+            keeps prompt/response/state files out of the repo; a relative
+            path resolves against Neovim's cwd and pollutes it.
+          '';
+        };
+        mdFiles = lib.mkOption {
+          default = ["AGENTS.md"];
+          example = ["AGENTS.md"];
+          type = with lib.types; listOf str;
+          description = ''
+            Markdown files 99 auto-attaches based on the request location (md_files).
+          '';
+        };
+        displayErrors = lib.mkOption {
+          default = false;
+          example = true;
+          type = lib.types.bool;
+          description = ''
+            Whether 99 surfaces provider errors inline (display_errors).
+          '';
+        };
+        autoAddSkills = lib.mkOption {
+          default = null;
+          example = true;
+          type = with lib.types; nullOr bool;
+          description = ''
+            Whether 99 auto-attaches discovered skills (auto_add_skills).
+            Null leaves the 99 default in place.
+          '';
+        };
+        logger = {
+          level = lib.mkOption {
+            default = "debug";
+            example = "info";
+            type = lib.types.enum ["debug" "info" "warn" "error" "fatal"];
+            description = ''
+              99 file-log verbosity, mapped to require("99").DEBUG etc.
+            '';
+          };
+          type = lib.mkOption {
+            default = null;
+            example = "file";
+            type = with lib.types; nullOr (enum ["print" "void" "file"]);
+            description = ''
+              99 logger sink. Null leaves the 99 default in place.
+            '';
+          };
+          path = lib.mkOption {
+            default = null;
+            example = "/tmp/99.debug";
+            type = with lib.types; nullOr str;
+            description = ''
+              99 log file path. Null computes "/tmp/<cwd-basename>.99.debug" at setup.
+            '';
+          };
+          printOnError = lib.mkOption {
+            default = true;
+            example = false;
+            type = lib.types.bool;
+            description = ''
+              Whether 99 prints log output when a request errors (print_on_error).
+            '';
+          };
+          maxRequestsCached = lib.mkOption {
+            default = null;
+            example = 50;
+            type = with lib.types; nullOr int;
+            description = ''
+              How many requests 99 keeps for log viewing (max_requests_cached).
+              Null leaves the 99 default in place.
+            '';
+          };
+        };
+        completion = {
+          source = lib.mkOption {
+            default = "blink";
+            example = "native";
+            type = lib.types.enum ["native" "cmp" "blink"];
+            description = ''
+              Completion engine for #rules and @files in the 99 prompt buffer.
+              "native" uses 99's built-in completion; "blink" matches DashVim's
+              default completion setup.
+            '';
+          };
+          customRules = lib.mkOption {
+            default = [];
+            example = ["scratch/custom_rules/"];
+            type = with lib.types; listOf str;
+            description = ''
+              Folders holding SKILL.md rules for #rule completion (custom_rules).
+              Expected layout: <dir>/<skill_name>/SKILL.md.
+            '';
+          };
+          files = {
+            enabled = lib.mkOption {
+              default = true;
+              example = false;
+              type = lib.types.bool;
+              description = ''
+                Whether @file completion is enabled.
+              '';
+            };
+            maxFileSize = lib.mkOption {
+              default = 102400;
+              example = 102400;
+              type = lib.types.int;
+              description = ''
+                Files larger than this (bytes) are skipped by @file completion.
+              '';
+            };
+            maxFiles = lib.mkOption {
+              default = 5000;
+              example = 5000;
+              type = lib.types.int;
+              description = ''
+                Cap on total files discovered for @file completion.
+              '';
+            };
+            exclude = lib.mkOption {
+              default = [
+                ".env"
+                ".env.*"
+                "node_modules"
+                ".git"
+                "dist"
+                "build"
+                "*.log"
+                ".DS_Store"
+                "tmp"
+                ".cursor"
+              ];
+              example = [".env"];
+              type = with lib.types; listOf str;
+              description = ''
+                Exclude patterns for @file completion, applied on top of .gitignore.
+              '';
+            };
+          };
+        };
+        inFlight = {
+          enable = lib.mkOption {
+            default = true;
+            example = false;
+            type = lib.types.bool;
+            description = ''
+              Whether 99 shows the in-flight request indicator (in_flight_options.enable).
+            '';
+          };
+          interval = lib.mkOption {
+            default = null;
+            example = 500;
+            type = with lib.types; nullOr int;
+            description = ''
+              Poll interval (ms) for the in-flight indicator (in_flight_interval).
+              Null leaves the 99 default in place.
+            '';
+          };
+          throbber = lib.mkOption {
+            default = {};
+            example = {
+              throb_time = 1000;
+            };
+            type = with lib.types; attrsOf anything;
+            description = ''
+              Throbber timing overrides (throb_time, cooldown_time, tick_time).
+            '';
+          };
+        };
+        extraConfig = lib.mkOption {
+          default = {};
+          example = {};
+          type = with lib.types; attrsOf anything;
+          description = ''
+            Additional setupOpts passed to 99's setup function.
+            Merged with (and overrides) the generated options.
+          '';
+        };
+      };
     };
 
     formatters = lib.mkOption {

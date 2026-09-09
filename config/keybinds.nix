@@ -20,6 +20,7 @@
       }
       // {
         "<leader>a" = lib.mkIf config'.agent.enable "+Agentic";
+        "<leader>n" = lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) "+99";
       };
     lsp.mappings = mkDashDefault {
       goToDefinition = "<leader>ca";
@@ -799,6 +800,62 @@
         key = "<leader>as";
         action = ''<CMD>lua require("agentic").switch_provider()<CR>'';
         desc = "Switch ACP provider";
+      })
+
+      # 99 (ThePrimeagen/99 agentic search/vibe workflow)
+      (lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) {
+        mode = "n";
+        key = "<leader>ns";
+        action = ''<CMD>lua require("99").search()<CR>'';
+        desc = "99 search project";
+      })
+      (lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) {
+        mode = "n";
+        key = "<leader>nV";
+        action = ''<CMD>lua require("99").vibe()<CR>'';
+        desc = "99 vibe";
+      })
+      (lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) {
+        mode = "v";
+        key = "<leader>nv";
+        action = ''<CMD>lua require("99").visual()<CR>'';
+        desc = "99 visual selection";
+      })
+      (lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) {
+        mode = "n";
+        key = "<leader>no";
+        action = ''<CMD>lua require("99").open()<CR>'';
+        desc = "99 open last interaction";
+      })
+      (lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) {
+        mode = "n";
+        key = "<leader>nl";
+        action = ''<CMD>lua require("99").view_logs()<CR>'';
+        desc = "99 view logs";
+      })
+      (lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) {
+        mode = "n";
+        key = "<leader>nx";
+        action = ''<CMD>lua require("99").stop_all_requests()<CR>'';
+        desc = "99 stop all requests";
+      })
+      (lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) {
+        mode = "n";
+        key = "<leader>nc";
+        action = ''<CMD>lua require("99").clear_previous_requests()<CR>'';
+        desc = "99 clear previous requests";
+      })
+      (lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) {
+        mode = "n";
+        key = "<leader>nm";
+        action = ''<CMD>lua require("99.extensions.telescope").select_model()<CR>'';
+        desc = "99 select model";
+      })
+      (lib.mkIf (config'.agent.enable && config'.agent.ninetyNine.enable) {
+        mode = "n";
+        key = "<leader>np";
+        action = ''<CMD>lua require("99.extensions.telescope").select_provider()<CR>'';
+        desc = "99 select provider";
       })
 
       # OpenCode

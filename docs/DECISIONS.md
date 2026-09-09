@@ -1,5 +1,11 @@
 # Decisions
 
+## 2026-09-09 — ThePrimeagen/99 via Nix, gated on agent.enable
+
+- Added `programs.dashvim.agent.ninetyNine` subtree in `modules/default.nix` covering all 99 `setup` opts (provider enum, model, providerExtraArgs, tmpDir, mdFiles, displayErrors, autoAddSkills, logger.*, completion.*, inFlight.*, extraConfig override). Null-typed options pass through to 99 defaults instead of forcing values.
+- `config/editor/ninetynine.nix` builds 99 with `buildVimPlugin` (pinned rev `c174224`), `setupModule = "99"`, gated on `agent.enable && agent.ninetyNine.enable`. Lua-only values (provider table, logger level, default log path) use `lib.mkLuaInline`; pure Nix config stays in the module.
+- Keybinds on `<leader>n` in `config/keybinds.nix` (`nV` vibe in normal mode, `nv` visual in visual mode only, plus search/open/logs/stop/clear/model/provider), with `+99` whichKey group. All gated on the same flags so no dead maps exist when agents are off.
+
 ## 2026-09-03 — Copilot ACP project-document deployment
 
 - `hm/default.nix` deploys the OpenCode continuity documents (`DECISIONS.md`, `ARCHITECTURE.md`, `UI.md`, `CODE_GUIDELINES.md`, `TECHNICAL_DEBT.md`, and `TESTING.md`) beside `.github/copilot-instructions.md`, directly under `.github/`.
@@ -133,3 +139,13 @@
 - Fix: `lib/toolchain.nix` formatters map now redefines the full `csharpier` entry with explicit `args = ["format" "--write-stdout" "--stdin-path" "$FILENAME"]`. conform placeholder syntax is shell-style `$FILENAME` (no braces) — `${FILENAME}` is passed through literally and made CSharpier throw `ArgumentNullException (directoryPath)` before the correction. Other formatters unchanged (command-only override still fine for them).
 - Rejected: conform `pipe-files` subcommand — long-running multi-file protocol, unusable for conform's stdin mode.
 - Verified via nix eval of `lib/toolchain.nix` formatters + direct CLI stdin test; resolver passthrough unchanged.
+## 2026-09-09 — pin editor TypeScript stack to typescript_5 (5.9.3)
+
+- nixpkgs unstable `typescript` is now 7.x (Go-native: `tsc` binary only, no `tsserver.js`/`tsserverlibrary.js`, no JS API). `typescript-tools.nvim` and `ngserver` both spawn tsserver under node, so `config/languages/lsp.nix` `pinnedTsserverPath`/`typescriptRoot` now point at `pkgs.typescript_5` (5.9.3, classic JS layout — verified `tsserver.js` exists in the store path).
+- CLI/toolchain `tsc` fallback (`lib/toolchain.nix`) intentionally stays on TS 7; editor-vs-CLI version skew is benign since `preferProjectTools` (default `true`) resolves project-local TS first.
+- Native `tsc --lsp` migration deferred: no tsserver plugin mechanism means losing `@angular/language-service`, styled, effect, and eslint plugins in TS buffers; Microsoft itself advises Angular projects to keep old-TS editor support. Revisit when Angular LS supports TS 7 or `typescript_5` leaves nixpkgs.
+## 2026-09-09 — 99 OpenCode default model: opencode/big-pickle
+
+- Symptom: every 99 query failed with "OpenCodeProvider make_query failed: process exit code: 1".
+- Root cause: 99's hardcoded OpenCode default model `opencode/claude-sonnet-4-5` is not a valid model id (`opencode run` fails with `ProviderModelNotFoundError: Model not found: opencode/claude-sonnet-4-5`; verified via `--print-logs`). DashVim's `ninetyNine.model` defaulted to null, falling through to the broken upstream default.
+- Fix: `ninetyNine.model` now defaults to `opencode/big-pickle` (verified `opencode run --agent build -m opencode/big-pickle` exits 0). Other providers' upstream defaults untouched.

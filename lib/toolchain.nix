@@ -194,9 +194,9 @@
     };
     tofu-ls = {fallback = getExe pkgs.tofu-ls;};
     ty = {fallback = getExe pkgs.ty;};
-    typescript-go = {
-      commands = ["tsgo" "typescript-go"];
-      fallback = getExe pkgs.typescript-go;
+    typescript = {
+      commands = ["tsc" "typescript"];
+      fallback = getExe pkgs.typescript;
     };
     typescript-language-server = {fallback = getExe pkgs.typescript-language-server;};
     typstyle = {fallback = getExe pkgs.typstyle;};
@@ -345,7 +345,7 @@ in rec {
     tinymist = mkLsp "tinymist" [];
     tofu-ls = mkLsp "tofu-ls" ["serve"];
     ty = mkLsp "ty" ["server"];
-    typescript-go = mkLsp "typescript-go" ["--lsp" "--stdio"];
+    typescript = mkLsp "typescript" ["--lsp" "--stdio"];
     typescript-language-server = mkLsp "typescript-language-server" ["--stdio"];
     vala-language-server = mkLsp "vala-language-server" [];
     vscode-css-language-server = mkLsp "vscode-css-language-server" ["--stdio"];

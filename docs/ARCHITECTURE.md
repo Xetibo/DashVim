@@ -5,12 +5,13 @@ DashVim is a Nix flake that builds and distributes a Neovim configuration based 
 ## Structure
 
 - `flake.nix` is the main entry point. It wires inputs with `flake-parts`, defines supported systems, dev shells, packages, and exported modules.
-- `modules/default.nix` defines the public `programs.dashvim` option surface, including colors, keybind toggles, LSP defaults, formatter defaults, opencode integration, and code companion settings.
+- `modules/default.nix` defines the public `programs.dashvim` option surface, including colors, keybind toggles, LSP defaults, formatter defaults, opencode integration, agent settings (`agent.enable`/`variant` plus the `agent.ninetyNine` 99 setup subtree), and code companion settings.
 - `lib/default.nix` calls `inputs.nvf.lib.neovimConfiguration` and passes DashVim options into the `config/` module tree through `extraSpecialArgs`.
 - `config/default.nix` imports the Neovim configuration modules for base settings, theme, keybinds, editor features, language support, custom config, and user-provided `additionalConfig`.
 - `config/languages/toolchain.nix` injects project-aware command resolvers for known DashVim/nvf LSPs, formatters, and linters when `programs.dashvim.toolchain.preferProjectTools` is enabled; `config/languages/lsp.nix` handles the TypeScript server path special case inside the owning plugin definition.
 - `config/languages/lsp.nix` also owns plugin-backed LSP setup such as `typescript-tools.nvim` and `roslyn.nvim`; Roslyn file watching, targeted file-change notifications, broad solution search, and target locking are controlled through `programs.dashvim.lsp.special.roslyn.*`.
 - `lib/env.nix` creates the runnable environment by combining the generated Neovim package, optional wrapped opencode package, and shared CLI/runtime dependencies.
+- `config/editor/opencode.nix` wires opencode-nvim; `config/editor/ninetynine.nix` wires ThePrimeagen/99 via `buildVimPlugin` (pinned GitHub rev) with `setupModule = "99"` and `setupOpts` generated from `programs.dashvim.agent.ninetyNine`, gated on `agent.enable && agent.ninetyNine.enable`. Lua-only values (provider table, logger level enum, default log path) use `lib.mkLuaInline`; `extraConfig` merges over generated opts.
 - `lib/opencode-config.nix` generates opencode theme, TUI config, opencode config JSON, and bundled skills/commands for both wrapped opencode and Home Manager deployments.
 - `lib/toolchain.nix` builds a Rust resolver and per-tool launch symlinks that prefer a different executable from the active Neovim `PATH` and fall back to DashVim's pinned Nix executable.
 - `hm/default.nix` adapts DashVim for Home Manager and NixOS-style module consumers, deploying Copilot ACP instructions plus their supporting project documents directly under `.github/`.
