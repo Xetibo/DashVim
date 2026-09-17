@@ -8,6 +8,10 @@
     base16.url = "github:SenchoPens/base16.nix";
     statix.url = "github:oppiliappan/statix";
     sqlit.url = "github:Maxteabag/sqlit";
+    nvim-mcp = {
+      url = "github:linw1995/nvim-mcp/986be68135a05ebdb727e73e609ffda0bbbbfdf6";
+      flake = false;
+    };
   };
 
   outputs = {flake-parts, ...} @ inputs:
@@ -23,6 +27,7 @@
         imports = [
           (import ./modules {inherit lib config';})
         ];
+        programs.dashvim.agent.enable = true;
         systems = [
           "x86_64-linux"
           "aarch64-linux"
@@ -106,22 +111,27 @@
               [
                 nuget
                 lua
+                python3
               ]
               ++ deps;
           };
           packages = let
             enableAgent = orig.config.programs.dashvim.agent.enable or false;
-            mkPkgBase = neovim:
+            mkPkgBase = enableAgent: neovim:
               import ./lib/env.nix {
                 inherit pkgs neovim system inputs enableAgent;
               };
-            mkPkg = import ./lib/mkPkg.nix {inherit pkgs mkPkgBase;};
+            mkPkg = enableAgent:
+              import ./lib/mkPkg.nix {
+                inherit pkgs;
+                mkPkgBase = mkPkgBase enableAgent;
+              };
           in {
             dependencies = deps;
             lint = inputs.statix.packages.${system}.default;
             format = pkgs.alejandra;
-            default = mkPkg package.neovim;
-            minimal = mkPkg custom.neovim;
+            default = (mkPkg enableAgent) package.neovim;
+            minimal = (mkPkg customConfig.agent.enable) custom.neovim;
             docs = import ./docs {
               inherit inputs pkgs lib stable;
             };

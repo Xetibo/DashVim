@@ -9,6 +9,7 @@
     ./misc.nix
     ./opencode.nix
     ./ninetynine.nix
+    ./codex-bridge.nix
     ./avante.nix
     ./markdown-preview.nix
   ];

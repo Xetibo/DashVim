@@ -1,5 +1,44 @@
 # Decisions
 
+## 2026-10-01 — Save direct Codex buffer edits
+
+- User confirmed live MCP editing works and requested that edited buffers be saved. Replaced the shared leave-unsaved instruction with a native `nvim_buf_call` / `noautocmd update` save after editing each named file buffer. This saves existing buffer content too, preserves undo, skips write autocommands under the no-validation policy, and reports failures without forcing writes. Only edited buffers are saved; 99 visual replacements remain owned by 99.
+- Updated bridge coverage to include explicit native saving and undo after saving. Tests/builds were not run in this editor session. Rebuild/redeploy and restart the provider to load the new generated instructions.
+
+## 2026-10-01 — Pass ACP configuration through CODEX_CONFIG
+
+- Inspected the installed `@agentclientprotocol/codex-acp` 1.13.1 adapter: its ACP entry point ignores CLI `-c` arguments and reads session overrides from JSON in `CODEX_CONFIG`. The installed Neovim config already contained the intended arguments, so rebuilding the previous configuration alone would not fix missing MCP tools, editor instructions, or bundled Caveman/Compact Context content.
+- Agentic now supplies the shared settings and per-editor MCP server through its provider environment. 99 still passes CLI overrides directly to `codex exec`. Both use the same socket and server settings helper; no global Codex configuration is changed.
+- Updated the bridge test to compare ACP environment JSON with CLI settings. Its earlier CLI parser check did not exercise the ACP adapter and therefore missed this mismatch. No tests or builds were run for this correction; an authenticated ACP session remains unverified. Rebuild/redeploy and restart the editor/provider to pick up the fix.
+
+## 2026-10-01 — Linked buffer edit attempt
+
+- This session exposed no Neovim MCP tools and shell discovery found no running Neovim process. Added a test line to `test.md` on disk; live buffer synchronization could not be confirmed.
+
+## 2026-10-01 — Existing Neovim MCP bridge for Codex
+
+- Added [linw1995/nvim-mcp](https://github.com/linw1995/nvim-mcp), pinned at `986be68135a05ebdb727e73e609ffda0bbbbfdf6` as a source-only flake input. `lib/nvim-mcp.nix` builds its Rust server with DashVim's existing nixpkgs toolchain and upstream Cargo.lock; no runtime downloads or second Rust toolchain input.
+- `config/editor/codex-bridge.nix` packages the upstream Lua module and DashVim's small launcher helper. `dashvim.codex-bridge.args` opens one private temporary RPC socket per Neovim process, reuses it for both hosts, and passes a required stdio MCP server using `--connect <exact-socket>`. No global MCP config, project auto-discovery, or TCP listener. The socket closes on editor exit.
+- Both Codex ACP and 99 use that helper. Native MCP `read` with buffer IDs sees unsaved contents; `exec_lua` exposes Neovim's buffer editing and undo APIs, and the bridge supplies LSP navigation/diagnostic tools. Instructions prefer these tools, require conflict checks, preserve dirty buffers, and leave saving to the user. 99 visual replacements still go through 99's response contract; vibe uses live-buffer edits.
+- Editor-scoped launch flags disable Codex shell/unified-exec tools; MCP formatting/import-organization tools are filtered out. No-validation policy also covers process execution through `exec_lua`. This is an editor behavior policy, not a Lua security sandbox. Direct MCP edits do not use ACP patch previews.
+- `tests/codex-bridge.py` exercises the actual built MCP server and live Neovim instances over stdio/Unix RPC, without a model call. It also verifies generated ACP/CLI arguments agree and retain Caveman/no-validation instructions.
+- Verified: default and minimal packages build; both pass the live bridge test, including Codex CLI configuration parsing, unsaved reads/edits, diagnostics, undo, unchanged disk content, and two-instance isolation. Nix formatting and whitespace checks pass. No authenticated model request was made.
+
+## 2026-10-01 — Codex editor policy and bundled skills
+
+- `lib/codex-editor.nix` reuses the tracked Caveman and Compact Context skills for both Codex hosts via `-c developer_instructions=...`. Caveman is active for prose; Compact Context is on request. No global config/home writes or runtime plugin downloads; standalone Codex is unaffected.
+- Both hosts instruct Codex to stay within the editor request, skip all validation, avoid autonomous workflows, and never perform shell-based edits. Read-only shell discovery is a fallback when supplied context/native readers are insufficient. This is behavioral policy, not a security sandbox.
+- agentic.nvim uses direct native `apply_patch`, which pinned codex-acp exposes and reports through ACP tool/diff events. Do not advertise fictional buffer tools: the pinned client explicitly disables ACP `fs` and the adapter has no corresponding filesystem forwarding. Unsaved-buffer conflicts must be preserved, not overwritten.
+- 99's packaged Codex provider loads generated launch args and a pinned CLI path from `99.codex-config`. Visual replacements remain code-only for 99 to apply; search/vibe retain location records. The CLI owns TEMP_FILE through `--output-last-message`, so instructions explicitly prevent the model from writing that file itself and then overwriting it with a final prose summary.
+- Codex launch configuration follows the official [developer_instructions reference](https://developers.openai.com/codex/config-reference/). User-supplied `agent.config` and `ninetyNine.providerExtraArgs` retain their existing override behavior.
+- Verified both agent-enabled flake outputs build, both pass headless provider/config smoke checks, and generated CLI instruction arguments parse as TOML with exact text round-tripping. Formatting and whitespace checks pass. Live model behavior was not exercised.
+
+## 2026-10-01 — Codex CLI and ACP agent options via nixpkgs
+
+- Agent-enabled environments carry `pkgs.codex` and `pkgs.codex-acp` along with the existing GitHub Copilot CLI and OpenCode. The flake sets its intended `agent.enable = true` on the actual default module (rather than only in a local value), passes each output's agent flag to its wrapper, and gates agentic.nvim on that flag. No new flake input or ad hoc runtime download.
+- 99's pinned upstream providers do not include Codex; install `config/editor/codex-provider.lua` in the plugin and register it when setup options are evaluated so the existing provider picker can discover it. The CLI writes its final message to 99's expected temp file; default model is `gpt-5.3-codex`. A null `ninetyNine.model` now means use the selected provider's default, except OpenCode retains its working `opencode/big-pickle` override.
+- `agent.variant = "codex"` selects the existing agentic.nvim `codex-acp` adapter; `codex-acp` command is pinned to the nixpkgs binary, while the Copilot-only initial model remains scoped to Copilot. Existing provider switchers keep OpenCode and Copilot available; users authenticate with Codex separately.
+
 ## 2026-09-18 — markdown-preview.nvim via Nix (`programs.dashvim.markdownPreview`)
 
 - New `programs.dashvim.markdownPreview` subtree in `modules/default.nix` (after the agent block): `enable` (default true), `port`/`theme`/`browser` (g:mkdp_port/theme/browser), `autoStart` false / `autoClose` true / `combinePreview` false, `filetypes` `[markdown]`, `extraConfig` (attrsOf anything, overrides generated globals). Wired in `config/editor/markdown-preview.nix` (imported from `config/editor/default.nix`); also removed stale `mkdp_auto_start=true` from `config/base.nix`, which would have collided and hijacked the browser on every markdown buffer.

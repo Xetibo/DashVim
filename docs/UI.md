@@ -15,6 +15,7 @@ DashVim's UI is a terminal Neovim interface configured through `nvf`, plus an op
 - Keep visual defaults compact and keyboard-driven.
 - Preserve existing DashVim navigation conventions and leader-key patterns when adding UI interactions.
 - Avoid visual noise in editor surfaces; prioritize readable buffers, diagnostics, completion menus, and search results.
+- Editor-assistant buffer edits should preserve unsaved user work and native undo history. Save edited file buffers through Neovim without write autocommands, preserving undo history and avoiding formatting or validation on save. Report write failures without forcing a write; do not silently replace buffers from disk.
 
 ## Color Patterns
 
@@ -31,6 +32,7 @@ DashVim's UI is a terminal Neovim interface configured through `nvf`, plus an op
 - Update this file when adding components, layouts, themes, colors, interaction patterns, or visual rules.
 - Document important keybinding changes in user-facing docs when they affect default workflows.
 - 99 keybindings live under `<leader>n` ("+99" whichKey group): `<leader>ns` search, `<leader>nV` vibe (normal), `<leader>nv` visual selection (visual mode only), `<leader>no` open last interaction, `<leader>nl` logs, `<leader>nx` stop, `<leader>nc` clear, `<leader>nm` select model, `<leader>np` select provider.
+- Codex appears in 99's `<leader>np` provider picker when agents are enabled. In agentic.nvim, use `<localLeader>s` (or the existing provider-switch mapping) to choose Codex ACP; changing the default provider requires `programs.dashvim.agent.variant = "codex"`.
 
 ## Don'ts
 

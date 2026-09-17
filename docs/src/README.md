@@ -199,6 +199,28 @@ only available on dashboard
 | \<leader\>ov   | Complete review and send to Avante |
 | `:OpenCodeAgentMode copilot\|free` | Switch oh-my-openagent model mode |
 
+## Agent backends
+
+When `programs.dashvim.agent.enable = true`, the Nix environment includes Codex CLI and
+Codex ACP alongside OpenCode and GitHub Copilot. Run `codex login` once to authenticate.
+99 defaults to OpenCode; choose `CodexProvider` with `<leader>np`, or set
+`programs.dashvim.agent.ninetyNine.provider = "CodexProvider"`. Its default model
+is `gpt-5.3-codex` (override with `ninetyNine.model` for another model).
+agentic.nvim defaults to Copilot; choose Codex ACP using its provider picker
+(`<localLeader>s` in the chat), or set `programs.dashvim.agent.variant = "codex"`.
+
+Both Codex integrations include Caveman (active by default) and Compact Context
+(on request), and instruct Codex to act as an editor coding assistant: focused
+edits and answers, no validation commands, commits, or autonomous background work.
+Say `normal mode` to disable Caveman. These settings only apply inside the editor.
+Both launchers automatically connect the bundled `nvim-mcp` bridge to their own
+Neovim instance. Codex can read unsaved buffers, query existing diagnostics and
+LSP navigation, and edit buffers using Neovim's undo system. Edits stay unsaved
+for review and `:write`; use `u` to undo them. These edits appear directly in the
+buffer, rather than as ACP patch previews. Shell tools are disabled in these
+launches. 99 applies visual replacement text itself and keeps its structured
+search/vibe results. Rebuild and restart Neovim to activate the bridge.
+
 ## Treesitter specials
 used to interact with treesitter defined objects.
 | key | Description                          |

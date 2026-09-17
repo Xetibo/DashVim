@@ -5,6 +5,7 @@
   lib,
   ...
 }: let
+  codexEditor = import ../../lib/codex-editor.nix {inherit lib;};
   agentic-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "agentic.nvim";
     version = "2026-07-20";
@@ -19,147 +20,155 @@
 
   # agent.variant selects the ACP provider:
   #   "copilot"  → copilot-acp (direct GitHub adapter: copilot --acp --stdio)
-  #   otherwise  → opencode-acp (via opencode binary: opencode acp)
+  #   "codex"    → codex-acp (Nix-packaged ACP adapter)
+  #   "opencode" → opencode-acp (via opencode binary: opencode acp)
   providerName =
     if config'.agent.variant == "copilot"
     then "copilot-acp"
+    else if config'.agent.variant == "codex"
+    then "codex-acp"
     else "opencode-acp";
+in
+  lib.mkIf config'.agent.enable {
+    vim = {
+      # agentic.nvim handles its own copilot connection via ACP —
+      # no need for nvf's built-in copilot.vim plugin.
+      assistant.copilot.enable = false;
 
-in {
-  vim = {
-    # agentic.nvim handles its own copilot connection via ACP —
-    # no need for nvf's built-in copilot.vim plugin.
-    assistant.copilot.enable = false;
+      # Set theme highlights BEFORE plugin loads (theme.lua only sets if not exists)
+      luaConfigRC.agentic-theme =
+        mkDashDefault
+        /*
+        lua
+        */
+        ''
+          vim.api.nvim_set_hl(0, "AgenticStatusPending", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base0E or "cba6f7"}", bold = true })
+          vim.api.nvim_set_hl(0, "AgenticStatusCompleted", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base0B or "a6e3a1"}", bold = true })
+          vim.api.nvim_set_hl(0, "AgenticStatusFailed", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base08 or "f38ba8"}", bold = true })
+          vim.api.nvim_set_hl(0, "AgenticTitle", { bg = "#${config'.colorscheme.base0D or "89b4fa"}", fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bold = true })
+          vim.api.nvim_set_hl(0, "AgenticSpinnerGenerating", { fg = "#${config'.colorscheme.base0D or "89b4fa"}", bold = true })
+          vim.api.nvim_set_hl(0, "AgenticSpinnerThinking", { fg = "#${config'.colorscheme.base0E or "cba6f7"}", bold = true })
+          vim.api.nvim_set_hl(0, "AgenticSpinnerSearching", { fg = "#${config'.colorscheme.base0A or "f9e2af"}", bold = true })
+          vim.api.nvim_set_hl(0, "AgenticDiffDeleteWord", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base08 or "f38ba8"}", bold = true })
+          vim.api.nvim_set_hl(0, "AgenticDiffAddWord", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base0B or "a6e3a1"}", bold = true })
+          vim.api.nvim_set_hl(0, "AgenticPermissionButtonInactive", { fg = "#${config'.colorscheme.base05 or "cdd6f4"}", bg = "#${config'.colorscheme.base03 or "45475a"}" })
+        '';
 
-    # Set theme highlights BEFORE plugin loads (theme.lua only sets if not exists)
-    luaConfigRC.agentic-theme =
-      mkDashDefault
-      /*
-      lua
-      */
-      ''
-        vim.api.nvim_set_hl(0, "AgenticStatusPending", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base0E or "cba6f7"}", bold = true })
-        vim.api.nvim_set_hl(0, "AgenticStatusCompleted", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base0B or "a6e3a1"}", bold = true })
-        vim.api.nvim_set_hl(0, "AgenticStatusFailed", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base08 or "f38ba8"}", bold = true })
-        vim.api.nvim_set_hl(0, "AgenticTitle", { bg = "#${config'.colorscheme.base0D or "89b4fa"}", fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bold = true })
-        vim.api.nvim_set_hl(0, "AgenticSpinnerGenerating", { fg = "#${config'.colorscheme.base0D or "89b4fa"}", bold = true })
-        vim.api.nvim_set_hl(0, "AgenticSpinnerThinking", { fg = "#${config'.colorscheme.base0E or "cba6f7"}", bold = true })
-        vim.api.nvim_set_hl(0, "AgenticSpinnerSearching", { fg = "#${config'.colorscheme.base0A or "f9e2af"}", bold = true })
-        vim.api.nvim_set_hl(0, "AgenticDiffDeleteWord", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base08 or "f38ba8"}", bold = true })
-        vim.api.nvim_set_hl(0, "AgenticDiffAddWord", { fg = "#${config'.colorscheme.base00 or "1e1e2e"}", bg = "#${config'.colorscheme.base0B or "a6e3a1"}", bold = true })
-        vim.api.nvim_set_hl(0, "AgenticPermissionButtonInactive", { fg = "#${config'.colorscheme.base05 or "cdd6f4"}", bg = "#${config'.colorscheme.base03 or "45475a"}" })
-      '';
+      lazy.plugins = {
+        "agentic.nvim" = mkDashDefault {
+          package = agentic-nvim;
+          setupModule = "agentic";
+          setupOpts =
+            {
+              provider = providerName;
 
-    lazy.plugins = {
-      "agentic.nvim" = mkDashDefault {
-        package = agentic-nvim;
-        setupModule = "agentic";
-        setupOpts =
-          {
-            provider = providerName;
-
-            acp_providers = {
-              "${providerName}" = {
-                initial_model = "gpt-5.6-terra";
-              };
-            };
-
-            windows = {
-              position = "left";
-              width = "40%";
-            };
-
-            # agentic.nvim keymaps mix positional and named keys in a single table
-            # (e.g. { "<S-Tab>", mode = { "i", "n", "v" } }), which can't be
-            # expressed in pure Nix — use inline Lua to preserve the exact structure.
-            keymaps =
-              lib.mkLuaInline
-              /*
-              lua
-              */
-              ''
+              acp_providers =
                 {
-                  widget = {
-                    close = "q",
-                    change_mode = {
-                      { "<S-Tab>", mode = { "i", "n", "v" } },
-                    },
-                    switch_provider = "<localLeader>s",
-                    switch_model = "<localLeader>m",
-                    change_thought_level = "<localLeader>t",
-                  },
-                  prompt = {
-                    submit = {
-                      "<CR>",
-                      { "<C-s>", mode = { "i", "n", "v" } },
-                    },
-                    paste_image = {
-                      { "<localLeader>p", mode = { "n" } },
-                      { "<C-v>", mode = { "i" } },
-                    },
-                  },
-                  chat = {
-                    next_heading = "]]",
-                    prev_heading = "[[",
-                    next_tool_call = "]t",
-                    prev_tool_call = "[t",
-                  },
-                  diff_preview = {
-                    next_hunk = "]c",
-                    prev_hunk = "[c",
-                  },
-                  permission = {
-                    cycle_next = "<C-n>",
-                    cycle_prev = "<C-p>",
-                  },
+                  "codex-acp" = {
+                    command = "${pkgs.codex-acp}/bin/codex-acp";
+                    env = lib.mkLuaInline ''require("dashvim.codex-bridge").env(vim.json.decode([==[${builtins.toJSON codexEditor.config.agentic}]==]))'';
+                  };
                 }
-              '';
-          }
-          // config'.agent.config;
+                // lib.optionalAttrs (providerName == "copilot-acp") {
+                  "copilot-acp".initial_model = "gpt-5.6-terra";
+                };
+
+              windows = {
+                position = "left";
+                width = "40%";
+              };
+
+              # agentic.nvim keymaps mix positional and named keys in a single table
+              # (e.g. { "<S-Tab>", mode = { "i", "n", "v" } }), which can't be
+              # expressed in pure Nix — use inline Lua to preserve the exact structure.
+              keymaps =
+                lib.mkLuaInline
+                /*
+                lua
+                */
+                ''
+                  {
+                    widget = {
+                      close = "q",
+                      change_mode = {
+                        { "<S-Tab>", mode = { "i", "n", "v" } },
+                      },
+                      switch_provider = "<localLeader>s",
+                      switch_model = "<localLeader>m",
+                      change_thought_level = "<localLeader>t",
+                    },
+                    prompt = {
+                      submit = {
+                        "<CR>",
+                        { "<C-s>", mode = { "i", "n", "v" } },
+                      },
+                      paste_image = {
+                        { "<localLeader>p", mode = { "n" } },
+                        { "<C-v>", mode = { "i" } },
+                      },
+                    },
+                    chat = {
+                      next_heading = "]]",
+                      prev_heading = "[[",
+                      next_tool_call = "]t",
+                      prev_tool_call = "[t",
+                    },
+                    diff_preview = {
+                      next_hunk = "]c",
+                      prev_hunk = "[c",
+                    },
+                    permission = {
+                      cycle_next = "<C-n>",
+                      cycle_prev = "<C-p>",
+                    },
+                  }
+                '';
+            }
+            // config'.agent.config;
+        };
       };
+
+      # After plugin loads: write copilot instructions file and handle pending review prompts
+      luaConfigRC.agentic-after =
+        mkDashDefault
+        /*
+        lua
+        */
+        ''
+          vim.api.nvim_create_autocmd("User", {
+            pattern = "VeryLazy",
+            once = true,
+            callback = function()
+              -- Patch SessionRegistry.new_session to handle pending review prompts
+              local SessionRegistry = require("agentic.session_registry")
+              local original_new_session = SessionRegistry.new_session
+              SessionRegistry.new_session = function(tab_page_id)
+                local session = original_new_session(tab_page_id)
+
+                local pending_prompt = vim.g.agentic_pending_prompt
+                if pending_prompt then
+                  vim.g.agentic_pending_prompt = nil
+                end
+
+                if session and pending_prompt then
+                  session:on_session_ready(function(ready_session)
+                    if ready_session.session_id then
+                      local prompt = {
+                        { type = "text", text = pending_prompt }
+                      }
+                      ready_session.agent:send_prompt(ready_session.session_id, prompt, function(response, err)
+                        if err then
+                          vim.notify("[Agentic] Review prompt failed: " .. tostring(err), vim.log.levels.ERROR)
+                        end
+                      end)
+                    end
+                  end)
+                end
+
+                return session
+              end
+            end,
+          })
+        '';
     };
-
-    # After plugin loads: write copilot instructions file and handle pending review prompts
-    luaConfigRC.agentic-after =
-      mkDashDefault
-      /*
-      lua
-      */
-      ''
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "VeryLazy",
-          once = true,
-          callback = function()
-            -- Patch SessionRegistry.new_session to handle pending review prompts
-            local SessionRegistry = require("agentic.session_registry")
-            local original_new_session = SessionRegistry.new_session
-            SessionRegistry.new_session = function(tab_page_id)
-              local session = original_new_session(tab_page_id)
-
-              local pending_prompt = vim.g.agentic_pending_prompt
-              if pending_prompt then
-                vim.g.agentic_pending_prompt = nil
-              end
-
-              if session and pending_prompt then
-                session:on_session_ready(function(ready_session)
-                  if ready_session.session_id then
-                    local prompt = {
-                      { type = "text", text = pending_prompt }
-                    }
-                    ready_session.agent:send_prompt(ready_session.session_id, prompt, function(response, err)
-                      if err then
-                        vim.notify("[Agentic] Review prompt failed: " .. tostring(err), vim.log.levels.ERROR)
-                      end
-                    end)
-                  end
-                end)
-              end
-
-              return session
-            end
-          end,
-        })
-      '';
-  };
-}
+  }

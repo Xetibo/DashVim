@@ -6,6 +6,7 @@
   ...
 }: let
   cfg = config'.agent.ninetyNine;
+  codexEditor = import ../../lib/codex-editor.nix {inherit lib;};
 
   nineNine = pkgs.vimUtils.buildVimPlugin {
     pname = "99";
@@ -20,6 +21,15 @@
     # Upstream lua/99/editor/lsp.lua requires 99.editor.treesitter, which does
     # not exist in the repo, so nixpkgs' neovim require-check fails. Skip it.
     doCheck = false;
+    postInstall = ''
+      cp ${./codex-provider.lua} $out/lua/99/codex-provider.lua
+      cat > $out/lua/99/codex-config.lua <<'EOF'
+      return vim.json.decode([==[${builtins.toJSON {
+        command = "${pkgs.codex}/bin/codex";
+        args = codexEditor.args.ninetyNine;
+      }}]==])
+      EOF
+    '';
   };
 
   levelMap = {
@@ -39,8 +49,19 @@ in
           setupOpts =
             {
               # provider is a Lua table (require("99").Providers.X), not a string.
-              provider = lib.mkLuaInline ''require("99").Providers.${cfg.provider}'';
-              model = cfg.model;
+              provider = lib.mkLuaInline ''
+                (function()
+                  local providers = require("99").Providers
+                  providers.CodexProvider = require("99.codex-provider")
+                  return providers.${cfg.provider}
+                end)()
+              '';
+              model =
+                if cfg.model != null
+                then cfg.model
+                else if cfg.provider == "OpenCodeProvider"
+                then "opencode/big-pickle"
+                else null;
               provider_extra_args = cfg.providerExtraArgs;
               tmp_dir = cfg.tmpDir;
               md_files = cfg.mdFiles;

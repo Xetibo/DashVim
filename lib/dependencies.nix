@@ -38,4 +38,8 @@ in
     ]
     ++ pkgs.lib.optional enableOpencode pkgs.opencode
     ++ pkgs.lib.optional enableOpencode pkgs.opencode-desktop
-    ++ pkgs.lib.optional enableAgent pkgs.github-copilot-cli
+    ++ pkgs.lib.optionals enableAgent [
+      pkgs.github-copilot-cli
+      pkgs.codex
+      pkgs.codex-acp
+    ]

@@ -199,14 +199,14 @@
       variant = lib.mkOption {
         default = "copilot";
         example = "opencode";
-        type = lib.types.str;
+        type = lib.types.enum ["copilot" "opencode" "codex"];
         description = ''
           agentic.nvim ACP provider variant.
 
           "copilot"  → copilot-acp provider (direct GitHub ACP adapter: copilot --acp --stdio)
           "opencode" → opencode-acp provider (via opencode binary: opencode acp)
-
-          Any other value defaults to opencode-acp.
+          "codex"    → codex-acp provider (Nix-packaged adapter using Codex auth).
+          Switch providers in agentic.nvim with <localLeader>s.
         '';
       };
       key = lib.mkOption {
@@ -243,6 +243,7 @@
           example = "ClaudeCodeProvider";
           type = lib.types.enum [
             "OpenCodeProvider"
+            "CodexProvider"
             "ClaudeCodeProvider"
             "CursorAgentProvider"
             "KiroProvider"
@@ -253,18 +254,18 @@
           '';
         };
         model = lib.mkOption {
-          default = "opencode/big-pickle";
+          default = null;
           example = "anthropic/claude-sonnet-4-5";
           type = with lib.types; nullOr str;
           description = ''
-            Model override for 99 requests. Defaults to opencode/big-pickle
-            (opencode's flagship default) because the provider default
+            Model override for 99 requests. When null, OpenCode uses
+            opencode/big-pickle (its available default) because the provider default
             (OpenCode: opencode/claude-sonnet-4-5) is not a valid model id in
             current opencode and makes every query fail with
-            "OpenCodeProvider make_query failed". Null falls back to the
-            provider default (currently broken for OpenCode, see above).
-            Override this if your opencode auth provides other models; the
-            runtime model picker (<leader>nm) lists what is actually available.
+            "OpenCodeProvider make_query failed".
+            Other providers use their own default model (Codex: gpt-5.3-codex).
+            Override this for another model; the Codex picker only lists its
+            default because the Codex CLI does not expose a model listing command.
           '';
         };
         providerExtraArgs = lib.mkOption {

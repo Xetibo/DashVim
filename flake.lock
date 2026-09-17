@@ -218,12 +218,30 @@
         "type": "github"
       }
     },
+    "nvim-mcp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788966761,
+        "narHash": "sha256-uVp4/I9OtC3KWl9h3h9NivepiC4VtUWL4JGm3qenruY=",
+        "owner": "linw1995",
+        "repo": "nvim-mcp",
+        "rev": "986be68135a05ebdb727e73e609ffda0bbbbfdf6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linw1995",
+        "repo": "nvim-mcp",
+        "rev": "986be68135a05ebdb727e73e609ffda0bbbbfdf6",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "base16": "base16",
         "flake-parts": "flake-parts",
         "nixpkgs": "nixpkgs",
         "nvf": "nvf",
+        "nvim-mcp": "nvim-mcp",
         "sqlit": "sqlit",
         "stable": "stable",
         "statix": "statix"
