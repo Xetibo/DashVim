@@ -460,6 +460,93 @@
       };
     };
 
+    markdownPreview = {
+      enable = lib.mkOption {
+        default = true;
+        example = false;
+        type = lib.types.bool;
+        description = ''
+          Enables iamcco/markdown-preview.nvim.
+          Toggle the preview with <leader>mm (MarkdownPreviewToggle);
+          toggling again stops the preview and its node server.
+        '';
+      };
+      port = lib.mkOption {
+        default = "";
+        example = "8080";
+        type = lib.types.str;
+        description = ''
+          Port for the preview server (g:mkdp_port).
+          Empty means a random free port.
+        '';
+      };
+      theme = lib.mkOption {
+        default = "dark";
+        example = "light";
+        type = lib.types.enum [
+          "dark"
+          "light"
+        ];
+        description = ''
+          Preview page theme (g:mkdp_theme).
+        '';
+      };
+      browser = lib.mkOption {
+        default = "";
+        example = "firefox";
+        type = lib.types.str;
+        description = ''
+          Browser command for opening the preview (g:mkdp_browser).
+          Empty uses the system default browser.
+        '';
+      };
+      autoStart = lib.mkOption {
+        default = false;
+        example = true;
+        type = lib.types.bool;
+        description = ''
+          Open the preview automatically when entering a markdown buffer
+          (g:mkdp_auto_start). Off by default so markdown never hijacks
+          your browser uninvited.
+        '';
+      };
+      autoClose = lib.mkOption {
+        default = true;
+        example = false;
+        type = lib.types.bool;
+        description = ''
+          Close the preview page when leaving the markdown buffer
+          (g:mkdp_auto_close).
+        '';
+      };
+      combinePreview = lib.mkOption {
+        default = false;
+        example = true;
+        type = lib.types.bool;
+        description = ''
+          Reuse one preview page across markdown buffers instead of one
+          page per buffer (g:mkdp_combine_preview).
+        '';
+      };
+      filetypes = lib.mkOption {
+        default = ["markdown"];
+        example = ["markdown" "vimwiki"];
+        type = with lib.types; listOf str;
+        description = ''
+          Filetypes the preview activates for (g:mkdp_filetypes).
+        '';
+      };
+      extraConfig = lib.mkOption {
+        default = {};
+        example = {mkdp_page_title = "\${name}";};
+        type = with lib.types; attrsOf anything;
+        description = ''
+          Additional g:mkdp_* globals for markdown-preview.nvim.
+          Merged with (and overrides) the generated options.
+        '';
+      };
+    };
+
     formatters = lib.mkOption {
       default = let
         prettier = [

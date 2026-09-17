@@ -10,5 +10,6 @@
     ./opencode.nix
     ./ninetynine.nix
     ./avante.nix
+    ./markdown-preview.nix
   ];
 }

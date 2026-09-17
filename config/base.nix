@@ -28,7 +28,6 @@
       clear_background = true;
       loaded_netrw = true;
       loaded_netrwPlugin = true;
-      mkdp_auto_start = true;
       neovide_refresh_rate = 180;
       neovide_refresh_rate_idle = 5;
       neovide_hide_mouse_when_typing = true;
