@@ -5,17 +5,11 @@
   mkDashDefault,
   ...
 }: let
-  toolchain = import ../../lib/toolchain.nix {inherit lib pkgs;};
   # Pinned to typescript_5 (classic JS build with tsserver.js): typescript-tools.nvim
   # and ngserver both spawn tsserver under node, which TS 7 (Go-native, tsc
   # only) no longer ships. Revisit when @angular/language-service supports TS 7.
   pinnedTsserverPath = "${pkgs.typescript_5}/lib/node_modules/typescript/lib/tsserver.js";
   angularLanguageServiceRoot = "${pkgs.angular-language-server}/lib";
-  angularLanguageServerCommand =
-    if config'.toolchain.preferProjectTools or false
-    then toolchain.bin "ngserver"
-    else "${pkgs.angular-language-server}/bin/ngserver";
-  typescriptRoot = "${pkgs.typescript_5}/lib";
   typescriptToolsWithAngular = pkgs.vimPlugins.typescript-tools-nvim.overrideAttrs (old: {
     postPatch =
       (old.postPatch or "")
@@ -90,31 +84,6 @@ in {
           }
         ];
         setupOpts = {
-          on_attach =
-            lib.generators.mkLuaInline
-            /*
-            lua
-            */
-            ''
-              function(client, bufnr)
-                local bufname = vim.api.nvim_buf_get_name(bufnr)
-                if bufname == nil or bufname == "" then
-                  return
-                end
-
-                -- In Angular projects references come from ngserver so external
-                -- .html template usages are included. Give up references here to
-                -- avoid double-served references.
-                local angular_root = vim.fs.find({ "angular.json", "nx.json" }, {
-                  path = vim.fs.dirname(bufname),
-                  upward = true,
-                })[1]
-
-                if angular_root ~= nil then
-                  client.server_capabilities.referencesProvider = false
-                end
-              end
-            '';
           settings = {
             separate_diagnostic_server = true;
             expose_as_code_action = [
@@ -179,150 +148,11 @@ in {
           cmd = ["${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server" "--stdio"];
           filetypes = ["json" "jsonc"];
         };
-        angular = {
-          enable = mkDashDefault true;
-          cmd = lib.mkOverride 80 (lib.generators.mkLuaInline
-            /*
-            lua
-            */
-            ''
-              function(dispatchers, config)
-                local root_dir = (config and config.root_dir) or vim.fn.getcwd()
-                local probe_locations = {}
-                local seen = {}
-
-                local function add_probe(path)
-                  if path ~= nil and path ~= "" and not seen[path] and vim.uv.fs_stat(path) then
-                    seen[path] = true
-                    table.insert(probe_locations, path)
-                  end
-                end
-
-                local project_node_modules = vim.fs.find("node_modules", {
-                  path = root_dir,
-                  upward = true,
-                  type = "directory",
-                })[1]
-
-                add_probe(project_node_modules)
-                add_probe("${angularLanguageServiceRoot}")
-                add_probe("${typescriptRoot}")
-
-                local function angular_core_version()
-                  local package_json = vim.fs.find("package.json", {
-                    path = root_dir,
-                    upward = true,
-                    type = "file",
-                  })[1]
-
-                  if package_json == nil then
-                    return ""
-                  end
-
-                  local ok, content = pcall(vim.fn.readfile, package_json)
-                  if not ok then
-                    return ""
-                  end
-
-                  local parsed_ok, package = pcall(vim.json.decode, table.concat(content, "\n"))
-                  if not parsed_ok or type(package) ~= "table" then
-                    return ""
-                  end
-
-                  local version = (package.dependencies or {})["@angular/core"] or (package.devDependencies or {})["@angular/core"] or ""
-                  return version:match("%d+%.%d+%.%d+") or ""
-                end
-
-                return vim.lsp.rpc.start({
-                  "${angularLanguageServerCommand}",
-                  "--stdio",
-                  "--tsProbeLocations",
-                  table.concat(probe_locations, ","),
-                  "--ngProbeLocations",
-                  table.concat(probe_locations, ","),
-                  "--angularCoreVersion",
-                  angular_core_version(),
-                }, dispatchers)
-              end
-            '');
-          filetypes = mkDashDefault ["html" "htmlangular" "typescript" "typescriptreact"];
-          root_markers = mkDashDefault ["angular.json" "nx.json"];
-          on_attach = mkDashDefault (lib.generators.mkLuaInline
-            /*
-            lua
-            */
-            ''
-              function(client, bufnr)
-                client.server_capabilities.documentFormattingProvider = false
-                client.server_capabilities.documentRangeFormattingProvider = false
-                client.server_capabilities.documentOnTypeFormattingProvider = false
-
-                local ft = vim.bo[bufnr].filetype
-                if ft == "html" or ft == "htmlangular" then
-                  -- Only angular serves .html templates: neuter any vanilla html
-                  -- LSP that may also have attached so it cannot steal providers.
-                  for _, other in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
-                    if other.id ~= client.id and other.name ~= "angular" then
-                      other.server_capabilities.completionProvider = false
-                      other.server_capabilities.hoverProvider = false
-                      other.server_capabilities.signatureHelpProvider = false
-                      other.server_capabilities.definitionProvider = false
-                      other.server_capabilities.referencesProvider = false
-                      other.server_capabilities.documentSymbolProvider = false
-                      other.server_capabilities.codeActionProvider = false
-                      other.server_capabilities.diagnosticProvider = false
-                    end
-                  end
-                end
-
-                if ft == "typescript" or ft == "typescriptreact" then
-                  -- On TS/TSX buffers angular is a references-only companion so
-                  -- usages in external .html templates are included. Everything
-                  -- else is owned by typescript-tools.
-                  client.server_capabilities.completionProvider = false
-                  client.server_capabilities.hoverProvider = false
-                  client.server_capabilities.signatureHelpProvider = false
-                  client.server_capabilities.definitionProvider = false
-                  client.server_capabilities.codeActionProvider = false
-                  client.server_capabilities.documentSymbolProvider = false
-                  client.server_capabilities.diagnosticProvider = false
-                  client.server_capabilities.inlayHintProvider = false
-                end
-              end
-            '');
-        };
         # csharp = mkDashDefault {
         #   enable = true;
         #   cmd = ["${pkgs.roslyn-ls}/bin/Microsoft.CodeAnalysis.LanguageServer" "--logLevel" "Information" "--extensionLogDirectory" ".roslyn-cache" "--stdio"];
         #   filetypes = ["cs"];
         #   root_markers = ["*.csproj" ".git" "NuGet.Config"];
-        # };
-        # ts-ls = mkDashDefault {
-        #   enable = true;
-        #   cmd = ["${pkgs.typescript-language-server}/bin/typescript-language-server" "--stdio"];
-        #   filetypes = ["typescript" "javascript"];
-        #   root_markers = [".git" "package.json"];
-        #   on_attach =
-        #     lib.generators.mkLuaInline
-        #     /*
-        #     lua
-        #     */
-        #     ''
-        #       function(client, bufnr)
-        #         ${(import ../luaFunctions.nix).isAngular}
-        #
-        #         -- This shit is the most annoying thing ever
-        #         client.server_capabilities.insertReplaceSupport = false
-        #         local root_dir = client.config.root_dir
-        #         if is_angular_project(root_dir) then
-        #           client.server_capabilities.renameProvider = false
-        #           client.server_capabilities.referencesProvider = false
-        #         end
-        #           client.server_capabilities.documentFormattingProvider = false
-        #           client.server_capabilities.documentRangeFormattingProvider = false
-        #           client.server_capabilities.documentOnTypeFormattingProvider = false
-        #       end
-        #     '';
         # };
       };
     };

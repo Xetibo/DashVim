@@ -21,6 +21,20 @@ DashVim currently uses a flake-first verification strategy. Prefer the smallest 
 - `nix build .#default`
 - `nix build .#docs`
 
+## Headless Angular LSP smoke test
+
+After `nix build .#packages.x86_64-linux.default` (refreshes `./result`), with a
+fixture project rooted at an `angular.json`:
+
+- Filetype (must print `htmlangular`, before any LSP attaches):
+  `./result/bin/nvim --headless <root>/src/app/app.component.html -c 'lua print(vim.bo.filetype)' -c 'qa!'`
+- Attach + ownership on a `.ts` buffer (expect `angular refs=true def=false`,
+  `typescript-tools refs=false def=true`):
+  `./result/bin/nvim --headless <root>/src/app/app.component.ts -c 'lua vim.wait(60000, function() return #vim.lsp.get_clients({bufnr=0}) >= 2 end) for _, c in ipairs(vim.lsp.get_clients({bufnr=0})) do print(c.name .. " refs=" .. tostring(c.server_capabilities.referencesProvider) .. " def=" .. tostring(c.server_capabilities.definitionProvider)) end' -c 'qa!'`
+- Template goto-definition needs installed `@angular/core` in the fixture;
+  `vim.lsp.buf_request_sync(0, "textDocument/definition", ...)` on an
+  interpolation should return a `LocationLink` into the component `.ts`.
+
 For opencode config changes, evaluate the generated config where practical. Example shape:
 
 ```sh
