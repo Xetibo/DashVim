@@ -14,13 +14,17 @@
 
   skillsPath = ../.opencode/skills;
 
+  standalone = import ./standalone-agent.nix {
+    inherit pkgs;
+    lib = pkgs.lib;
+  };
+
   opencodeFiles = import ./opencode-config.nix {
     inherit pkgs base16Lib skillsPath;
     lib = pkgs.lib;
+    # Standalone opencode reads the shared seed file (same as HM).
     instructionPaths = [
-      "${../AGENTS.md}"
-      "${skillsPath}/caveman/SKILL.md"
-      "${skillsPath}/compact-context/SKILL.md"
+      standalone.sharedInstructionPath
     ];
   };
 
@@ -37,7 +41,8 @@
         --set OPENCODE_CONFIG "${opencodeFiles.globalConfigDir}/opencode.json" \
         --set OPENCODE_CONFIG_DIR "${opencodeFiles.configDir}" \
         --set OPENCODE_TUI_CONFIG "${opencodeFiles.globalConfigDir}/tui.json" \
-        --run 'mkdir -p ''${XDG_CONFIG_HOME:-$HOME/.config}/opencode/themes && cp -f ${opencodeFiles.globalConfigDir}/themes/dashvim.json ''${XDG_CONFIG_HOME:-$HOME/.config}/opencode/themes/dashvim.json 2>/dev/null || true'
+        --run 'mkdir -p ''${XDG_CONFIG_HOME:-$HOME/.config}/opencode/themes && cp -f ${opencodeFiles.globalConfigDir}/themes/dashvim.json ''${XDG_CONFIG_HOME:-$HOME/.config}/opencode/themes/dashvim.json 2>/dev/null || true' \
+        --run 'dest="$HOME/.config/agents/agentic.md"; if [ ! -e "$dest" ]; then mkdir -p "$(dirname "$dest")" && cp ${standalone.baseFile} "$dest" && chmod u+rw "$dest" 2>/dev/null || true; fi'
     '';
   };
 

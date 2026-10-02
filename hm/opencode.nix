@@ -17,13 +17,13 @@
     opencodePlugins = config'.opencode.plugin;
     tuiPlugins = config'.opencode.tuiPlugin;
     skillsPath = ../.opencode/skills;
+    # Standalone agents (including opencode) read the shared seed file.
+    # Seeded once to ~/.config/agents/agentic.md by hm/agents.nix; the
+    # seed already bundles AGENTS.md + every repo skill (caveman, ...).
     instructionPaths = [
-      "~/.opencode/AGENTS.md"
-      "~/.opencode/skills/caveman/SKILL.md"
-      "~/.opencode/skills/compact-context/SKILL.md"
+      "~/.config/agents/agentic.md"
     ];
   };
-
 in {
   homeFiles = {
     ".opencode/AGENTS.md".source = ../AGENTS.md;

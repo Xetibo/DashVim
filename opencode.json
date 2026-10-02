@@ -7,9 +7,7 @@
     "reserved": 10000
   },
   "instructions": [
-    "~/.opencode/AGENTS.md",
-    "~/.opencode/skills/caveman/SKILL.md",
-    "~/.opencode/skills/compact-context/SKILL.md"
+    "~/.config/agents/agentic.md"
   ],
   "mcp": {
     "mcp_everything": {

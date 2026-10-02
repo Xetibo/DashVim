@@ -29,6 +29,11 @@ inputs: {
   opencodeIntegration = import ./opencode.nix {
     inherit lib pkgs config' inputs;
   };
+
+  # Standalone agent seed (~/.config/agents/agentic.md + Codex symlink)
+  agentsIntegration = import ./agents.nix {
+    inherit lib pkgs;
+  };
 in {
   imports = [
     (import ../modules {inherit lib config';})
@@ -67,6 +72,9 @@ in {
         }
         // lib.optionalAttrs config'.opencode.enable
         opencodeIntegration.homeFiles;
+      home.activation.agenticSeed = lib.mkIf (config'.opencode.enable || config'.agent.enable) (
+        lib.hm.dag.entryAfter ["writeBoundary"] agentsIntegration.activationScript
+      );
     }
     // lib.optionalAttrs (options ? xdg.configFile) {
       xdg.configFile =

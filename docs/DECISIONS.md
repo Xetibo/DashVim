@@ -1,5 +1,12 @@
 # Decisions
 
+## 2026-10-02 — Standalone agent seed + Codex global config
+
+- Added `lib/standalone-agent.nix`: builds the `~/.config/agents/agentic.md` seed from repo sources (`AGENTS.md` + all `.opencode/skills/*/SKILL.md`, currently caveman + compact-context, auto-picks up new skills like avante's reader). Per user choice, opencode instructions were replaced (not appended): HM, wrapped, and repo-root `opencode.json` now list only `~/.config/agents/agentic.md`.
+- Added `hm/agents.nix` + `home.activation.agenticSeed` (gated on `opencode.enable || agent.enable`): seeds the shared file copy-if-missing (user-editable afterwards, `chmod u+rw`) and symlinks standalone Codex global instructions (`~/.codex/AGENTS.md`, symlink-if-missing per user choice) at it. Nix never overwrites either destination; existing `~/.codex/config.toml` (trust levels etc.) is untouched. Editor-hosted Codex (agentic.nvim, 99) keeps scoped `lib/codex-editor.nix` instructions and does not read this file.
+- `lib/env.nix` wrapped opencode also seeds the shared file at runtime when missing, so `nix run` without Home Manager still works.
+- Verified: `nix eval` of seed content (7112 bytes, both skills), generated opencode instructions, and activation script; `nix eval .#packages.x86_64-linux.default.name`; sandboxed copy/symlink rerun test (edits preserved); `alejandra` format + `git diff --check`. No `nix build` or bridge test run (heavy).
+
 ## 2026-10-01 — Save direct Codex buffer edits
 
 - User confirmed live MCP editing works and requested that edited buffers be saved. Replaced the shared leave-unsaved instruction with a native `nvim_buf_call` / `noautocmd update` save after editing each named file buffer. This saves existing buffer content too, preserves undo, skips write autocommands under the no-validation policy, and reports failures without forcing writes. Only edited buffers are saved; 99 visual replacements remain owned by 99.
