@@ -254,40 +254,6 @@ function M.setup(opts)
       color = { fg = "#89b4fa" },
       padding = { left = 1, right = 0 },
     })
-    -- Modify mode component to show "REVIEW" during review sessions.
-    -- lualine stores the mode component either as string 'mode' or table { 'mode', ... }.
-    -- Handle both: convert string to table with our fmt, or add fmt to an existing table.
-    local mode_comps = cfg.sections.lualine_a
-    if mode_comps then
-      for i, comp in ipairs(mode_comps) do
-        local t = type(comp)
-        if (t == "string" and comp == "mode") or (t == "table" and (comp[1] == "mode" or comp.mode)) then
-          local orig_fmt = t == "table" and comp.fmt or nil
-          local new_comp = {
-            'mode',
-            fmt = function(mode_str)
-              if vim.g.in_review_session then
-                return "REVIEW"
-              end
-              return orig_fmt and orig_fmt(mode_str) or mode_str
-            end,
-          }
-          mode_comps[i] = new_comp
-          break
-        end
-      end
-    else
-      -- lualine_a not configured — set it up with mode + our indicator
-      cfg.sections.lualine_a = {
-        function()
-          if vim.g.in_review_session then
-            return "REVIEW"
-          end
-          return nil
-        end,
-        'mode',
-      }
-    end
     lualine.setup(cfg)
   end
 
@@ -326,10 +292,6 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("OpenCodeReviewComplete", function()
     review_cmd().complete()
   end, { desc = "Finalize review: collect comments, write JSON, send to agent" })
-
-  vim.api.nvim_create_user_command("OpenCodeReviewAvante", function()
-    review_cmd().complete_avante()
-  end, { desc = "Finalize review: collect comments, write JSON, open Avante with prompt" })
 
   vim.api.nvim_create_user_command("OpenCodeReviewAgentic", function()
     review_cmd().complete_agentic()

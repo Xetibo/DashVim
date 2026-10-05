@@ -156,7 +156,6 @@
       autoupdate = true;
       snapshot = true;
 
-      model = "github-copilot/gpt-5.3-codex";
       mcp = {
         mcp_everything = {
           type = "local";

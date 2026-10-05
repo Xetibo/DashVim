@@ -73,7 +73,7 @@
             {
               agent = {
                 enable = true;
-                variant = "copilot";
+                variant = "codex";
                 key = "";
                 config = {};
                 ninetyNine = orig.config.programs.dashvim.agent.ninetyNine;

@@ -29,7 +29,7 @@ function M.open()
   vim.cmd("redrawstatus")
 
   vim.notify(
-    "Review session started. Navigate to a changed line and run :OpenCodeReviewComment.",
+    "Review session started. Use <leader>an (Agentic) or :OpenCodeReviewComment to annotate lines.",
     vim.log.levels.INFO
   )
 end
@@ -44,7 +44,7 @@ M._comment_popover = nil
 --- memory under M.comments and does NOT modify the working tree file.
 function M.add_comment()
   if not M.current_session then
-    vim.notify("No active review session. Start one with :OpenCodeReview.", vim.log.levels.WARN)
+    vim.notify("No active review session. Start one with <leader>ar or :OpenCodeReview.", vim.log.levels.WARN)
     return
   end
 
@@ -212,7 +212,11 @@ function M.write_review_file(comments)
 
   local omo_dir = vim.fn.getcwd() .. "/.omo"
   if vim.fn.isdirectory(omo_dir) == 0 then
-    vim.fn.mkdir(omo_dir, "p")
+    local created, err = pcall(vim.fn.mkdir, omo_dir, "p")
+    if not created then
+      vim.notify("Failed to create review directory: " .. tostring(err), vim.log.levels.ERROR)
+      return nil
+    end
   end
 
   local filepath = omo_dir .. "/" .. M.current_session.id .. ".json"
@@ -222,7 +226,11 @@ function M.write_review_file(comments)
     return nil
   end
 
-  vim.fn.writefile({ json }, filepath)
+  local written, err = pcall(vim.fn.writefile, { json }, filepath)
+  if not written or err ~= 0 then
+    vim.notify("Failed to write review JSON: " .. tostring(err), vim.log.levels.ERROR)
+    return nil
+  end
   return filepath
 end
 
@@ -264,64 +272,8 @@ function M.complete()
   vim.g.in_review_session = false
 end
 
---- Complete review and hand off to avante.nvim instead of the opencode
---- terminal. Writes the same .omo/review-*.json, then opens the Avante
---- sidebar with a prompt referencing the file. Keeps the session alive on
---- failure so the user can retry with :OpenCodeReviewComplete.
-function M.complete_avante()
-  if not M.current_session then
-    vim.notify("No active review session", vim.log.levels.WARN)
-    return
-  end
-
-  local comments = M.collect_comments()
-
-  if #comments == 0 then
-    vim.notify("No review comments. Use :OpenCodeReviewComment to add comments before completing.", vim.log.levels.INFO)
-    -- Clean up stale session
-    M.current_session = nil
-    M.comments = {}
-    vim.g.in_review_session = false
-    return
-  end
-
-  local filepath = M.write_review_file(comments)
-  if not filepath then
-    vim.notify("Failed to write review file", vim.log.levels.ERROR)
-    return
-  end
-
-  -- Force-load avante (lazy-loaded on its commands only)
-  local lazy_ok, lazy = pcall(require, "lazy")
-  if lazy_ok then
-    pcall(lazy.load, { plugins = { "avante.nvim" } })
-  end
-
-  local api_ok, api = pcall(require, "avante.api")
-  if not api_ok then
-    vim.notify("avante.nvim not available. Review file written to " .. filepath, vim.log.levels.ERROR)
-    return
-  end
-
-  vim.notify("Wrote " .. #comments .. " review comments to " .. filepath, vim.log.levels.INFO)
-
-  local msg = string.format(
-    "Review file %s has %d comments. Read the file, process each comment, and update the code accordingly.",
-    filepath,
-    #comments
-  )
-
-  api.ask({ question = msg })
-
-  M.current_session = nil
-  M.comments = {}
-  vim.g.in_review_session = false
-end
-
 --- Complete review and hand off to agentic.nvim. Writes the same
---- .omo/review-*.json, then creates a new agentic session with a prompt
---- referencing the file. The agentic monkey-patch in agentic.nix picks up
---- vim.g.agentic_pending_prompt and auto-submits it once the session is ready.
+--- .omo/review-*.json, then submits through the normal chat path once ready.
 function M.complete_agentic()
   if not M.current_session then
     vim.notify("No active review session", vim.log.levels.WARN)
@@ -345,13 +297,7 @@ function M.complete_agentic()
     return
   end
 
-  -- Force-load agentic (lazy-loaded on its commands only)
-  local lazy_ok, lazy = pcall(require, "lazy")
-  if lazy_ok then
-    pcall(lazy.load, { plugins = { "agentic.nvim" } })
-  end
-
-  local agentic_ok, agentic = pcall(require, "agentic")
+  local agentic_ok = pcall(require, "agentic")
   if not agentic_ok then
     vim.notify("agentic.nvim not available. Review file written to " .. filepath, vim.log.levels.ERROR)
     return
@@ -365,15 +311,30 @@ function M.complete_agentic()
     #comments
   )
 
-  -- Store the prompt for the agentic monkey-patch to pick up
-  vim.g.agentic_pending_prompt = msg
+  local registry = require("agentic.session_registry")
+  local ok, session = pcall(registry.new_session)
+  if not ok or not session then
+    vim.notify("Failed to create Agentic session. Review kept at " .. filepath, vim.log.levels.ERROR)
+    return
+  end
 
-  -- Create a new agentic session (the monkey-patch will auto-submit the prompt)
-  agentic.new_session()
-
-  M.current_session = nil
-  M.comments = {}
-  vim.g.in_review_session = false
+  local review_session = M.current_session
+  session.widget:show()
+  session:on_session_ready(function(ready_session)
+    if M.current_session ~= review_session or registry.sessions[ready_session.tab_page_id] ~= ready_session then
+      return
+    end
+    -- This pinned API maintains chat history, generation state, hooks and UI.
+    local submitted, result = pcall(ready_session._handle_input_submit, ready_session, msg)
+    if not submitted or not result then
+      vim.notify("Agentic review submission failed. Review kept at " .. filepath, vim.log.levels.ERROR)
+      return
+    end
+    M.current_session = nil
+    M.comments = {}
+    vim.g.in_review_session = false
+    vim.cmd("redrawstatus")
+  end)
 end
 
 return M

@@ -4,6 +4,8 @@ This file tracks known issues, limitations, deferred work, and cleanup items tha
 
 ## Known Items
 
+- Agentic review submission uses the pinned session manager's private `_handle_input_submit` method because this version exposes no public prompt submission API. Verify it when updating the plugin. Latest-session restore depends on provider support for ACP session listing/loading and selects from the returned page; the pinned client's list API exposes no pagination cursor.
+
 - The bridge integration test compares ACP `CODEX_CONFIG` with CLI overrides and exercises the MCP server directly, but does not exercise the ACP adapter's full session/model path. Its previous CLI-only configuration parsing missed that codex-acp 1.13.1 ignores `-c` arguments. The configuration transport is corrected; end-to-end ACP session coverage remains a gap.
 
 - README keybinding documentation says it may be outdated. Verify default keymaps in code before changing or relying on README keybinding tables.

@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   mkDashDefault,
   ...
 }: {
@@ -13,6 +14,9 @@
       package = lualine-nvim;
       setupModule = "lualine";
       setupOpts = {
+        sections.lualine_a = [
+          (lib.mkLuaInline ''{ "mode", fmt = function(mode) return vim.g.in_review_session and "REVIEW" or mode end }'')
+        ];
         options = {
           theme = "base16";
           disabled_filetypes = {

@@ -33,6 +33,7 @@ DashVim's UI is a terminal Neovim interface configured through `nvf`, plus an op
 - Document important keybinding changes in user-facing docs when they affect default workflows.
 - 99 keybindings live under `<leader>n` ("+99" whichKey group): `<leader>ns` search, `<leader>nV` vibe (normal), `<leader>nv` visual selection (visual mode only), `<leader>no` open last interaction, `<leader>nl` logs, `<leader>nx` stop, `<leader>nc` clear, `<leader>nm` select model, `<leader>np` select provider.
 - Codex appears in 99's `<leader>np` provider picker when agents are enabled. In agentic.nvim, use `<localLeader>s` (or the existing provider-switch mapping) to choose Codex ACP; changing the default provider requires `programs.dashvim.agent.variant = "codex"`.
+- Assistant review uses Diffview with in-memory line comments and a `REVIEW` statusline indicator. `<leader>ar` starts, `<leader>an` adds a comment, and `<leader>ae` sends the completed review to Agentic. Confirm comments with `<F2>`; cancel with `<Esc>` in insert mode or `q` in normal mode. `<leader>ap` restores the newest previous session for the current project and selected provider, using upstream conflict handling for an existing conversation.
 
 ## Don'ts
 

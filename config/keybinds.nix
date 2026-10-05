@@ -784,6 +784,30 @@
 
       # Agentic
       (lib.mkIf config'.agent.enable {
+        mode = "n";
+        key = "<leader>ar";
+        action = ''<CMD>lua require("opencode.review").open()<CR>'';
+        desc = "Start Agentic review";
+      })
+      (lib.mkIf config'.agent.enable {
+        mode = "n";
+        key = "<leader>an";
+        action = ''<CMD>lua require("opencode.review").add_comment()<CR>'';
+        desc = "Add review comment";
+      })
+      (lib.mkIf config'.agent.enable {
+        mode = "n";
+        key = "<leader>ae";
+        action = ''<CMD>lua require("opencode.review").complete_agentic()<CR>'';
+        desc = "Finish review and send to Agentic";
+      })
+      (lib.mkIf config'.agent.enable {
+        mode = "n";
+        key = "<leader>ap";
+        action = ''<CMD>lua require("dashvim.agentic").restore_last_session()<CR>'';
+        desc = "Restore last Agentic session";
+      })
+      (lib.mkIf config'.agent.enable {
         mode = "";
         key = "<leader>ac";
         action = ''<CMD>lua require("agentic").toggle()<CR>'';
@@ -922,14 +946,6 @@
         noremap = true;
         silent = true;
         desc = "Complete review and send comments to agent";
-      }
-      {
-        mode = "n";
-        key = "<leader>ov";
-        action = "<CMD>OpenCodeReviewAvante<CR>";
-        noremap = true;
-        silent = true;
-        desc = "Complete review and send to Avante";
       }
     ];
   };

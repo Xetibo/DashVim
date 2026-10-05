@@ -1,8 +1,16 @@
 # Decisions
 
+## 2026-10-05 — shared review workflow and Agentic session restore
+
+- Removed the retired assistant plugin, review handoff, keybinding, and stale documentation. OpenCode review remains available.
+- Agentic keys: `<leader>ar` starts Diffview review, `<leader>an` adds an in-memory line comment, `<leader>ae` writes review JSON and submits in a fresh Agentic session after readiness. Normal chat submission replaces the global pending-prompt/registry monkey-patch; failed creation or submission retains annotations.
+- `<leader>ap` selects the newest previous ACP session for the current project/provider, excluding the initialization session, and uses upstream restore conflict handling. The helper is bundled into the pinned Agentic plugin; no dependency or revision change.
+- Review Lua remains packaged when Agentic is enabled but OpenCode is disabled; OpenCode setup remains gated. The shared statusline owns the review-mode indicator.
+- Verified: `nix build path:.#default path:.#minimal --no-link`, headless review/session checks on both outputs, and `tests/codex-bridge.py` on both outputs. ACP workflow checks use a stub provider; live model/auth requests were not made. Nix formatting and `git diff --check` pass.
+
 ## 2026-10-02 — Standalone agent seed + Codex global config
 
-- Added `lib/standalone-agent.nix`: builds the `~/.config/agents/agentic.md` seed from repo sources (`AGENTS.md` + all `.opencode/skills/*/SKILL.md`, currently caveman + compact-context, auto-picks up new skills like avante's reader). Per user choice, opencode instructions were replaced (not appended): HM, wrapped, and repo-root `opencode.json` now list only `~/.config/agents/agentic.md`.
+- Added `lib/standalone-agent.nix`: builds the `~/.config/agents/agentic.md` seed from repo sources (`AGENTS.md` + all `.opencode/skills/*/SKILL.md`, currently caveman + compact-context, auto-picks up new skills). Per user choice, opencode instructions were replaced (not appended): HM, wrapped, and repo-root `opencode.json` now list only `~/.config/agents/agentic.md`.
 - Added `hm/agents.nix` + `home.activation.agenticSeed` (gated on `opencode.enable || agent.enable`): seeds the shared file copy-if-missing (user-editable afterwards, `chmod u+rw`) and symlinks standalone Codex global instructions (`~/.codex/AGENTS.md`, symlink-if-missing per user choice) at it. Nix never overwrites either destination; existing `~/.codex/config.toml` (trust levels etc.) is untouched. Editor-hosted Codex (agentic.nvim, 99) keeps scoped `lib/codex-editor.nix` instructions and does not read this file.
 - `lib/env.nix` wrapped opencode also seeds the shared file at runtime when missing, so `nix run` without Home Manager still works.
 - Verified: `nix eval` of seed content (7112 bytes, both skills), generated opencode instructions, and activation script; `nix eval .#packages.x86_64-linux.default.name`; sandboxed copy/symlink rerun test (edits preserved); `alejandra` format + `git diff --check`. No `nix build` or bridge test run (heavy).
@@ -179,19 +187,7 @@
 - nvf commit a213644c removed `vim.languages.rust.lsp.package`. The toolchain rust-analyzer override now sets `vim.lsp.servers.rust-analyzer.cmd` instead.
 - `vim.languages.ts` no longer exists in nvf; split into `typescript` (ts/js) and `tsx` (react/tsx). DashVim `lspServers` defaults updated accordingly, both with `lsp.enable = false` (typescript-tools.nvim owns the TS LSP).
 - Full `nix eval` of `.#packages.x86_64-linux.default` succeeds after both changes.
-## 2026-08-25 — avante.nvim as review handoff target
 
-- Added `config/editor/avante.nix`: avante.nvim from nixpkgs (`vimPlugins.avante-nvim`, includes prebuilt Rust binary) with `plenary-nvim` + `nui-nvim` in startPlugins.
-- Avante is lazy-loaded on its commands only (`cmd = [...]`): zero startup cost and no startup API-key prompt when unused.
-- New review handoff: `:OpenCodeReviewAvante` / `<leader>ov` (`review.lua:complete_avante`) reuses comment collection + `.omo/review-*.json` writing, then calls `avante.api.ask({ question = ... })`. Session stays alive on handoff failure so `<leader>oe` (opencode) remains a fallback.
-- nvf's `lzn-auto-require` auto-loads opt plugins on require; the explicit `lazy.load` call in `complete_avante` is belt-and-suspenders.
-- Verified: `nix build .#default` passes; headless smoke test confirms `require("avante.api")`, `:AvanteAsk` registration, and `:OpenCodeReviewAvante` all work in the built package.
-## 2026-08-25 — avante.nvim provider/model + opencode-parity instructions
-
-- Default model: GitHub Copilot `gpt-5.6-terra` (`provider = "copilot"`, `use_response_api = true`, context_window 1048576, max_tokens 128000).
-- Copilot auth needs no extra plugin: avante reads the OAuth token already present in `~/.config/github-copilot/{hosts,apps}.json` (written by copilot.lua/copilot.vim). If the stored refresh token is expired, a one-time re-auth is required.
-- opencode parity for instructions: opencode always loads `~/.opencode/AGENTS.md` + all `~/.opencode/skills/*/SKILL.md` (opencode.json `instructions`). Avante equivalent: Nix builds `agentic.avanterules` from the SAME repo sources (`AGENTS.md`, `.opencode/skills/*/SKILL.md` — dynamic readDir, auto-picks up new skills) into a store dir wired via `rules.global_dir`. Avante injects it into every agentic-mode system prompt (path.lua find_rules). Project-root AGENTS.md is additionally read natively by avante.
-- Divergence vs opencode: avante's rules take the FIRST found per mode (project `.avante/rules/agentic.avanterules` overrides global); opencode merges project + global. Injection covers agentic mode only (avante default).
 ## 2026-08-26 — csharpier formatter: explicit args override for CSharpier 1.x CLI
 
 - Symptom: `Formatter 'csharpier' error: Unrecognized command or argument 'csharpier'.`

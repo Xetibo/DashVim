@@ -196,8 +196,24 @@ only available on dashboard
 | \<leader\>or   | Open code review session      |
 | \<leader\>on   | Add review comment on current line |
 | \<leader\>oe   | Complete review and send to agent |
-| \<leader\>ov   | Complete review and send to Avante |
 | `:OpenCodeAgentMode copilot\|free` | Switch oh-my-openagent model mode |
+
+## Agentic
+
+| key | Description |
+| --- | --- |
+| \<leader\>ac | Toggle Agentic chat |
+| \<leader\>aa | Start new Agentic session |
+| \<leader\>as | Switch ACP provider |
+| \<leader\>ar | Start review in Diffview |
+| \<leader\>an | Add review comment on current line |
+| \<leader\>ae | Finish review and send comments to Agentic |
+| \<leader\>ap | Load newest previous session for current project/provider |
+
+Review comments stay in memory; source files are not modified. Press `<F2>` to
+save a comment, or `<Esc>` (insert mode) / `q` (normal mode) to cancel. Finishing
+writes `.omo/review-*.json` and starts a new Agentic conversation to process it.
+Session restore requires ACP listing/loading support from the selected provider.
 
 ## Agent backends
 

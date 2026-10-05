@@ -38,7 +38,6 @@ in {
     "opencode/tui.json".source = lib.mkDefault opencodeFiles.tuiConfigFile;
     "opencode/opencode.json".source = lib.mkDefault opencodeFiles.configFile;
     # Deploy both agent configs — runtime switching handled by opencode-nvim plugin
-    "opencode/oh-my-openagent-copilot.jsonc".source = ../opencode/oh-my-openagent-copilot.jsonc;
-    "opencode/oh-my-openagent-free.jsonc".source = ../opencode/oh-my-openagent-free.jsonc;
+    # "opencode/oh-my-openagent-free.jsonc".source = ../opencode/oh-my-openagent-free.jsonc;
   };
 }

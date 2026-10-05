@@ -16,6 +16,10 @@
       rev = "246feb4773923a10a6fedc40048657516bd05792";
       hash = "sha256-dIHH1ayd3Vqer1Rj4CpdazqcG8haZ9ITQb2upj7BH6o=";
     };
+    postInstall = ''
+      mkdir -p $out/lua/dashvim
+      cp ${./agentic.lua} $out/lua/dashvim/agentic.lua
+    '';
   };
 
   # agent.variant selects the ACP provider:
@@ -127,48 +131,5 @@ in
             // config'.agent.config;
         };
       };
-
-      # After plugin loads: write copilot instructions file and handle pending review prompts
-      luaConfigRC.agentic-after =
-        mkDashDefault
-        /*
-        lua
-        */
-        ''
-          vim.api.nvim_create_autocmd("User", {
-            pattern = "VeryLazy",
-            once = true,
-            callback = function()
-              -- Patch SessionRegistry.new_session to handle pending review prompts
-              local SessionRegistry = require("agentic.session_registry")
-              local original_new_session = SessionRegistry.new_session
-              SessionRegistry.new_session = function(tab_page_id)
-                local session = original_new_session(tab_page_id)
-
-                local pending_prompt = vim.g.agentic_pending_prompt
-                if pending_prompt then
-                  vim.g.agentic_pending_prompt = nil
-                end
-
-                if session and pending_prompt then
-                  session:on_session_ready(function(ready_session)
-                    if ready_session.session_id then
-                      local prompt = {
-                        { type = "text", text = pending_prompt }
-                      }
-                      ready_session.agent:send_prompt(ready_session.session_id, prompt, function(response, err)
-                        if err then
-                          vim.notify("[Agentic] Review prompt failed: " .. tostring(err), vim.log.levels.ERROR)
-                        end
-                      end)
-                    end
-                  end)
-                end
-
-                return session
-              end
-            end,
-          })
-        '';
     };
   }
