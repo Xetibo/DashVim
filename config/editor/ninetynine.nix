@@ -6,7 +6,10 @@
   ...
 }: let
   cfg = config'.agent.ninetyNine;
-  codexEditor = import ../../lib/codex-editor.nix {inherit lib;};
+  codexEditor = import ../../lib/codex-editor.nix {
+    inherit lib;
+    inherit (config'.agent.codex) reasoningEffort;
+  };
 
   nineNine = pkgs.vimUtils.buildVimPlugin {
     pname = "99";
@@ -27,6 +30,7 @@
       return vim.json.decode([==[${builtins.toJSON {
         command = "${pkgs.codex}/bin/codex";
         args = codexEditor.args.ninetyNine;
+        inherit (config'.agent.codex) model models;
       }}]==])
       EOF
     '';

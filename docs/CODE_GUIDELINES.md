@@ -20,6 +20,8 @@
 
 ## Testing And Verification
 
+- Editor-hosted assistant configuration must remain process-scoped and shared across ACP JSON and CLI TOML transports. Preapprove only explicitly read-only tools; preserve sandbox and edit approval settings. Prefer bounded native tools with enforced stale-edit checks over generated Lua. Focused editor requests are exempt from standalone documentation chores.
+
 - Use `docs/TESTING.md` as the source of truth for current test strategy and expected checks.
 - Run the smallest useful Nix command for the change, such as evaluating generated config, building a package, or running formatter checks.
 - For opencode config changes, evaluate generated `opencodeConfig` where practical and preserve the schema field.

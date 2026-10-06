@@ -16,6 +16,7 @@
     postInstall = ''
       mkdir -p $out/lua/dashvim
       cp ${./codex-bridge.lua} $out/lua/dashvim/codex-bridge.lua
+      cp ${./codex-tools.lua} $out/lua/dashvim/codex-tools.lua
       cat > $out/lua/dashvim/codex-bridge-config.lua <<'EOF'
       return { command = "${lib.getExe server}" }
       EOF

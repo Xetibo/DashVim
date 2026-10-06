@@ -15,7 +15,7 @@ DashVim's UI is a terminal Neovim interface configured through `nvf`, plus an op
 - Keep visual defaults compact and keyboard-driven.
 - Preserve existing DashVim navigation conventions and leader-key patterns when adding UI interactions.
 - Avoid visual noise in editor surfaces; prioritize readable buffers, diagnostics, completion menus, and search results.
-- Editor-assistant buffer edits should preserve unsaved user work and native undo history. Save edited file buffers through Neovim without write autocommands, preserving undo history and avoiding formatting or validation on save. Report write failures without forcing a write; do not silently replace buffers from disk.
+- Editor-assistant buffer edits should preserve unsaved user work and native undo history. Reject stale changedtick or expected-text mismatches before editing. Save edited file buffers through Neovim without write autocommands, preserving undo history and avoiding formatting or validation on save. Report write failures without forcing a write; do not silently replace buffers from disk.
 
 ## Color Patterns
 
@@ -33,6 +33,7 @@ DashVim's UI is a terminal Neovim interface configured through `nvf`, plus an op
 - Document important keybinding changes in user-facing docs when they affect default workflows.
 - 99 keybindings live under `<leader>n` ("+99" whichKey group): `<leader>ns` search, `<leader>nV` vibe (normal), `<leader>nv` visual selection (visual mode only), `<leader>no` open last interaction, `<leader>nl` logs, `<leader>nx` stop, `<leader>nc` clear, `<leader>nm` select model, `<leader>np` select provider.
 - Codex appears in 99's `<leader>np` provider picker when agents are enabled. In agentic.nvim, use `<localLeader>s` (or the existing provider-switch mapping) to choose Codex ACP; changing the default provider requires `programs.dashvim.agent.variant = "codex"`.
+- Codex defaults to the shared `agent.codex.model` (`gpt-6.1-sol`) and `reasoningEffort` (`low`). Agentic's `<localLeader>m`/`<localLeader>t` change model/effort; its default mode is "Approve for me" with reads preapproved and edits reviewed. The 99 model picker includes locally cached visible Codex models and configured extra IDs; `agent.ninetyNine.model` can override its initial model.
 - Assistant review uses Diffview with in-memory line comments and a `REVIEW` statusline indicator. `<leader>ar` starts, `<leader>an` adds a comment, and `<leader>ae` sends the completed review to Agentic. Confirm comments with `<F2>`; cancel with `<Esc>` in insert mode or `q` in normal mode. `<leader>ap` restores the newest previous session for the current project and selected provider, using upstream conflict handling for an existing conversation.
 
 ## Don'ts

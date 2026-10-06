@@ -76,6 +76,7 @@
                 variant = "codex";
                 key = "";
                 config = {};
+                codex = orig.config.programs.dashvim.agent.codex;
                 ninetyNine = orig.config.programs.dashvim.agent.ninetyNine;
               };
               lsp = {

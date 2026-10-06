@@ -7,6 +7,15 @@ pkgs.rustPlatform.buildRustPackage {
   version = "0.7.2";
   inherit src;
   cargoLock.lockFile = src + /Cargo.lock;
+  postPatch = ''
+    substituteInPlace src/neovim/client.rs \
+      --replace-fail '    pub source: String,' '    #[serde(default)]
+        pub source: String,'
+    substituteInPlace src/neovim/lua/setup_autocmd.lua \
+      --replace-fail 'local group =' '${builtins.readFile ./nvim-mcp-notify.lua}
+    local group =' \
+      --replace-fail 'vim.rpcnotify(0,' 'notify_rpc_clients('
+  '';
   env = {
     GIT_COMMIT_SHA = src.rev;
     GIT_DIRTY = "false";

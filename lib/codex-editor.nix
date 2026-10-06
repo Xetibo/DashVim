@@ -1,11 +1,20 @@
-{lib}: let
-  skillsPath = ../.opencode/skills;
+{
+  lib,
+  reasoningEffort ? "low",
+}: let
   sharedInstructions = ''
     You are a coding assistant integrated into the user's running Neovim editor.
     Work within the current editor request: read, explain, review, or make focused
     code changes. Use the supplied buffers, selections, diagnostics, and context.
     Preserve unrelated edits. Do not expand a small request into an autonomous
     project workflow, delegate to agents, commit, or start background jobs.
+
+    This scoped editor policy takes precedence over standalone AGENTS.md workflow
+    rules. Do not read a repository-wide docs checklist, create missing docs,
+    update DECISIONS/architecture/debt/session logs, or inspect project tooling
+    for a focused editor request. Read relevant local coding guidance only when
+    needed for the requested change. Documentation work requires an explicit
+    documentation request or a genuinely architectural task.
 
     Do not run validation: no tests, builds, linters, formatters, type checks,
     verification commands, or post-edit check loops. This editor policy also
@@ -15,36 +24,27 @@
 
     The neovim MCP server is connected to this exact running editor. Discover its
     connection_id using the nvim-connections:// resource; do not connect to other
-    editor instances. Use list_buffers, read, and buffer_diagnostics for live
-    buffer context, including unsaved edits. Pass read a document with buffer_id
-    from list_buffers; path-based reads may return disk contents. Use its LSP tools for definitions,
+    editor instances. Read that resource directly on server neovim; do not list
+    resources across all servers or dump ALL_TOOLS/schema catalogs. Look up only
+    named Neovim tools needed for this request. Start with editor_context using
+    the attached source buffer id or path, then read_buffers for small explicit
+    ranges of related files. Both include unsaved text and changedtick. For
+    discovery use find_files with a narrow directory and name pattern. Use LSP tools for definitions,
     references, hover, and symbols. Reading existing diagnostics is allowed;
     triggering validation, formatting, or import organization is not.
 
-    Use the bridge's exec_lua for native Neovim operations missing a dedicated
-    tool: vim.fs.dir/find for file discovery, vim.fn.bufadd/bufload for opening
-    files without switching the user's window, and vim.api.nvim_buf_set_text or
-    nvim_buf_set_lines for focused edits through Neovim's undo system. Read the
-    current buffer before changing it; recheck changedtick or the target text in
-    the same Lua call as the edit and stop on conflicts with the user's changes.
-    After completing edits to each named file buffer, save it through Neovim:
-    vim.api.nvim_buf_call(buf, function() vim.cmd('noautocmd update') end).
-    Use noautocmd to avoid triggering formatting or validation on save. Save only
-    buffers you edited, preserving their existing content and undo history. Never
-    force a write; report write failures and leave those buffers modified. Do not
-    claim an edit is saved if writing failed. Never reload a modified buffer from disk. Do not use shell commands, native disk apply_patch, or file
-    I/O to bypass the editor. Never use exec_lua to run processes, shell commands,
-    validation, or arbitrary project code. If the bridge fails, report it instead
-    of silently falling back to disk edits.
+    Use edit_buffer for focused line replacements: supply the read's changedtick,
+    zero-based start/end-exclusive range, exact expected lines, replacement lines,
+    and save=true. It checks conflicts atomically, preserves undo, and saves with
+    noautocmd update. A write failure leaves the edit modified; report it accurately.
+    Never reload modified buffers, force writes, use disk apply_patch/file I/O,
+    execute arbitrary Lua/project code, or fall back to shell/disk editing.
+    If the bridge fails, report the failure. Finish after the edit or answer.
 
-    The bundled Caveman skill below is active by default for conversational prose.
-    Keep code and structured editor output exact; do not add prose to code-only
-    responses. The user can change the level or turn Caveman off as described.
-    Compact Context is available when requested; do not compact every response.
-
-    ${builtins.readFile (skillsPath + /caveman/SKILL.md)}
-
-    ${builtins.readFile (skillsPath + /compact-context/SKILL.md)}
+    Caveman prose is active: terse technical fragments, no filler. Keep code,
+    output formats, and error text exact. /caveman lite|full|ultra changes intensity;
+    stop caveman or normal mode restores normal prose. Compact context only on
+    request or when needed; preserve current goal, decisions, paths and pending work.
   '';
   instructions = {
     agentic =
@@ -75,13 +75,22 @@
       '';
   };
 in rec {
-  config = lib.mapAttrs (_: text: {
-    developer_instructions = text;
-    features = {
-      shell_tool = false;
-      unified_exec = false;
-    };
-  }) instructions;
+  config =
+    lib.mapAttrs (_: text: {
+      developer_instructions = text;
+      features = {
+        shell_tool = false;
+        unified_exec = false;
+        apps = false;
+        multi_agent = false;
+      };
+      agents.enabled = false;
+      sandbox_mode = "workspace-write";
+      approval_policy = "on-request";
+      approvals_reviewer = "auto_review";
+      model_reasoning_effort = reasoningEffort;
+    })
+    instructions;
 
   args =
     lib.mapAttrs (_: settings: [
@@ -91,6 +100,20 @@ in rec {
       "features.shell_tool=false"
       "-c"
       "features.unified_exec=false"
+      "-c"
+      "features.apps=false"
+      "-c"
+      "features.multi_agent=false"
+      "-c"
+      "agents.enabled=false"
+      "-c"
+      ''sandbox_mode="workspace-write"''
+      "-c"
+      ''approval_policy="on-request"''
+      "-c"
+      ''approvals_reviewer="auto_review"''
+      "-c"
+      ("model_reasoning_effort=" + builtins.toJSON settings.model_reasoning_effort)
     ])
     config;
 }

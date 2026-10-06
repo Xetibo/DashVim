@@ -228,6 +228,24 @@
         '';
       };
 
+      codex = {
+        model = lib.mkOption {
+          default = "gpt-6.1-sol";
+          type = lib.types.str;
+          description = "Default editor Codex model for Agentic and 99. Agentic's model picker and ninetyNine.model can override it.";
+        };
+        reasoningEffort = lib.mkOption {
+          default = "low";
+          type = lib.types.enum ["minimal" "low" "medium" "high" "xhigh" "max"];
+          description = "Initial editor reasoning effort. Choose an effort supported by the selected model; Agentic's thought-level picker can override it.";
+        };
+        models = lib.mkOption {
+          default = [];
+          type = lib.types.listOf lib.types.str;
+          description = "Extra Codex model ids for the 99 picker, merged with the default and Codex's locally cached visible model catalog. No discovery API call is made.";
+        };
+      };
+
       ninetyNine = {
         enable = lib.mkOption {
           default = true;
@@ -263,9 +281,8 @@
             (OpenCode: opencode/claude-sonnet-4-5) is not a valid model id in
             current opencode and makes every query fail with
             "OpenCodeProvider make_query failed".
-            Other providers use their own default model (Codex: gpt-5.3-codex).
-            Override this for another model; the Codex picker only lists its
-            default because the Codex CLI does not expose a model listing command.
+            Other providers use their own default model. Codex uses agent.codex.model;
+            its picker merges agent.codex.models with the locally cached catalog.
           '';
         };
         providerExtraArgs = lib.mkOption {

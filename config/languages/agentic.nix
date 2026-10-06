@@ -5,7 +5,10 @@
   lib,
   ...
 }: let
-  codexEditor = import ../../lib/codex-editor.nix {inherit lib;};
+  codexEditor = import ../../lib/codex-editor.nix {
+    inherit lib;
+    inherit (config'.agent.codex) reasoningEffort;
+  };
   agentic-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "agentic.nvim";
     version = "2026-07-20";
@@ -70,6 +73,9 @@ in
                 {
                   "codex-acp" = {
                     command = "${pkgs.codex-acp}/bin/codex-acp";
+                    default_mode = "agent";
+                    initial_model = config'.agent.codex.model;
+                    default_thought_level = config'.agent.codex.reasoningEffort;
                     env = lib.mkLuaInline ''require("dashvim.codex-bridge").env(vim.json.decode([==[${builtins.toJSON codexEditor.config.agentic}]==]))'';
                   };
                 }
